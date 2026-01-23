@@ -4,13 +4,30 @@ uniform sampler2D albedo_texture : source_color, repeat_disable;
 uniform sampler2D normal_texture : hint_normal, repeat_disable;
 uniform vec2 uv_offset = vec2(0.0);
 
+uniform vec3 target_color : source_color = vec3(0.0, 0.0, 1.0);
+uniform vec3 remap_color : source_color = vec3(1.0);
+
 float fresnel(float amount, vec3 normal, vec3 view)
 {
 	return pow((1.0 - clamp(dot(normalize(normal), normalize(view)), 0.0, 1.0 )), amount);
 }
 
 void fragment() {
-	ALBEDO = texture(albedo_texture, UV + uv_offset).rgb;
+	vec3 tex_color = texture(albedo_texture, UV + uv_offset).rgb;
+	float r = tex_color.r;
+	float g = tex_color.g;
+	float b = tex_color.b;
+	
+	float max_val = max(r, max(g, b));
+	float min_val = min(r, min(g, b));
+	float delta = max_val - min_val;
+	
+	if (delta > 0.9)
+	{
+		tex_color = remap_color;
+	}
+	
+	ALBEDO = tex_color;
 	NORMAL_MAP = texture(normal_texture, UV + uv_offset).xyz;
 	EMISSION = mix(vec3(1.0), ALBEDO, 0.75) * clamp(smoothstep(0.6, 0.7, fresnel(1.0, NORMAL, VIEW)) * NORMAL.y, 0.0, 1.0) * 2.0;
 	ROUGHNESS = 0.7;

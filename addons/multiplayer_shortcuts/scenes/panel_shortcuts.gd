@@ -45,7 +45,7 @@ func _generate_args(instance_count: int, net_mode: int) -> void:
 		dict["features"] = ""
 		data.append(dict)
 	
-	#RunInstancesDialog.get_singleton().set_stored_data(data)
+	RunInstancesDialog.get_singleton().set_stored_data(data)
 
 
 func _on_close_requested() -> void:
@@ -54,7 +54,7 @@ func _on_close_requested() -> void:
 
 func _on_spin_box_value_changed(value: float) -> void:
 	var net_mode: int = ProjectSettings.get_setting(MultiplayerShortcuts.NET_MODE_PATH)
-	#RunInstancesDialog.get_singleton().set_instance_count(value)
+	RunInstancesDialog.get_singleton().set_instance_count(value)
 	_generate_args(value, net_mode)
 	ProjectSettings.set_setting(MultiplayerShortcuts.INSTANCES_COUNT_PATH, value)
 	ProjectSettings.save()

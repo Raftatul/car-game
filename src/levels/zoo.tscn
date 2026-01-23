@@ -1,6 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://d0kihwooakirn"]
+[gd_scene format=3 uid="uid://d0kihwooakirn"]
 
+[ext_resource type="Script" uid="uid://fhu7ra8j7ufq" path="res://src/modules/water_system/water_body.gd" id="1_60fgb"]
 [ext_resource type="PackedScene" uid="uid://h8ktknpf0t7p" path="res://src/modules/multiplayer/spawn_point.tscn" id="1_n2inr"]
+[ext_resource type="Shader" uid="uid://kyo33b71nvyp" path="res://assets/shaders/water.gdshader" id="1_ygn0o"]
+[ext_resource type="PackedScene" uid="uid://pmbi6shhiwu5" path="res://src/features/collectible/collectible.tscn" id="4_t72cs"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2inr"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -13,43 +16,180 @@ sky_material = SubResource("ProceduralSkyMaterial_n2inr")
 background_mode = 2
 sky = SubResource("Sky_cn1qa")
 tonemap_mode = 2
+ssr_enabled = true
 glow_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
 
-[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_pxe1o"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ygn0o"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_t72cs"]
+noise = SubResource("FastNoiseLite_ygn0o")
+seamless = true
+as_normal_map = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_l54tx"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6w2um"]
+noise = SubResource("FastNoiseLite_l54tx")
+seamless = true
+as_normal_map = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_fkfc3"]
+noise_type = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8q3s2"]
+noise = SubResource("FastNoiseLite_fkfc3")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ygn0o"]
+render_priority = 0
+shader = ExtResource("1_ygn0o")
+shader_parameter/albedo = Color(0, 0.6037999, 0.6879359, 1)
+shader_parameter/albedo2 = Color(0, 0.71796554, 0.88857853, 1)
+shader_parameter/color_deep = Color(0.36074692, 0.5802685, 0.60887164, 1)
+shader_parameter/color_shallow = Color(0, 0.76862043, 0.827222, 1)
+shader_parameter/metallic = 0.50000002375
+shader_parameter/roughness = 0.02
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_t72cs")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_6w2um")
+shader_parameter/wave = SubResource("NoiseTexture2D_8q3s2")
+shader_parameter/wave_time = 0.0
+shader_parameter/wave_direction = Vector2(2, 0)
+shader_parameter/wave_2_direction = Vector2(0, 1)
+shader_parameter/time_scale = 0.025
+shader_parameter/wave_speed = 0.05
+shader_parameter/noise_scale = 50.0
+shader_parameter/height_scale = 2.0
+shader_parameter/beers_law = 0.089
+shader_parameter/depth_offset = -0.75
+shader_parameter/edge_scale = -0.1
+shader_parameter/near = 0.5
+shader_parameter/far = 100.0
+shader_parameter/edge_color = Color(0, 0, 0, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_1s5vw"]
+lightmap_size_hint = Vector2i(127, 127)
 size = Vector2(25, 25)
+subdivide_width = 50
+subdivide_depth = 50
 
-[node name="Zoo" type="Node3D"]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ygn0o"]
+properties/0/path = NodePath(".:time")
+properties/0/spawn = true
+properties/0/replication_mode = 1
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[sub_resource type="FogMaterial" id="FogMaterial_t72cs"]
+density = 0.35
+albedo = Color(0, 1, 1, 1)
+edge_fade = 0.7727469
+
+[sub_resource type="Gradient" id="Gradient_ygn0o"]
+offsets = PackedFloat32Array(0.2, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_t72cs"]
+noise_type = 2
+frequency = 0.03
+cellular_jitter = 3.0
+cellular_return_type = 0
+domain_warp_enabled = true
+domain_warp_type = 1
+domain_warp_amplitude = 50.0
+domain_warp_fractal_type = 2
+domain_warp_fractal_lacunarity = 1.5
+domain_warp_fractal_gain = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_l54tx"]
+noise = SubResource("FastNoiseLite_t72cs")
+color_ramp = SubResource("Gradient_ygn0o")
+seamless = true
+
+[sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_6w2um"]
+_shader_parameters = {
+&"bias_distance": 512.0,
+&"blend_sharpness": 0.5,
+&"depth_blur": 0.0,
+&"enable_macro_variation": true,
+&"enable_projection": true,
+&"flat_terrain_normals": false,
+&"macro_variation1": Color(1, 1, 1, 1),
+&"macro_variation2": Color(1, 1, 1, 1),
+&"macro_variation_slope": 0.333,
+&"mipmap_bias": 1.0,
+&"noise1_angle": 0.0,
+&"noise1_offset": Vector2(0.5, 0.5),
+&"noise1_scale": 0.04,
+&"noise2_scale": 0.076,
+&"noise_texture": SubResource("NoiseTexture2D_l54tx"),
+&"projection_threshold": 0.8
+}
+show_checkered = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fkfc3"]
+transparency = 4
+cull_mode = 2
+vertex_color_use_as_albedo = true
+backlight_enabled = true
+backlight = Color(0.5, 0.5, 0.5, 1)
+distance_fade_mode = 1
+distance_fade_min_distance = 128.0
+distance_fade_max_distance = 96.0
+
+[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_8q3s2"]
+generated_type = 1
+height_offset = 0.5
+material_override = SubResource("StandardMaterial3D_fkfc3")
+last_lod = 0
+last_shadow_lod = 0
+lod0_range = 128.0
+
+[sub_resource type="Terrain3DAssets" id="Terrain3DAssets_5tu61"]
+mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_8q3s2")])
+
+[node name="Zoo" type="Node3D" unique_id=653414602]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.03106451, 0.00030100346)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=78625833]
 environment = SubResource("Environment_ffv3l")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1199532417]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 shadow_enabled = true
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-shape = SubResource("WorldBoundaryShape3D_pxe1o")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=521056906]
+transform = Transform3D(3.9246202, 0, 0, 0, 1, 0, 0, 0, 3.9246202, 1.3448834, -3.2049365, -21.53858)
+material_override = SubResource("ShaderMaterial_ygn0o")
 mesh = SubResource("PlaneMesh_1s5vw")
+script = ExtResource("1_60fgb")
 
-[node name="SpawnPoint" parent="." instance=ExtResource("1_n2inr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.309087, 1.000001, -4.212706)
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="MeshInstance3D" unique_id=1392848849]
+replication_config = SubResource("SceneReplicationConfig_ygn0o")
 
-[node name="SpawnPoint2" parent="." instance=ExtResource("1_n2inr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.140835, 1.0000019, -3.9695516)
+[node name="FogVolume" type="FogVolume" parent="MeshInstance3D" unique_id=811447449]
+transform = Transform3D(0.9999984, 0, 0, 0, 1, 0, 0, 0, 0.9999984, -1.276304, -14.051269, 1.4265113)
+size = Vector3(30.987427, 30.10254, 22.827637)
+material = SubResource("FogMaterial_t72cs")
 
-[node name="SpawnPoint3" parent="." instance=ExtResource("1_n2inr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.9964752, 1.0000019, 4.931686)
+[node name="SpawnPoint" parent="." unique_id=739599985 instance=ExtResource("1_n2inr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2, -4)
 
-[node name="SpawnPoint4" parent="." instance=ExtResource("1_n2inr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.003525, 1.0000019, 4.931686)
+[node name="SpawnPoint2" parent="." unique_id=83577020 instance=ExtResource("1_n2inr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, -4)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8759155, 0.5, 0)
-use_collision = true
-size = Vector3(2.751831, 1, 1)
+[node name="SpawnPoint3" parent="." unique_id=1966631122 instance=ExtResource("1_n2inr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2, 4)
+
+[node name="SpawnPoint4" parent="." unique_id=794575501 instance=ExtResource("1_n2inr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, 4)
+
+[node name="Terrain3D" type="Terrain3D" parent="." unique_id=723942474]
+data_directory = "res://data/terrains/zoo"
+material = SubResource("Terrain3DMaterial_6w2um")
+assets = SubResource("Terrain3DAssets_5tu61")
+show_checkered = true
+top_level = true
+metadata/_edit_lock_ = true
+
+[node name="Collectible" parent="." unique_id=367338279 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.721979, 4.133067, 7.40303)

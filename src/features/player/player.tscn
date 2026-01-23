@@ -1,14 +1,131 @@
-[gd_scene load_steps=7 format=3 uid="uid://701k78kygyiu"]
+[gd_scene format=3 uid="uid://701k78kygyiu"]
 
 [ext_resource type="Script" uid="uid://c8c8bvww5wvax" path="res://src/features/player/player.gd" id="1_0ph83"]
 [ext_resource type="PackedScene" uid="uid://mcb0ovo14n40" path="res://assets/PlayerCharacter/GodotPlush/godot_plush_model.glb" id="2_3v8pm"]
 [ext_resource type="Material" uid="uid://buh6uaww5rtsq" path="res://assets/PlayerCharacter/GodotPlush/Material/godot_plush_mat.tres" id="3_p2vpv"]
+[ext_resource type="Script" uid="uid://da875ut8n11vq" path="res://assets/PlayerCharacter/GodotPlush/godot_plush_model.gd" id="3_ti7vc"]
 [ext_resource type="PackedScene" uid="uid://bwccmirxmpnbb" path="res://src/ui/pause_menu/pause_menu.tscn" id="4_p2vpv"]
+[ext_resource type="Script" uid="uid://bbfcrnb4wwgl2" path="res://src/modules/water_system/buoyancy.gd" id="6_rybn4"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0ph83"]
 height = 1.5
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_0ph83"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_njwrn"]
+animation = &"walk"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_502ij"]
+animation = &"run"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_si01v"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_njwrn")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_502ij")
+blend_point_1/pos = 1.0
+min_space = 0.0
+sync = true
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p2vpv"]
+animation = &"fall"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_aco40"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1mqja"]
+animation = &"up"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ri5lk"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wy6v3"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "get_parent().moving"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q3iuk"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "!get_parent().moving and !get_parent().falling"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ti7vc"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "get_parent().falling"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rybn4"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "get_parent().falling"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1mqja"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "!get_parent().falling and !get_parent().moving"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_njwrn"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "!get_parent().falling and get_parent().moving"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_502ij"]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_si01v"]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_aco40"]
+xfade_time = 0.2
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_2m83w"]
+states/GroundMovement/node = SubResource("AnimationNodeBlendSpace1D_si01v")
+states/GroundMovement/position = Vector2(588, 100)
+states/Start/position = Vector2(176, 100)
+states/fall/node = SubResource("AnimationNodeAnimation_p2vpv")
+states/fall/position = Vector2(394, 222)
+states/idle/node = SubResource("AnimationNodeAnimation_aco40")
+states/idle/position = Vector2(394, 100)
+states/up/node = SubResource("AnimationNodeAnimation_1mqja")
+states/up/position = Vector2(588, 216)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_ri5lk"), "idle", "GroundMovement", SubResource("AnimationNodeStateMachineTransition_wy6v3"), "GroundMovement", "idle", SubResource("AnimationNodeStateMachineTransition_q3iuk"), "idle", "fall", SubResource("AnimationNodeStateMachineTransition_ti7vc"), "GroundMovement", "fall", SubResource("AnimationNodeStateMachineTransition_rybn4"), "fall", "idle", SubResource("AnimationNodeStateMachineTransition_1mqja"), "fall", "GroundMovement", SubResource("AnimationNodeStateMachineTransition_njwrn"), "idle", "up", SubResource("AnimationNodeStateMachineTransition_502ij"), "GroundMovement", "up", SubResource("AnimationNodeStateMachineTransition_si01v"), "up", "fall", SubResource("AnimationNodeStateMachineTransition_aco40")]
+graph_offset = Vector2(-174, 12)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ti7vc"]
+animation = &"tilt_l"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rybn4"]
+animation = &"tilt_r"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_1mqja"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_ti7vc")
+blend_point_0/pos = -1.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_rybn4")
+blend_point_1/pos = 1.0
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_p2vpv"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_hn5l5"]
+graph_offset = Vector2(-965.7344, 73.900085)
+nodes/TiltBlend/node = SubResource("AnimationNodeBlend2_p2vpv")
+nodes/TiltBlend/position = Vector2(60, 140)
+nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_2m83w")
+nodes/StateMachine/position = Vector2(-540, 180)
+nodes/Tilt/node = SubResource("AnimationNodeBlendSpace1D_1mqja")
+nodes/Tilt/position = Vector2(-520, 400)
+node_connections = [&"output", 0, &"TiltBlend", &"TiltBlend", 0, &"StateMachine", &"TiltBlend", 1, &"Tilt"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ti7vc"]
+properties/0/path = NodePath(".:falling")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:moving")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:movement_blend")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_rybn4"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
@@ -16,45 +133,104 @@ properties/1/path = NodePath("Visual:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" unique_id=1690079816]
+collision_layer = 2
+collision_mask = 3
 script = ExtResource("1_0ph83")
 sensitivity = 0.25
 rotation_speed = 10.0
-acceleration = 0.5
-speed = 5.0
+walk_speed = 5.0
+run_speed = 8.0
 jump_force = 6.0
+walking_acceleration = 0.5
+falling_acceleration = 0.05
+swimming_speed = 3.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=711554080]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 shape = SubResource("CapsuleShape3D_0ph83")
 
-[node name="Visual" type="Node3D" parent="."]
+[node name="Visual" type="Node3D" parent="." unique_id=1424932337]
 unique_name_in_owner = true
 
-[node name="godot_plush_model" parent="Visual" instance=ExtResource("2_3v8pm")]
+[node name="godot_plush_model" parent="Visual" unique_id=869687079 instance=ExtResource("2_3v8pm")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+script = ExtResource("3_ti7vc")
+
+[node name="Skeleton3D" parent="Visual/godot_plush_model/Rig" index="0"]
+bones/0/position = Vector3(-1.2755717e-22, 0.7711019, -8.5243584e-10)
+bones/0/rotation = Quaternion(0.99813306, 0.00021102332, -0.06107769, -1.5283356e-05)
+bones/1/position = Vector3(-2.3597598e-17, 0, -6.18693e-17)
+bones/1/rotation = Quaternion(1, -2.2923515e-15, -3.4519715e-08, -5.960464e-08)
+bones/2/rotation = Quaternion(0.12517215, -0.22640792, 0.9077373, -0.33027926)
+bones/3/rotation = Quaternion(0.12761189, 0.028860379, -0.0037133673, 0.9913972)
+bones/5/rotation = Quaternion(0.073822066, 0.16034289, 0.923779, 0.33981314)
+bones/6/rotation = Quaternion(0.27106833, 0.028006986, -0.0078923525, 0.96212023)
+bones/8/rotation = Quaternion(-0.13955085, -0.006306305, -0.09205313, 0.9859067)
+bones/9/position = Vector3(-4.1177486e-08, 0.15144111, -5.01937e-09)
+bones/9/rotation = Quaternion(0.33915594, -0.19078748, 0.07042988, 0.9184841)
+bones/10/position = Vector3(1.7485785e-08, 0.20523024, 6.150877e-09)
+bones/10/rotation = Quaternion(-0.56772125, 0.050844576, 0.04021977, 0.8206642)
+bones/11/position = Vector3(-1.9200796e-08, 0.2512119, -4.9427776e-08)
+bones/11/rotation = Quaternion(-0.000102671445, 0.9324488, -0.36130223, 4.626674e-05)
+bones/12/rotation = Quaternion(-0.043228287, 0.0037701593, 0.05836403, 0.9973519)
+bones/13/position = Vector3(5.2024035e-08, 0.15186596, -1.5165407e-09)
+bones/13/rotation = Quaternion(0.28637734, 0.19618556, -0.060049392, 0.9358917)
+bones/14/position = Vector3(9.107058e-09, 0.2056787, 2.371518e-09)
+bones/14/rotation = Quaternion(-0.60115916, 0.07193173, -0.022943605, 0.79555464)
+bones/15/position = Vector3(-4.8419313e-10, 0.25120693, -5.0023658e-08)
+bones/15/rotation = Quaternion(-2.7789587e-05, 0.9324604, -0.36127216, 0.0002779076)
 
 [node name="GodotPlushMesh" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="0"]
 material_override = ExtResource("3_p2vpv")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_0ph83")
+[node name="AnimationTree" type="AnimationTree" parent="Visual/godot_plush_model" unique_id=1684553355]
+tree_root = SubResource("AnimationNodeBlendTree_hn5l5")
+anim_player = NodePath("../AnimationPlayer")
+parameters/TiltBlend/blend_amount = 0.0
+parameters/StateMachine/GroundMovement/blend_position = 1.0049322
+parameters/Tilt/blend_position = 1.0
 
-[node name="CameraPivot" type="Node3D" parent="."]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Visual/godot_plush_model" unique_id=1122505844]
+replication_config = SubResource("SceneReplicationConfig_ti7vc")
+
+[node name="CameraPivot" type="Node3D" parent="." unique_id=1647000280]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot"]
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot" unique_id=1113902983]
 unique_name_in_owner = true
-spring_length = 3.0
+spring_length = 6.0
 
-[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D"]
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D" unique_id=1174057119]
 unique_name_in_owner = true
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1461624240]
 
-[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("4_p2vpv")]
+[node name="PauseMenu" parent="CanvasLayer" unique_id=1912501345 instance=ExtResource("4_p2vpv")]
 unique_name_in_owner = true
 visible = false
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=871392169]
+replication_config = SubResource("SceneReplicationConfig_rybn4")
+
+[node name="Buoyancy" type="Node3D" parent="." unique_id=1772111575 node_paths=PackedStringArray("points")]
+script = ExtResource("6_rybn4")
+points = [NodePath("Pontoon"), NodePath("Pontoon2")]
+submerge_floor = 1.0
+bounciness = 0.5
+buo_damping = 0.15
+
+[node name="Pontoon" type="Marker3D" parent="Buoyancy" unique_id=1145496784]
+
+[node name="Pontoon2" type="Marker3D" parent="Buoyancy" unique_id=1915947604]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Label3D" type="Label3D" parent="." unique_id=403355102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+billboard = 1
+
+[connection signal="water_entered" from="Buoyancy" to="." method="_on_buoyancy_water_entered"]
+[connection signal="water_exited" from="Buoyancy" to="." method="_on_buoyancy_water_exited"]
 
 [editable path="Visual/godot_plush_model"]
