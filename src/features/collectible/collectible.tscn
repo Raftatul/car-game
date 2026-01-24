@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://pmbi6shhiwu5"]
+[gd_scene format=3 uid="uid://pmbi6shhiwu5"]
 
 [ext_resource type="Script" uid="uid://bbfcrnb4wwgl2" path="res://src/modules/water_system/buoyancy.gd" id="1_1lv1k"]
 [ext_resource type="Script" uid="uid://cjhtodj4q1jc1" path="res://src/features/collectible/collectible.gd" id="1_d5dss"]
@@ -16,43 +16,55 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="Collectible" type="RigidBody3D"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_d5dss"]
+size = Vector3(0.4416504, 1, 1)
+
+[node name="Collectible" type="RigidBody3D" unique_id=835410599 groups=["fish"]]
+collision_layer = 0
+collision_mask = 3
 contact_monitor = true
-max_contacts_reported = 1
+max_contacts_reported = 2
 script = ExtResource("1_d5dss")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2001821471]
 transform = Transform3D(0.38704348, 0, 0, 0, 0.7136692, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_ow1rj")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.16042835, 0, 0, 0, 0.44294366, 0, 0, 0, 0.40208173, 0, 0, -0.58889484)
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1444414610]
+transform = Transform3D(0.16042835, 0, 0, 0, 0.44294366, 0, 0, 0, 0.40208173, 0, 0, -0.49518865)
 mesh = SubResource("BoxMesh_ow1rj")
 
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="." unique_id=758494726]
 transform = Transform3D(0.16042835, 0, 0, 0, 0.44294366, 0, 0, 0, 0.40208173, 0, 0.28471044, 0.036111534)
 mesh = SubResource("BoxMesh_ow1rj")
 
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="." unique_id=2117635255]
 transform = Transform3D(0.11343996, -0.31320846, 0, 0.11343998, 0.31320846, 0, 0, 0, 0.40208173, 0.2565664, -0.08536008, 0.036111534)
 mesh = SubResource("BoxMesh_ow1rj")
 
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="." unique_id=1106956069]
 transform = Transform3D(0.11343997, 0.31320843, 0, -0.11343997, 0.31320843, 0, 0, 0, 0.40208173, -0.257, -0.085, 0.036)
 mesh = SubResource("BoxMesh_ow1rj")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1805044167]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05908203, 0)
 shape = SubResource("BoxShape3D_ow1rj")
 
-[node name="Buoyancy" type="Node3D" parent="." node_paths=PackedStringArray("points")]
+[node name="Buoyancy" type="Node3D" parent="." unique_id=6220324 node_paths=PackedStringArray("points")]
 script = ExtResource("1_1lv1k")
 points = [NodePath("Pontoon")]
 metadata/_custom_type_script = "uid://bbfcrnb4wwgl2"
 
-[node name="Pontoon" type="Marker3D" parent="Buoyancy"]
+[node name="Pontoon" type="Marker3D" parent="Buoyancy" unique_id=971410642]
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=173405653]
 replication_config = SubResource("SceneReplicationConfig_1lv1k")
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[node name="Area3D" type="Area3D" parent="." unique_id=1377329534]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1671116738]
+shape = SubResource("BoxShape3D_d5dss")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

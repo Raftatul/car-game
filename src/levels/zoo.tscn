@@ -4,6 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://h8ktknpf0t7p" path="res://src/modules/multiplayer/spawn_point.tscn" id="1_n2inr"]
 [ext_resource type="Shader" uid="uid://kyo33b71nvyp" path="res://assets/shaders/water.gdshader" id="1_ygn0o"]
 [ext_resource type="PackedScene" uid="uid://pmbi6shhiwu5" path="res://src/features/collectible/collectible.tscn" id="4_t72cs"]
+[ext_resource type="PackedScene" uid="uid://6442jxq5hu73" path="res://src/features/props/shop/shop.tscn" id="5_l54tx"]
+[ext_resource type="PackedScene" uid="uid://npk8f4u7ipp0" path="res://src/features/props/underwater/clam/clam.tscn" id="6_6w2um"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2inr"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -171,25 +173,76 @@ transform = Transform3D(0.9999984, 0, 0, 0, 1, 0, 0, 0, 0.9999984, -1.276304, -1
 size = Vector3(30.987427, 30.10254, 22.827637)
 material = SubResource("FogMaterial_t72cs")
 
-[node name="SpawnPoint" parent="." unique_id=739599985 instance=ExtResource("1_n2inr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2, -4)
+[node name="SpawnPoint" parent="." unique_id=1528174475 instance=ExtResource("1_n2inr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.6862788, -28.122992)
 
-[node name="SpawnPoint2" parent="." unique_id=83577020 instance=ExtResource("1_n2inr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, -4)
+[node name="SpawnPoint2" parent="." unique_id=1387630213 instance=ExtResource("1_n2inr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.6862788, -28.122992)
 
-[node name="SpawnPoint3" parent="." unique_id=1966631122 instance=ExtResource("1_n2inr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2, 4)
+[node name="SpawnPoint3" parent="." unique_id=1475003789 instance=ExtResource("1_n2inr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.6862788, -20.122992)
 
-[node name="SpawnPoint4" parent="." unique_id=794575501 instance=ExtResource("1_n2inr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, 4)
+[node name="SpawnPoint4" parent="." unique_id=450857441 instance=ExtResource("1_n2inr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.6862788, -20.122992)
 
 [node name="Terrain3D" type="Terrain3D" parent="." unique_id=723942474]
 data_directory = "res://data/terrains/zoo"
 material = SubResource("Terrain3DMaterial_6w2um")
 assets = SubResource("Terrain3DAssets_5tu61")
+collision_mode = 2
 show_checkered = true
 top_level = true
 metadata/_edit_lock_ = true
 
-[node name="Collectible" parent="." unique_id=367338279 instance=ExtResource("4_t72cs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.721979, 4.133067, 7.40303)
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=66137225]
+transform = Transform3D(1, 0, 0, 0, 0.8320703, 0.55467016, 0, -0.55467016, 0.8320703, 0, 2.6362457, -13.070774)
+use_collision = true
+size = Vector3(8.496338, 0.48413086, 11.48822)
+
+[node name="Shop" parent="." unique_id=565984807 instance=ExtResource("5_l54tx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0638666, 0.07600493, -24.050888)
+
+[node name="Collectible" parent="." unique_id=835410599 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.115973, 0.7091395, -23.025772)
+
+[node name="Collectible2" parent="." unique_id=657258155 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.762676, 0.7091395, -23.025772)
+
+[node name="Collectible3" parent="." unique_id=17160585 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.546378, 0.7091395, -23.025772)
+
+[node name="Collectible4" parent="." unique_id=826591873 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.277971, 0.7091395, -23.025772)
+
+[node name="Collectible5" parent="." unique_id=1101928818 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.115973, 0.7091395, -24.596083)
+
+[node name="Collectible6" parent="." unique_id=1569896455 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.762676, 0.7091395, -24.596083)
+
+[node name="Collectible7" parent="." unique_id=444411741 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.546378, 0.7091395, -24.596083)
+
+[node name="Collectible8" parent="." unique_id=873755440 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.277971, 0.7091395, -24.596083)
+
+[node name="Collectible9" parent="." unique_id=1033607603 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.115973, 0.7091395, -21.385157)
+
+[node name="Collectible10" parent="." unique_id=1313011460 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.762676, 0.7091395, -21.385157)
+
+[node name="Collectible11" parent="." unique_id=724219297 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.546378, 0.7091395, -21.385157)
+
+[node name="Collectible12" parent="." unique_id=1013485980 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.277971, 0.7091395, -21.385157)
+
+[node name="Clam" parent="." unique_id=114596885 instance=ExtResource("6_6w2um")]
+transform = Transform3D(-0.8660254, 0, -0.50000006, 0, 1, 0, 0.50000006, 0, -0.8660254, -4.3848877, -21.992037, 9.35355)
+
+[node name="Clam2" parent="." unique_id=1353359207 instance=ExtResource("6_6w2um")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -12.782791, 0.65864897, -18.795671)
+
+[node name="Clam3" parent="." unique_id=1591242960 instance=ExtResource("6_6w2um")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -12.782791, 0.65864897, -15.981588)

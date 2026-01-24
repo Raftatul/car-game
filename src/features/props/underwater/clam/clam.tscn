@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://npk8f4u7ipp0"]
+
+[ext_resource type="PackedScene" uid="uid://2gvnnq7nubed" path="res://assets/props/underwater/clam/clam.blend" id="1_1anpo"]
+[ext_resource type="Script" uid="uid://cpihj5k2m88ka" path="res://src/features/props/underwater/clam/clam.gd" id="1_2q2sj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2q2sj"]
+metallic = 0.1
+roughness = 0.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_1krx6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1krx6"]
+size = Vector3(1.8808594, 2.0722656, 0.6281738)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2q2sj"]
+size = Vector3(10, 10, 10)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_2q2sj"]
+properties/0/path = NodePath(".:closed")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+
+[node name="Clam" type="Node3D" unique_id=114596885]
+script = ExtResource("1_2q2sj")
+
+[node name="clam" parent="." unique_id=120288962 instance=ExtResource("1_1anpo")]
+
+[node name="Skeleton3D" parent="clam/Armature" parent_id_path=PackedInt32Array(120288962, 2035947866) index="0" unique_id=370076688]
+bones/0/rotation = Quaternion(0.76185334, -3.8608616e-07, -4.5409652e-07, 0.64774954)
+bones/1/rotation = Quaternion(-2.7324214e-07, 0.77589583, 0.63086104, -3.3606054e-07)
+
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="clam/Armature/Skeleton3D" index="1" unique_id=1304821876]
+transform = Transform3D(1, -3.979039e-13, -1.1920761e-06, -1.1765637e-06, -0.16084097, -0.9869735, -1.9173564e-07, 0.98698026, -0.16083987, 0, 0, 0)
+bone_name = "Down"
+bone_idx = 0
+
+[node name="Pearl" type="MeshInstance3D" parent="clam/Armature/Skeleton3D/BoneAttachment3D" unique_id=2000066313]
+transform = Transform3D(1, -1.176564e-06, -1.9173562e-07, -3.6948482e-13, -0.160841, 0.98698044, -1.1920926e-06, -0.9869872, -0.1608421, -1.8479135e-07, 0.951234, -0.15501674)
+material_override = SubResource("StandardMaterial3D_2q2sj")
+mesh = SubResource("SphereMesh_1krx6")
+skeleton = NodePath("../../../..")
+
+[node name="AnimatableBody3D" type="PhysicalBone3D" parent="clam/Armature/Skeleton3D/BoneAttachment3D" unique_id=663387239]
+transform = Transform3D(1, 0, 0, 0, 0.98713624, 0.15988119, 0, -0.15988119, 0.98713624, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="clam/Armature/Skeleton3D/BoneAttachment3D/AnimatableBody3D" unique_id=255388818]
+transform = Transform3D(1, 0, 2.4226648e-11, -1.1937118e-12, 1, 0, -2.4241928e-11, 0, 1, 3.4106051e-12, 0.97656286, 0.3123778)
+shape = SubResource("BoxShape3D_1krx6")
+
+[node name="BoneAttachment3D2" type="BoneAttachment3D" parent="clam/Armature/Skeleton3D" index="2" unique_id=1617103461]
+transform = Transform3D(-1, 1.4210853e-13, -8.662482e-07, -8.480299e-07, 0.20402864, 0.978961, 1.7674031e-07, 0.9789648, -0.2040279, 0, 0, 0)
+bone_name = "Up"
+bone_idx = 1
+
+[node name="AnimatableBody3D" type="PhysicalBone3D" parent="clam/Armature/Skeleton3D/BoneAttachment3D2" unique_id=853161300]
+transform = Transform3D(1, 1.7514593e-07, 1.789111e-08, -1.7514594e-07, 0.97934663, 0.20218909, 1.7891029e-08, -0.20218909, 0.97934663, 0, 0, 0)
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="clam/Armature/Skeleton3D/BoneAttachment3D2/AnimatableBody3D" unique_id=1241842083]
+transform = Transform3D(1, 0, 2.4226648e-11, -1.1937118e-12, 1, 0, -2.4241928e-11, 0, 1, 3.4106051e-12, 0.97656286, 0.3123778)
+shape = SubResource("BoxShape3D_1krx6")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1691071524]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=2077857811]
+shape = SubResource("BoxShape3D_2q2sj")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=607194024]
+replication_config = SubResource("SceneReplicationConfig_2q2sj")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
+
+[editable path="clam"]

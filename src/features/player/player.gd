@@ -23,11 +23,14 @@ enum MOVEMENT_STATE {WALKING, SWIMMING, FALLING, DIVING}
 @export_group("Config/Swimming", "swimming_")
 @export var swimming_speed: float = 1.0
 @export var swimming_acceleration: float = 0.05
+@export var swimming_rotation_speed: float = 0.05
 
 @export_group("")
 
 var speed: float = walk_speed
 var movement_state: MOVEMENT_STATE = MOVEMENT_STATE.FALLING
+
+var item_in_hand: Node3D
 
 @onready var camera_pivot: Node3D = %CameraPivot
 @onready var spring_arm: SpringArm3D = %SpringArm3D
@@ -37,6 +40,7 @@ var movement_state: MOVEMENT_STATE = MOVEMENT_STATE.FALLING
 @onready var pause_menu: Control = %PauseMenu
 @onready var buoyancy: Buoyancy = $Buoyancy
 @onready var label_3d: Label3D = $Label3D
+@onready var right_hand_socket: Marker3D = %RightHandSocket
 
 
 func _enter_tree() -> void:
@@ -134,12 +138,24 @@ func _process_diving_state(delta: float) -> void:
 	var input: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var up_input: float = Input.get_axis("dive", "ui_accept")
 	
+	if !Input.is_action_pressed("dive") and buoyancy.get_depth() < 2.0:
+		movement_state = MOVEMENT_STATE.SWIMMING
+		gravity_scale = 1.0
+		buoyancy.active = true
+	
 	if input or up_input:
 		var vel_dir: Vector3 = (camera.global_basis * Vector3(input.x, 0.0, input.y) + Vector3.UP * up_input).normalized()
 		var target_vel: Vector3 = vel_dir * swimming_speed
 		
 		velocity = velocity.move_toward(target_vel, swimming_acceleration)
-		visual.rotation.y = lerp_angle(visual.rotation.y, atan2(-target_vel.x, -target_vel.z), delta * rotation_speed)
+		
+		var right_vec: Vector3 = Vector3.UP.cross(velocity.normalized()).normalized()
+		var forward_vec: Vector3 = velocity.normalized().cross(right_vec).normalized()
+		var target_basis: Basis = Basis(-right_vec, velocity.normalized(), forward_vec).orthonormalized()
+		
+		if target_basis.is_conformal():
+			var quat_target: Quaternion = target_basis.get_rotation_quaternion()
+			visual.quaternion = visual.quaternion.slerp(quat_target, delta * swimming_rotation_speed)
 	else:
 		velocity = velocity.move_toward(Vector3(0.0, 0.0, 0.0), swimming_acceleration / 2.0)
 
@@ -152,6 +168,35 @@ func _process_movement(delta: float, max_speed: float, acceleration: float) -> v
 		visual.rotation.y = lerp_angle(visual.rotation.y, atan2(-target_vel.x, -target_vel.z), delta * rotation_speed)
 	else:
 		velocity = velocity.move_toward(Vector3(0.0, velocity.y, 0.0), acceleration)
+	
+	visual.rotation.x = lerp_angle(visual.rotation.x, 0.0, delta * rotation_speed)
+	visual.rotation.z = lerp_angle(visual.rotation.z, 0.0, delta * rotation_speed)
+
+
+func set_item_in_hand(item: Node3D) -> bool:
+	if not is_instance_valid(item):
+		item_in_hand = null
+		return true
+		
+	if item_in_hand:
+		return false
+	
+	_rpc_set_item_in_hand.rpc(item.get_path())
+	return true
+
+
+@rpc("any_peer", "call_local")
+func _rpc_set_item_in_hand(node_path: NodePath) -> void:
+	var item: Node3D = get_tree().root.get_node(node_path)
+	item_in_hand = item
+	if item:
+		item.reparent.call_deferred(right_hand_socket)
+		item.set_deferred("position", Vector3.ZERO)
+		item.set_deferred("rotation", Vector3.ZERO)
+
+
+func get_item_in_hand() -> Node3D:
+	return item_in_hand
 
 
 func _on_buoyancy_water_entered() -> void:

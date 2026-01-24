@@ -2,13 +2,62 @@
 
 [ext_resource type="Script" uid="uid://c8c8bvww5wvax" path="res://src/features/player/player.gd" id="1_0ph83"]
 [ext_resource type="PackedScene" uid="uid://mcb0ovo14n40" path="res://assets/PlayerCharacter/GodotPlush/godot_plush_model.glb" id="2_3v8pm"]
-[ext_resource type="Material" uid="uid://buh6uaww5rtsq" path="res://assets/PlayerCharacter/GodotPlush/Material/godot_plush_mat.tres" id="3_p2vpv"]
 [ext_resource type="Script" uid="uid://da875ut8n11vq" path="res://assets/PlayerCharacter/GodotPlush/godot_plush_model.gd" id="3_ti7vc"]
+[ext_resource type="Texture2D" uid="uid://drijhg0g7ak1n" path="res://assets/PlayerCharacter/GodotPlush/Material/godot_plush_albedo.png" id="4_1mqja"]
 [ext_resource type="PackedScene" uid="uid://bwccmirxmpnbb" path="res://src/ui/pause_menu/pause_menu.tscn" id="4_p2vpv"]
+[ext_resource type="Texture2D" uid="uid://dts2qgujqag2b" path="res://assets/PlayerCharacter/GodotPlush/Material/godot_plush_normal.png" id="5_njwrn"]
 [ext_resource type="Script" uid="uid://bbfcrnb4wwgl2" path="res://src/modules/water_system/buoyancy.gd" id="6_rybn4"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0ph83"]
 height = 1.5
+
+[sub_resource type="Shader" id="Shader_dqvdr"]
+code = "shader_type spatial;
+
+uniform sampler2D albedo_texture : source_color, repeat_disable;
+uniform sampler2D normal_texture : hint_normal, repeat_disable;
+uniform vec2 uv_offset = vec2(0.0);
+
+uniform vec3 target_color : source_color = vec3(0.0, 0.0, 1.0);
+uniform vec3 remap_color : source_color = vec3(1.0);
+
+float fresnel(float amount, vec3 normal, vec3 view)
+{
+	return pow((1.0 - clamp(dot(normalize(normal), normalize(view)), 0.0, 1.0 )), amount);
+}
+
+void fragment() {
+	vec3 tex_color = texture(albedo_texture, UV + uv_offset).rgb;
+	float r = tex_color.r;
+	float g = tex_color.g;
+	float b = tex_color.b;
+	
+	float max_val = max(r, max(g, b));
+	float min_val = min(r, min(g, b));
+	float delta = max_val - min_val;
+	
+	if (delta > 0.9)
+	{
+		tex_color = remap_color;
+	}
+	
+	ALBEDO = tex_color;
+	NORMAL_MAP = texture(normal_texture, UV + uv_offset).xyz;
+	EMISSION = mix(vec3(1.0), ALBEDO, 0.75) * clamp(smoothstep(0.6, 0.7, fresnel(1.0, NORMAL, VIEW)) * NORMAL.y, 0.0, 1.0) * 2.0;
+	ROUGHNESS = 0.7;
+	SPECULAR = 0.8;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_502ij"]
+resource_local_to_scene = true
+render_priority = 0
+shader = SubResource("Shader_dqvdr")
+shader_parameter/albedo_texture = ExtResource("4_1mqja")
+shader_parameter/normal_texture = ExtResource("5_njwrn")
+shader_parameter/uv_offset = Vector2(0, 0)
+shader_parameter/target_color = Color(0.09411765, 0.6, 1, 1)
+shader_parameter/remap_color = Color(0.09411765, 0.6, 1, 1)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_njwrn"]
 animation = &"walk"
@@ -145,6 +194,8 @@ jump_force = 6.0
 walking_acceleration = 0.5
 falling_acceleration = 0.05
 swimming_speed = 3.0
+swimming_acceleration = 0.1
+swimming_rotation_speed = 5.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=711554080]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
@@ -152,37 +203,47 @@ shape = SubResource("CapsuleShape3D_0ph83")
 
 [node name="Visual" type="Node3D" parent="." unique_id=1424932337]
 unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="godot_plush_model" parent="Visual" unique_id=869687079 instance=ExtResource("2_3v8pm")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+[node name="godot_plush_model" parent="Visual" unique_id=1080972857 instance=ExtResource("2_3v8pm")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, -1, 0)
 script = ExtResource("3_ti7vc")
 
-[node name="Skeleton3D" parent="Visual/godot_plush_model/Rig" index="0"]
-bones/0/position = Vector3(-1.2755717e-22, 0.7711019, -8.5243584e-10)
-bones/0/rotation = Quaternion(0.99813306, 0.00021102332, -0.06107769, -1.5283356e-05)
+[node name="Skeleton3D" parent="Visual/godot_plush_model/Rig" parent_id_path=PackedInt32Array(1080972857, 1940519781) index="0" unique_id=1131176568]
+bones/0/position = Vector3(-2.1183667e-22, 0.77668417, -6.6136346e-10)
+bones/0/rotation = Quaternion(0.9997886, 0.00552586, 0.01980628, 9.5310934e-05)
 bones/1/position = Vector3(-2.3597598e-17, 0, -6.18693e-17)
 bones/1/rotation = Quaternion(1, -2.2923515e-15, -3.4519715e-08, -5.960464e-08)
-bones/2/rotation = Quaternion(0.12517215, -0.22640792, 0.9077373, -0.33027926)
-bones/3/rotation = Quaternion(0.12761189, 0.028860379, -0.0037133673, 0.9913972)
-bones/5/rotation = Quaternion(0.073822066, 0.16034289, 0.923779, 0.33981314)
-bones/6/rotation = Quaternion(0.27106833, 0.028006986, -0.0078923525, 0.96212023)
-bones/8/rotation = Quaternion(-0.13955085, -0.006306305, -0.09205313, 0.9859067)
-bones/9/position = Vector3(-4.1177486e-08, 0.15144111, -5.01937e-09)
-bones/9/rotation = Quaternion(0.33915594, -0.19078748, 0.07042988, 0.9184841)
-bones/10/position = Vector3(1.7485785e-08, 0.20523024, 6.150877e-09)
-bones/10/rotation = Quaternion(-0.56772125, 0.050844576, 0.04021977, 0.8206642)
+bones/2/rotation = Quaternion(-0.05741407, 0.12875481, 0.9299029, -0.3397153)
+bones/3/rotation = Quaternion(0.30086595, -0.0230846, 0.0072761737, 0.95335925)
+bones/5/rotation = Quaternion(-0.10927334, -0.19520725, 0.9164658, 0.33172876)
+bones/6/rotation = Quaternion(0.0967639, -0.024090054, 0.002351286, 0.99501306)
+bones/8/rotation = Quaternion(-0.044660833, -0.0033471803, -0.047872003, 0.9978489)
+bones/9/position = Vector3(-3.2417834e-08, 0.15344952, -9.580924e-09)
+bones/9/rotation = Quaternion(0.24746834, -0.20110458, 0.052554138, 0.94633734)
+bones/10/position = Vector3(2.1938636e-08, 0.20730709, -4.3776485e-09)
+bones/10/rotation = Quaternion(-0.57086897, -0.029780991, 0.024650741, 0.8201305)
 bones/11/position = Vector3(-1.9200796e-08, 0.2512119, -4.9427776e-08)
 bones/11/rotation = Quaternion(-0.000102671445, 0.9324488, -0.36130223, 4.626674e-05)
-bones/12/rotation = Quaternion(-0.043228287, 0.0037701593, 0.05836403, 0.9973519)
-bones/13/position = Vector3(5.2024035e-08, 0.15186596, -1.5165407e-09)
-bones/13/rotation = Quaternion(0.28637734, 0.19618556, -0.060049392, 0.9358917)
-bones/14/position = Vector3(9.107058e-09, 0.2056787, 2.371518e-09)
-bones/14/rotation = Quaternion(-0.60115916, 0.07193173, -0.022943605, 0.79555464)
+bones/12/rotation = Quaternion(-0.0954719, 0.005666105, 0.08665934, 0.9916367)
+bones/13/position = Vector3(-1.5080738e-08, 0.15270986, 1.1011037e-08)
+bones/13/rotation = Quaternion(0.30084264, 0.19224288, -0.062066782, 0.9320323)
+bones/14/position = Vector3(-7.321016e-09, 0.2062961, -8.782884e-09)
+bones/14/rotation = Quaternion(-0.5707978, -0.0071475087, -0.038364746, 0.8201628)
 bones/15/position = Vector3(-4.8419313e-10, 0.25120693, -5.0023658e-08)
 bones/15/rotation = Quaternion(-2.7789587e-05, 0.9324604, -0.36127216, 0.0002779076)
 
-[node name="GodotPlushMesh" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="0"]
-material_override = ExtResource("3_p2vpv")
+[node name="GodotPlushMesh" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="0" unique_id=1009443981]
+material_override = SubResource("ShaderMaterial_502ij")
+
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="1" unique_id=1198560524]
+transform = Transform3D(-0.77641267, -0.5684353, -0.27214763, 0.62755626, -0.73702216, -0.25094175, -0.057934675, -0.36562228, 0.9289585, -0.6869201, 0.57687944, -0.12968647)
+bone_name = "DEF-hand.R"
+bone_idx = 7
+
+[node name="RightHandSocket" type="Marker3D" parent="Visual/godot_plush_model/Rig/Skeleton3D/BoneAttachment3D" unique_id=1731198154]
+unique_name_in_owner = true
+transform = Transform3D(1, 5.6311364e-09, 4.656613e-10, 5.6477347e-09, 1, -6.184564e-11, 0, 6.548362e-11, 1, 0.010235667, 0.14705995, 6.040046e-05)
 
 [node name="AnimationTree" type="AnimationTree" parent="Visual/godot_plush_model" unique_id=1684553355]
 tree_root = SubResource("AnimationNodeBlendTree_hn5l5")
