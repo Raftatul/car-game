@@ -8,6 +8,11 @@ var points = {}
 @onready var nav: AStar3D = AStar3D.new()
 
 
+#func _process(delta: float) -> void:
+	#for i in nav.get_point_count():
+		#DebugDraw3D.draw_sphere(nav.get_point_position(i), 0.5, Color.SEA_GREEN)
+
+
 func add_points(data: VolumetricPoints) -> void:
 	if not is_instance_valid(data): return
 	for p in data.points:

@@ -1,3 +1,4 @@
+class_name VolumetricAI
 extends Node3D
 
 @export var target_pos: Vector3

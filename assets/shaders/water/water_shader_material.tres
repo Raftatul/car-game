@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://pbw4j4s2e6cy"]
 
-[ext_resource type="Shader" path="res://assets/shaders/water/water.gdshader" id="1_wmdaw"]
+[ext_resource type="Shader" uid="uid://kyo33b71nvyp" path="res://assets/shaders/water/water.gdshader" id="1_wmdaw"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ygn0o"]
 
@@ -42,7 +42,7 @@ shader_parameter/time_scale = 0.025
 shader_parameter/wave_speed = 0.05
 shader_parameter/noise_scale = 50.0
 shader_parameter/height_scale = 2.0
-shader_parameter/beers_law = 0.089
+shader_parameter/beers_law = 0.029
 shader_parameter/depth_offset = -0.75
 shader_parameter/edge_scale = -0.1
 shader_parameter/near = 0.5

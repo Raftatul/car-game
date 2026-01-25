@@ -7,7 +7,6 @@ extends CSGBox3D
 @export_range(0.5, 10.0, 0.5, "or_greater") var grid_step: float = 2.0
 
 @export_tool_button("Bake") var bake_delegate = _generate_points
-@export var debug: bool = false
 
 @export_dir var save_path: String = "" :
 	set(v):
@@ -20,7 +19,7 @@ extends CSGBox3D
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	
-	visible = false
+	#visible = false
 	VolumetricNavigation.add_points(data)
 	set_process(false)
 

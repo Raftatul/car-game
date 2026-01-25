@@ -4,6 +4,8 @@ extends Node3D
 
 var player_count: int = 0
 
+var item: Node3D = null
+
 var closed: bool = true :
 	set(v):
 		if v == closed:
@@ -28,7 +30,7 @@ func _ready() -> void:
 
 
 func _spawn_item() -> void:
-	var item = items.pick_random().instantiate()
+	item = items.pick_random().instantiate()
 	item_socket.add_child(item)
 
 
