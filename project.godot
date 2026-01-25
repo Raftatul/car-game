@@ -28,6 +28,7 @@ config/icon="res://icon.svg"
 
 MultiplayerBackend="*res://src/modules/multiplayer/multiplayer_backend.gd"
 Global="*res://src/modules/windows_placement/global.gd"
+VolumetricNavigation="*uid://jmkpr6osphnj"
 
 [debug_draw_3d]
 
@@ -45,6 +46,7 @@ enabled=PackedStringArray("res://addons/multiplayer_shortcuts/plugin.cfg", "res:
 
 spawn_point=""
 fish=""
+volumetric_nav=""
 
 [input]
 
