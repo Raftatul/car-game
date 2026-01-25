@@ -186,7 +186,7 @@ properties/1/replication_mode = 1
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_1mqja"]
 
-[node name="Player" type="CharacterBody3D" unique_id=1690079816]
+[node name="Player" type="CharacterBody3D" unique_id=1690079816 groups=["player"]]
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_0ph83")
@@ -214,26 +214,26 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, -
 script = ExtResource("3_ti7vc")
 
 [node name="Skeleton3D" parent="Visual/godot_plush_model/Rig" parent_id_path=PackedInt32Array(1080972857, 1940519781) index="0" unique_id=1131176568]
-bones/0/position = Vector3(-1.9790727e-22, 0.7717582, -8.299704e-10)
-bones/0/rotation = Quaternion(0.9978161, -0.0011485516, 0.0660438, -8.3015264e-05)
+bones/0/position = Vector3(-1.8025323e-22, 0.79025424, -1.9687993e-10)
+bones/0/rotation = Quaternion(0.997892, 0.0110463705, -0.06394559, -0.0007069859)
 bones/1/position = Vector3(-2.3597598e-17, 0, -6.18693e-17)
 bones/1/rotation = Quaternion(1, -2.2923515e-15, -3.4519715e-08, -5.960464e-08)
-bones/2/rotation = Quaternion(-0.072088465, 0.15700828, 0.92449087, -0.33980638)
-bones/3/rotation = Quaternion(0.2638329, -0.027738893, 0.007595745, 0.9641396)
-bones/5/rotation = Quaternion(-0.12349684, -0.22311758, 0.90872407, 0.33043537)
-bones/6/rotation = Quaternion(0.13505974, -0.028497525, 0.0038810992, 0.99042)
-bones/8/rotation = Quaternion(-0.038545694, -0.004011425, -0.0577884, 0.9975764)
-bones/9/position = Vector3(-2.5444127e-08, 0.1532453, -6.731619e-09)
-bones/9/rotation = Quaternion(0.2824519, -0.1961775, 0.059110384, 0.93714535)
-bones/10/position = Vector3(1.7838545e-08, 0.20709895, -6.3902723e-09)
-bones/10/rotation = Quaternion(-0.60132015, -0.07704938, 0.022621945, 0.7949628)
+bones/2/rotation = Quaternion(0.033312764, -0.0468896, 0.9397282, -0.33705)
+bones/3/rotation = Quaternion(0.26699734, 0.0018791804, -0.0004949202, 0.9636954)
+bones/5/rotation = Quaternion(-0.019714503, -0.02046127, 0.94082445, 0.33770126)
+bones/6/rotation = Quaternion(0.13197434, 0.0019224557, -0.00028099597, 0.99125123)
+bones/8/rotation = Quaternion(-0.02315688, -0.0014579488, -0.01967182, 0.9995372)
+bones/9/position = Vector3(-4.5207248e-08, 0.15362994, -1.296393e-08)
+bones/9/rotation = Quaternion(0.121850155, -0.21069068, 0.02645954, 0.9695679)
+bones/10/position = Vector3(2.363845e-08, 0.20749043, 2.661334e-09)
+bones/10/rotation = Quaternion(-0.48532307, 0.052425954, 0.037006717, 0.8719768)
 bones/11/position = Vector3(-1.9200796e-08, 0.2512119, -4.9427776e-08)
 bones/11/rotation = Quaternion(-0.000102671445, 0.9324488, -0.36130223, 4.626674e-05)
-bones/12/rotation = Quaternion(-0.13997449, 0.0058858013, 0.08993311, 0.986045)
-bones/13/position = Vector3(-1.881033e-08, 0.15229557, 8.28242e-09)
-bones/13/rotation = Quaternion(0.33490878, 0.1918497, -0.069861405, 0.91986376)
-bones/14/position = Vector3(-8.0598985e-09, 0.2058256, -7.325996e-09)
-bones/14/rotation = Quaternion(-0.5639339, -0.055843562, -0.040199284, 0.82294846)
+bones/12/rotation = Quaternion(0.03819776, 0.0024572313, 0.038757518, 0.99851525)
+bones/13/position = Vector3(-3.6158285e-09, 0.15306664, 1.0710991e-08)
+bones/13/rotation = Quaternion(0.13284455, 0.20590404, -0.028242096, 0.9691018)
+bones/14/position = Vector3(-4.075056e-09, 0.20656987, -1.1763849e-08)
+bones/14/rotation = Quaternion(-0.5400811, 0.07969573, -0.021407956, 0.8375577)
 bones/15/position = Vector3(-4.8419313e-10, 0.25120693, -5.0023658e-08)
 bones/15/rotation = Quaternion(-2.7789587e-05, 0.9324604, -0.36127216, 0.0002779076)
 
@@ -241,7 +241,7 @@ bones/15/rotation = Quaternion(-2.7789587e-05, 0.9324604, -0.36127216, 0.0002779
 material_override = SubResource("ShaderMaterial_502ij")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="1" unique_id=1198560524]
-transform = Transform3D(-0.7595366, -0.5465349, -0.3527095, 0.6377333, -0.7324466, -0.23836617, -0.12806542, -0.40598238, 0.9048631, -0.67077816, 0.5843112, -0.19978109)
+transform = Transform3D(-0.7818492, -0.59822845, 0.17559746, 0.61915135, -0.7780879, 0.10597425, 0.07323349, 0.19157735, 0.9787413, -0.6937359, 0.5720092, 0.11024812)
 bone_name = "DEF-hand.R"
 bone_idx = 7
 

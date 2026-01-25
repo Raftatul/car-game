@@ -47,6 +47,7 @@ enabled=PackedStringArray("res://addons/multiplayer_shortcuts/plugin.cfg", "res:
 spawn_point=""
 fish=""
 volumetric_nav=""
+player=""
 
 [input]
 
