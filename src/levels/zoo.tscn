@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://fhu7ra8j7ufq" path="res://src/modules/water_system/water_body.gd" id="1_60fgb"]
 [ext_resource type="Script" uid="uid://d1x52urwedobx" path="res://compositor/water_effect.gd" id="1_fkfc3"]
 [ext_resource type="PackedScene" uid="uid://h8ktknpf0t7p" path="res://src/modules/multiplayer/spawn_point.tscn" id="1_n2inr"]
-[ext_resource type="Shader" uid="uid://kyo33b71nvyp" path="res://assets/shaders/water.gdshader" id="1_ygn0o"]
+[ext_resource type="Material" uid="uid://pbw4j4s2e6cy" path="res://assets/shaders/water/water_shader_material.tres" id="2_arbid"]
 [ext_resource type="PackedScene" uid="uid://pmbi6shhiwu5" path="res://src/features/collectible/collectible.tscn" id="4_t72cs"]
 [ext_resource type="PackedScene" uid="uid://6442jxq5hu73" path="res://src/features/props/shop/shop.tscn" id="5_l54tx"]
 [ext_resource type="PackedScene" uid="uid://npk8f4u7ipp0" path="res://src/features/props/underwater/clam/clam.tscn" id="6_6w2um"]
@@ -37,53 +37,6 @@ metadata/_custom_type_script = "uid://d1x52urwedobx"
 
 [sub_resource type="Compositor" id="Compositor_5tu61"]
 compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_8q3s2")])
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_ygn0o"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_t72cs"]
-noise = SubResource("FastNoiseLite_ygn0o")
-seamless = true
-as_normal_map = true
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_l54tx"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6w2um"]
-noise = SubResource("FastNoiseLite_l54tx")
-seamless = true
-as_normal_map = true
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_fkfc3"]
-noise_type = 3
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8q3s2"]
-noise = SubResource("FastNoiseLite_fkfc3")
-seamless = true
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ygn0o"]
-render_priority = 0
-shader = ExtResource("1_ygn0o")
-shader_parameter/albedo = Color(0, 0.6037999, 0.6879359, 1)
-shader_parameter/albedo2 = Color(0, 0.71796554, 0.88857853, 1)
-shader_parameter/color_deep = Color(0.36074692, 0.5802685, 0.60887164, 1)
-shader_parameter/color_shallow = Color(0, 0.76862043, 0.827222, 1)
-shader_parameter/metallic = 0.50000002375
-shader_parameter/roughness = 0.02
-shader_parameter/texture_normal = SubResource("NoiseTexture2D_t72cs")
-shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_6w2um")
-shader_parameter/wave = SubResource("NoiseTexture2D_8q3s2")
-shader_parameter/wave_time = 0.0
-shader_parameter/wave_direction = Vector2(2, 0)
-shader_parameter/wave_2_direction = Vector2(0, 1)
-shader_parameter/time_scale = 0.025
-shader_parameter/wave_speed = 0.05
-shader_parameter/noise_scale = 50.0
-shader_parameter/height_scale = 2.0
-shader_parameter/beers_law = 0.089
-shader_parameter/depth_offset = -0.75
-shader_parameter/edge_scale = -0.1
-shader_parameter/near = 0.5
-shader_parameter/far = 100.0
-shader_parameter/edge_color = Color(0, 0, 0, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_1s5vw"]
 lightmap_size_hint = Vector2i(127, 127)
@@ -177,7 +130,7 @@ shadow_enabled = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=521056906]
 transform = Transform3D(3.9246202, 0, 0, 0, 1, 0, 0, 0, 3.9246202, 1.3448834, -3.2049365, -21.53858)
-material_override = SubResource("ShaderMaterial_ygn0o")
+material_override = ExtResource("2_arbid")
 mesh = SubResource("PlaneMesh_1s5vw")
 script = ExtResource("1_60fgb")
 
