@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://srybne1cmv"
+path="res://.godot/imported/water_effect.glsl-221cc54df32bf10e89bd13d8c38fe05c.res"
+
+[deps]
+
+source_file="res://compositor/glsl/water_effect.glsl"
+dest_files=["res://.godot/imported/water_effect.glsl-221cc54df32bf10e89bd13d8c38fe05c.res"]
+
+[params]
+

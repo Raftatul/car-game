@@ -42,6 +42,10 @@ var item_in_hand: Node3D
 @onready var label_3d: Label3D = $Label3D
 @onready var right_hand_socket: Marker3D = %RightHandSocket
 
+##Components
+@onready var inputs_component: InputsComponent = $InputsComponent
+@onready var interactor: Interactor = $Interactor
+
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(int(name))
@@ -84,6 +88,11 @@ func _physics_process(delta: float) -> void:
 			_process_falling_state(delta)
 		MOVEMENT_STATE.DIVING:
 			_process_diving_state(delta)
+	
+	inputs_component.update()
+	
+	interactor.wants_interact = inputs_component.interaction_pressed
+	interactor.update()
 	
 	move_and_slide()
 	label_3d.text = str(MOVEMENT_STATE.find_key(movement_state))

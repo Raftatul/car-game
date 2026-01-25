@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://cmdgoj3a0fr5h"]
+
+[ext_resource type="Texture2D" uid="uid://c7abq0ivc2au2" path="res://assets/icons/Circle.png" id="1_716lj"]
+[ext_resource type="Script" uid="uid://cp2qtdokg7sw" path="res://src/modules/interaction_system/interaction_preview.gd" id="1_w1esb"]
+[ext_resource type="Texture2D" uid="uid://bxcspwwog8fl1" path="res://assets/icons/circle_dark.png" id="2_w1esb"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_jtlie"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="LabelSettings" id="LabelSettings_716lj"]
+outline_size = 7
+outline_color = Color(0, 0, 0, 1)
+
+[node name="InteractionPreview" type="Node3D" unique_id=903042312]
+script = ExtResource("1_w1esb")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=363715867]
+billboard = 1
+no_depth_test = true
+texture = SubResource("ViewportTexture_jtlie")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1065166536]
+disable_3d = true
+transparent_bg = true
+gui_disable_input = true
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="SubViewport" unique_id=705347922]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -250.0
+offset_right = 250.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.15, 0.15)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+max_value = 1.0
+step = 0.01
+value = 1.0
+fill_mode = 4
+texture_under = ExtResource("2_w1esb")
+texture_progress = ExtResource("1_716lj")
+
+[node name="Label" type="Label" parent="SubViewport" unique_id=1374242446]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -21.0
+offset_right = 20.0
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+text = "[E]"
+label_settings = SubResource("LabelSettings_716lj")
+horizontal_alignment = 1
+vertical_alignment = 1

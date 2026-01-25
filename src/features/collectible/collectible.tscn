@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bbfcrnb4wwgl2" path="res://src/modules/water_system/buoyancy.gd" id="1_1lv1k"]
 [ext_resource type="Script" uid="uid://cjhtodj4q1jc1" path="res://src/features/collectible/collectible.gd" id="1_d5dss"]
+[ext_resource type="Script" uid="uid://dbhxlu164ckm8" path="res://src/features/props/items/interactable_item.gd" id="3_se7dc"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_ow1rj"]
 
@@ -16,8 +17,8 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_d5dss"]
-size = Vector3(0.4416504, 1, 1)
+[sub_resource type="BoxShape3D" id="BoxShape3D_se7dc"]
+size = Vector3(4, 4, 4)
 
 [node name="Collectible" type="RigidBody3D" unique_id=835410599 groups=["fish"]]
 collision_layer = 0
@@ -60,11 +61,12 @@ metadata/_custom_type_script = "uid://bbfcrnb4wwgl2"
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=173405653]
 replication_config = SubResource("SceneReplicationConfig_1lv1k")
 
-[node name="Area3D" type="Area3D" parent="." unique_id=1377329534]
-collision_layer = 0
-collision_mask = 2
+[node name="Interactable" type="Area3D" parent="." unique_id=486149514]
+script = ExtResource("3_se7dc")
+interaction_time = 0.5
+metadata/_custom_type_script = "uid://bdjscuxss8e37"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1671116738]
-shape = SubResource("BoxShape3D_d5dss")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable" unique_id=1834597553]
+shape = SubResource("BoxShape3D_se7dc")
 
-[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="interacted" from="Interactable" to="." method="_on_interactable_interacted"]

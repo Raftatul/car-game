@@ -1,0 +1,14 @@
+[gd_resource type="CompositorEffect" script_class="PostProcessShader" format=3 uid="uid://csrfqx0fleb0q"]
+
+[ext_resource type="Script" uid="uid://d1x52urwedobx" path="res://compositor/water_effect.gd" id="1_7n6jw"]
+
+[resource]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("1_7n6jw")
+shader_code = null
+metadata/_custom_type_script = "uid://d1x52urwedobx"

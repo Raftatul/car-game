@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://d0kihwooakirn"]
 
 [ext_resource type="Script" uid="uid://fhu7ra8j7ufq" path="res://src/modules/water_system/water_body.gd" id="1_60fgb"]
+[ext_resource type="Script" uid="uid://d1x52urwedobx" path="res://compositor/water_effect.gd" id="1_fkfc3"]
 [ext_resource type="PackedScene" uid="uid://h8ktknpf0t7p" path="res://src/modules/multiplayer/spawn_point.tscn" id="1_n2inr"]
 [ext_resource type="Shader" uid="uid://kyo33b71nvyp" path="res://assets/shaders/water.gdshader" id="1_ygn0o"]
 [ext_resource type="PackedScene" uid="uid://pmbi6shhiwu5" path="res://src/features/collectible/collectible.tscn" id="4_t72cs"]
@@ -22,6 +23,20 @@ ssr_enabled = true
 glow_enabled = true
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.0
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_8q3s2"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("1_fkfc3")
+shader_code = "color.a = depth;"
+metadata/_custom_type_script = "uid://d1x52urwedobx"
+
+[sub_resource type="Compositor" id="Compositor_5tu61"]
+compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_8q3s2")])
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ygn0o"]
 
@@ -154,6 +169,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.03106451, 0.00030100346
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=78625833]
 environment = SubResource("Environment_ffv3l")
+compositor = SubResource("Compositor_5tu61")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1199532417]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
@@ -202,47 +218,46 @@ size = Vector3(8.496338, 0.48413086, 11.48822)
 [node name="Shop" parent="." unique_id=565984807 instance=ExtResource("5_l54tx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0638666, 0.07600493, -24.050888)
 
-[node name="Collectible" parent="." unique_id=835410599 instance=ExtResource("4_t72cs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.115973, 0.7091395, -23.025772)
+[node name="Props" type="Node" parent="." unique_id=1444304400]
 
-[node name="Collectible2" parent="." unique_id=657258155 instance=ExtResource("4_t72cs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.762676, 0.7091395, -23.025772)
+[node name="Collectible" parent="Props" unique_id=835410599 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8999262, 0.678075, -24.464176)
 
-[node name="Collectible3" parent="." unique_id=17160585 instance=ExtResource("4_t72cs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.546378, 0.7091395, -23.025772)
+[node name="Collectible2" parent="Props" unique_id=657258155 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45337105, 0.678075, -24.464176)
 
-[node name="Collectible4" parent="." unique_id=826591873 instance=ExtResource("4_t72cs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.277971, 0.7091395, -23.025772)
+[node name="Collectible3" parent="Props" unique_id=17160585 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6696692, 0.678075, -24.464176)
 
-[node name="Collectible5" parent="." unique_id=1101928818 instance=ExtResource("4_t72cs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.115973, 0.7091395, -24.596083)
+[node name="Collectible4" parent="Props" unique_id=826591873 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.938076, 0.678075, -24.464176)
 
-[node name="Collectible6" parent="." unique_id=1569896455 instance=ExtResource("4_t72cs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.762676, 0.7091395, -24.596083)
+[node name="Collectible5" parent="Props" unique_id=1101928818 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8999262, 0.678075, -26.034487)
 
-[node name="Collectible7" parent="." unique_id=444411741 instance=ExtResource("4_t72cs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.546378, 0.7091395, -24.596083)
+[node name="Collectible6" parent="Props" unique_id=1569896455 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45337105, 0.678075, -26.034487)
 
-[node name="Collectible8" parent="." unique_id=873755440 instance=ExtResource("4_t72cs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.277971, 0.7091395, -24.596083)
+[node name="Collectible7" parent="Props" unique_id=444411741 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6696692, 0.678075, -26.034487)
 
-[node name="Collectible9" parent="." unique_id=1033607603 instance=ExtResource("4_t72cs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.115973, 0.7091395, -21.385157)
+[node name="Collectible8" parent="Props" unique_id=873755440 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.938076, 0.678075, -26.034487)
 
-[node name="Collectible10" parent="." unique_id=1313011460 instance=ExtResource("4_t72cs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.762676, 0.7091395, -21.385157)
+[node name="Collectible9" parent="Props" unique_id=1033607603 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.865161, 0.678075, -22.82356)
 
-[node name="Collectible11" parent="." unique_id=724219297 instance=ExtResource("4_t72cs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.546378, 0.7091395, -21.385157)
+[node name="Collectible10" parent="Props" unique_id=1313011460 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45337105, 0.678075, -22.82356)
 
-[node name="Collectible12" parent="." unique_id=1013485980 instance=ExtResource("4_t72cs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.277971, 0.7091395, -21.385157)
+[node name="Collectible11" parent="Props" unique_id=724219297 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6696692, 0.678075, -22.82356)
 
-[node name="Clam" parent="." unique_id=114596885 instance=ExtResource("6_6w2um")]
-transform = Transform3D(-0.8660254, 0, -0.50000006, 0, 1, 0, 0.50000006, 0, -0.8660254, -4.3848877, -21.992037, 9.35355)
+[node name="Collectible12" parent="Props" unique_id=1013485980 instance=ExtResource("4_t72cs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.938076, 0.678075, -22.82356)
 
-[node name="Clam2" parent="." unique_id=1353359207 instance=ExtResource("6_6w2um")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -12.782791, 0.65864897, -18.795671)
+[node name="Clam" parent="Props" unique_id=114596885 instance=ExtResource("6_6w2um")]
+transform = Transform3D(-0.9659258, 0, -0.25881913, 0, 1, 0, 0.25881913, 0, -0.9659258, -5.722789, -18.767353, 16.39987)
 
-[node name="Clam3" parent="." unique_id=1591242960 instance=ExtResource("6_6w2um")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -12.782791, 0.65864897, -15.981588)
+[node name="Clam2" parent="Props" unique_id=1872716149 instance=ExtResource("6_6w2um")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.102928, 0.64090884, -28.577314)

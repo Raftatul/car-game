@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://bwccmirxmpnbb" path="res://src/ui/pause_menu/pause_menu.tscn" id="4_p2vpv"]
 [ext_resource type="Texture2D" uid="uid://dts2qgujqag2b" path="res://assets/PlayerCharacter/GodotPlush/Material/godot_plush_normal.png" id="5_njwrn"]
 [ext_resource type="Script" uid="uid://bbfcrnb4wwgl2" path="res://src/modules/water_system/buoyancy.gd" id="6_rybn4"]
+[ext_resource type="Script" uid="uid://dss72a2cjr3u8" path="res://src/modules/interaction_system/interactor.gd" id="8_njwrn"]
+[ext_resource type="Script" uid="uid://clyypf1rhthc" path="res://src/features/components/inputs_component.gd" id="9_502ij"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0ph83"]
 height = 1.5
@@ -49,7 +51,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_502ij"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1mqja"]
 resource_local_to_scene = true
 render_priority = 0
 shader = SubResource("Shader_dqvdr")
@@ -182,6 +184,8 @@ properties/1/path = NodePath("Visual:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_1mqja"]
+
 [node name="Player" type="CharacterBody3D" unique_id=1690079816]
 collision_layer = 2
 collision_mask = 3
@@ -210,34 +214,34 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, -
 script = ExtResource("3_ti7vc")
 
 [node name="Skeleton3D" parent="Visual/godot_plush_model/Rig" parent_id_path=PackedInt32Array(1080972857, 1940519781) index="0" unique_id=1131176568]
-bones/0/position = Vector3(-2.1183667e-22, 0.77668417, -6.6136346e-10)
-bones/0/rotation = Quaternion(0.9997886, 0.00552586, 0.01980628, 9.5310934e-05)
+bones/0/position = Vector3(-1.4046435e-22, 0.77477, -7.2688167e-10)
+bones/0/rotation = Quaternion(0.9967979, -0.00432756, 0.07984471, -0.00035356518)
 bones/1/position = Vector3(-2.3597598e-17, 0, -6.18693e-17)
 bones/1/rotation = Quaternion(1, -2.2923515e-15, -3.4519715e-08, -5.960464e-08)
-bones/2/rotation = Quaternion(-0.05741407, 0.12875481, 0.9299029, -0.3397153)
-bones/3/rotation = Quaternion(0.30086595, -0.0230846, 0.0072761737, 0.95335925)
-bones/5/rotation = Quaternion(-0.10927334, -0.19520725, 0.9164658, 0.33172876)
-bones/6/rotation = Quaternion(0.0967639, -0.024090054, 0.002351286, 0.99501306)
-bones/8/rotation = Quaternion(-0.044660833, -0.0033471803, -0.047872003, 0.9978489)
-bones/9/position = Vector3(-3.2417834e-08, 0.15344952, -9.580924e-09)
-bones/9/rotation = Quaternion(0.24746834, -0.20110458, 0.052554138, 0.94633734)
-bones/10/position = Vector3(2.1938636e-08, 0.20730709, -4.3776485e-09)
-bones/10/rotation = Quaternion(-0.57086897, -0.029780991, 0.024650741, 0.8201305)
+bones/2/rotation = Quaternion(-0.06338769, 0.14026134, 0.9278296, -0.33976632)
+bones/3/rotation = Quaternion(0.23599899, -0.025235808, 0.006157214, 0.9714061)
+bones/5/rotation = Quaternion(-0.11507234, -0.20658109, 0.91344345, 0.33121565)
+bones/6/rotation = Quaternion(0.16351527, -0.025630862, 0.004223851, 0.9861988)
+bones/8/rotation = Quaternion(-0.017243296, -0.003701205, -0.053158987, 0.9984304)
+bones/9/position = Vector3(-2.211302e-08, 0.15314774, -5.3706017e-09)
+bones/9/rotation = Quaternion(0.25550568, -0.19790787, 0.053497568, 0.9448214)
+bones/10/position = Vector3(1.5880069e-08, 0.20699953, -7.3516353e-09)
+bones/10/rotation = Quaternion(-0.5953669, -0.09191333, 0.020843549, 0.7979072)
 bones/11/position = Vector3(-1.9200796e-08, 0.2512119, -4.9427776e-08)
 bones/11/rotation = Quaternion(-0.000102671445, 0.9324488, -0.36130223, 4.626674e-05)
-bones/12/rotation = Quaternion(-0.0954719, 0.005666105, 0.08665934, 0.9916367)
-bones/13/position = Vector3(-1.5080738e-08, 0.15270986, 1.1011037e-08)
-bones/13/rotation = Quaternion(0.30084264, 0.19224288, -0.062066782, 0.9320323)
-bones/14/position = Vector3(-7.321016e-09, 0.2062961, -8.782884e-09)
-bones/14/rotation = Quaternion(-0.5707978, -0.0071475087, -0.038364746, 0.8201628)
+bones/12/rotation = Quaternion(-0.1314097, 0.0051177084, 0.07847167, 0.9882042)
+bones/13/position = Vector3(-2.0591829e-08, 0.15209767, 6.979051e-09)
+bones/13/rotation = Quaternion(0.30557114, 0.19627118, -0.064517856, 0.9294845)
+bones/14/position = Vector3(-8.4128375e-09, 0.20560084, -6.6300903e-09)
+bones/14/rotation = Quaternion(-0.54671156, -0.06982114, -0.04040275, 0.83342606)
 bones/15/position = Vector3(-4.8419313e-10, 0.25120693, -5.0023658e-08)
 bones/15/rotation = Quaternion(-2.7789587e-05, 0.9324604, -0.36127216, 0.0002779076)
 
 [node name="GodotPlushMesh" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="0" unique_id=1009443981]
-material_override = SubResource("ShaderMaterial_502ij")
+material_override = SubResource("ShaderMaterial_1mqja")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="1" unique_id=1198560524]
-transform = Transform3D(-0.77641267, -0.5684353, -0.27214763, 0.62755626, -0.73702216, -0.25094175, -0.057934675, -0.36562228, 0.9289585, -0.6869201, 0.57687944, -0.12968647)
+transform = Transform3D(-0.7514553, -0.5735303, -0.32615596, 0.6428232, -0.7477912, -0.16609249, -0.14863752, -0.3344717, 0.9306101, -0.67282706, 0.5880054, -0.20110361)
 bone_name = "DEF-hand.R"
 bone_idx = 7
 
@@ -290,6 +294,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 [node name="Label3D" type="Label3D" parent="." unique_id=403355102]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 billboard = 1
+
+[node name="Interactor" type="Area3D" parent="." unique_id=1930921537 node_paths=PackedStringArray("camera")]
+script = ExtResource("8_njwrn")
+camera = NodePath("../CameraPivot/SpringArm3D/Camera3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactor" unique_id=500022172]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("SphereShape3D_1mqja")
+
+[node name="InputsComponent" type="Node" parent="." unique_id=1603485649]
+script = ExtResource("9_502ij")
+metadata/_custom_type_script = "uid://clyypf1rhthc"
 
 [connection signal="water_entered" from="Buoyancy" to="." method="_on_buoyancy_water_entered"]
 [connection signal="water_exited" from="Buoyancy" to="." method="_on_buoyancy_water_exited"]

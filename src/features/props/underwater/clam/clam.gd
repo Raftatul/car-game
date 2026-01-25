@@ -1,5 +1,7 @@
 extends Node3D
 
+@export var items: Array[PackedScene]
+
 var player_count: int = 0
 
 var closed: bool = true :
@@ -16,10 +18,18 @@ var closed: bool = true :
 
 @onready var animation_player: AnimationPlayer = $clam/AnimationPlayer
 @onready var area: Area3D = $Area3D
+@onready var item_socket: Node3D = %ItemSocket
 
 
 func _ready() -> void:
+	if is_multiplayer_authority():
+		_spawn_item()
 	closed = false
+
+
+func _spawn_item() -> void:
+	var item = items.pick_random().instantiate()
+	item_socket.add_child(item)
 
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
@@ -42,4 +52,3 @@ func _on_area_3d_body_exited(body: Node3D) -> void:
 	
 	player_count -= 1
 	closed = player_count != 0
-	closed = false
