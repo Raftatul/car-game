@@ -7,9 +7,6 @@ func _rpc_disable_node() -> void:
 
 
 func _on_interactable_interacted(node: Node) -> void:
-	if not is_multiplayer_authority():
-		return
-	
 	if node is PlayerCharacter:
 		if node.set_item_in_hand(self):
 			_rpc_disable_node.rpc()

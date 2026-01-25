@@ -43,7 +43,7 @@ var item_in_hand: Node3D
 @onready var right_hand_socket: Marker3D = %RightHandSocket
 
 ##Components
-@onready var inputs_component: InputsComponent = $InputsComponent
+@onready var inputs_comp: InputsComponent = $InputsComponent
 @onready var interactor: Interactor = $Interactor
 
 
@@ -79,6 +79,11 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	inputs_comp.update()
+	
+	interactor.wants_interact = inputs_comp.interaction_pressed
+	interactor.update()
+	
 	match movement_state:
 		MOVEMENT_STATE.WALKING:
 			_process_walking_state(delta)
@@ -88,11 +93,6 @@ func _physics_process(delta: float) -> void:
 			_process_falling_state(delta)
 		MOVEMENT_STATE.DIVING:
 			_process_diving_state(delta)
-	
-	inputs_component.update()
-	
-	interactor.wants_interact = inputs_component.interaction_pressed
-	interactor.update()
 	
 	move_and_slide()
 	label_3d.text = str(MOVEMENT_STATE.find_key(movement_state))
@@ -108,22 +108,22 @@ func _process_walking_state(delta: float) -> void:
 		movement_state = MOVEMENT_STATE.FALLING
 		return
 	
-	if Input.is_action_pressed("run"):
+	if inputs_comp.run_pressed:
 		speed = run_speed
 	else:
 		speed = walk_speed
 	
-	if Input.is_action_just_pressed("ui_accept"):
+	if inputs_comp.jump_pressed:
 		jump(jump_force)
 	
 	_process_movement(delta, speed, walking_acceleration)
 
 
 func _process_swimming_state(delta: float) -> void:
-	if Input.is_action_just_pressed("ui_accept"):
+	if inputs_comp.jump_pressed:
 		jump(water_jump_force)
 	
-	if Input.is_action_pressed("dive") or buoyancy.get_depth() > 3.5:
+	if inputs_comp.dive_pressed or buoyancy.get_depth() > 3.5:
 		buoyancy.active = false
 		if abs(velocity.y) < 3.0:
 			velocity.y += -3.0
@@ -144,10 +144,10 @@ func _process_falling_state(delta: float) -> void:
 
 
 func _process_diving_state(delta: float) -> void:
-	var input: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	var up_input: float = Input.get_axis("dive", "ui_accept")
+	var input: Vector2 = inputs_comp.flat_input
+	var up_input: float = inputs_comp.vertical_input
 	
-	if !Input.is_action_pressed("dive") and buoyancy.get_depth() < 2.0:
+	if !inputs_comp.dive_pressed and buoyancy.get_depth() < 2.0:
 		movement_state = MOVEMENT_STATE.SWIMMING
 		gravity_scale = 1.0
 		buoyancy.active = true
@@ -170,9 +170,8 @@ func _process_diving_state(delta: float) -> void:
 
 
 func _process_movement(delta: float, max_speed: float, acceleration: float) -> void:
-	var input: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	if input:
-		var target_vel: Vector3 = camera_pivot.global_basis * Vector3(input.x, 0.0, input.y) * max_speed
+	if inputs_comp.move_dir:
+		var target_vel: Vector3 = camera_pivot.global_basis * inputs_comp.move_dir * max_speed
 		velocity = velocity.move_toward(Vector3(target_vel.x, velocity.y, target_vel.z), acceleration)
 		visual.rotation.y = lerp_angle(visual.rotation.y, atan2(-target_vel.x, -target_vel.z), delta * rotation_speed)
 	else:
