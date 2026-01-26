@@ -2,8 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://2gvnnq7nubed" path="res://assets/props/underwater/clam/clam.blend" id="1_1anpo"]
 [ext_resource type="Script" uid="uid://cpihj5k2m88ka" path="res://src/features/props/underwater/clam/clam.gd" id="1_2q2sj"]
-[ext_resource type="PackedScene" uid="uid://csk7bjrftxdy7" path="res://src/features/props/items/item_test.tscn" id="2_e224h"]
-[ext_resource type="PackedScene" uid="uid://bkat1f5wawv7w" path="res://src/features/props/items/item_test_2.tscn" id="3_ixshm"]
+[ext_resource type="PackedScene" uid="uid://bkat1f5wawv7w" path="res://src/modules/inventory_system/item.tscn" id="2_e224h"]
+[ext_resource type="PackedScene" uid="uid://bkat1f5wawv7w" path="res://src/modules/inventory_system/item.tscn" id="3_ixshm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1krx6"]
 size = Vector3(1.8808594, 2.0722656, 0.6281738)
@@ -20,14 +20,14 @@ properties/0/replication_mode = 2
 script = ExtResource("1_2q2sj")
 items = Array[PackedScene]([ExtResource("2_e224h"), ExtResource("3_ixshm")])
 
-[node name="clam" parent="." unique_id=761981354 instance=ExtResource("1_1anpo")]
+[node name="clam" parent="." unique_id=722669206 instance=ExtResource("1_1anpo")]
 
-[node name="Skeleton3D" parent="clam/Armature" parent_id_path=PackedInt32Array(761981354, 1248714293) index="0" unique_id=1592617758]
-bones/0/rotation = Quaternion(0.76185334, -3.8608616e-07, -4.5409652e-07, 0.64774954)
-bones/1/rotation = Quaternion(-2.7324214e-07, 0.77589583, 0.63086104, -3.3606054e-07)
+[node name="Skeleton3D" parent="clam/Armature" parent_id_path=PackedInt32Array(722669206, 2064030438) index="0" unique_id=1179913468]
+bones/0/rotation = Quaternion(0.7531649, -3.920958e-07, -4.4891794e-07, 0.6578319)
+bones/1/rotation = Quaternion(-4.5386837e-08, 0.9944943, 0.104791135, -4.307417e-07)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="clam/Armature/Skeleton3D" index="1" unique_id=1304821876]
-transform = Transform3D(1, -3.979039e-13, -1.1920761e-06, -1.1765637e-06, -0.16084097, -0.9869735, -1.9173564e-07, 0.98698026, -0.16083987, 0, 0, 0)
+transform = Transform3D(1, -5.115907e-13, -1.1920764e-06, -1.1812506e-06, -0.13451456, -0.99090475, -1.6035222e-07, 0.99091154, -0.13451365, 0, 0, 0)
 bone_name = "Down"
 bone_idx = 0
 
@@ -40,10 +40,10 @@ shape = SubResource("BoxShape3D_1krx6")
 
 [node name="ItemSocket" type="Node3D" parent="clam/Armature/Skeleton3D/BoneAttachment3D" unique_id=1804048912]
 unique_name_in_owner = true
-transform = Transform3D(0.1, 1.7372097e-08, 1.397723e-09, 1.397723e-09, -0.015988087, 0.09871363, 1.7372097e-08, -0.09871363, -0.015988087, -2.1257377e-07, 1.0942471, -0.1783227)
+transform = Transform3D(1, 3.0004924e-07, 2.4141341e-08, 2.4141341e-08, -0.15988088, 0.9871363, 3.0004924e-07, -0.9871363, -0.15988088, -2.1257377e-07, 1.0942471, -0.1783227)
 
 [node name="BoneAttachment3D2" type="BoneAttachment3D" parent="clam/Armature/Skeleton3D" index="2" unique_id=1617103461]
-transform = Transform3D(-1, 1.4210853e-13, -8.662482e-07, -8.480299e-07, 0.20402864, 0.978961, 1.7674031e-07, 0.9789648, -0.2040279, 0, 0, 0)
+transform = Transform3D(-1, 1.9184652e-12, -8.662491e-07, -1.805497e-07, 0.97803754, 0.20842752, 8.4722797e-07, 0.20842832, -0.9780338, 0, 0, 0)
 bone_name = "Up"
 bone_idx = 1
 

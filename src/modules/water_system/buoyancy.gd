@@ -17,6 +17,7 @@ signal water_exited
 
 @export_group("Drags")
 @export var buo_damping := 0.05
+@export var water_linear_drag := 0.01
 @export var water_angular_drag := 0.1
 
 @export_group("Debug")
@@ -37,7 +38,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if Engine.is_editor_hint():
+	if Engine.is_editor_hint() or !is_instance_valid(water_body):
 		return
 	
 	submerged_percent = 0.0
@@ -84,6 +85,8 @@ func _apply_force(delta: float, force: float, relative_position: Vector3) -> voi
 		if parent.linear_velocity.y > 0.0:
 			parent.linear_velocity.y *= max(0.0, 1.0 - buo_damping / points_count)
 		
+		parent.linear_velocity.x *= max(0.0, 1.0 - water_linear_drag / points_count)
+		parent.linear_velocity.z *= max(0.0, 1.0 - water_linear_drag / points_count)
 		parent.angular_velocity *= max(0.0, 1.0 - water_angular_drag / points_count)
 	elif parent is CharacterBody3D:
 		parent.velocity += Vector3.UP * force * delta

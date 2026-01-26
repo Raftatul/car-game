@@ -1,8 +1,0 @@
-[gd_scene format=3 uid="uid://csk7bjrftxdy7"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_q5wfc"]
-
-[node name="ItemTest" type="Node3D" unique_id=1820969227]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1480390910]
-mesh = SubResource("BoxMesh_q5wfc")

@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://c0ese4a7cdcip"]
+
+[ext_resource type="PackedScene" uid="uid://bkat1f5wawv7w" path="res://src/modules/inventory_system/item.tscn" id="1_n7jx1"]
+[ext_resource type="Texture2D" uid="uid://drijhg0g7ak1n" path="res://assets/PlayerCharacter/GodotPlush/Material/godot_plush_albedo.png" id="2_tgold"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_n7jx1"]
+resource_local_to_scene = true
+radius = 2.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_tgold"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_n7jx1"]
+
+[node name="ItemTest" unique_id=1407846572 instance=ExtResource("1_n7jx1")]
+icon = ExtResource("2_tgold")
+
+[node name="CollisionShape3D" parent="Interactable" parent_id_path=PackedInt32Array(616402960) index="0" unique_id=1309856409]
+shape = SubResource("SphereShape3D_n7jx1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=1893391310]
+shape = SubResource("SphereShape3D_tgold")
+debug_fill = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="3" unique_id=2007979337]
+mesh = SubResource("SphereMesh_n7jx1")

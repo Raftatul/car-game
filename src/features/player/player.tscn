@@ -7,8 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://bwccmirxmpnbb" path="res://src/ui/pause_menu/pause_menu.tscn" id="4_p2vpv"]
 [ext_resource type="Texture2D" uid="uid://dts2qgujqag2b" path="res://assets/PlayerCharacter/GodotPlush/Material/godot_plush_normal.png" id="5_njwrn"]
 [ext_resource type="Script" uid="uid://bbfcrnb4wwgl2" path="res://src/modules/water_system/buoyancy.gd" id="6_rybn4"]
+[ext_resource type="Script" uid="uid://c6b34boy1rxu1" path="res://src/modules/inventory_system/ui/box_inventory_slots.gd" id="7_aco40"]
 [ext_resource type="Script" uid="uid://dss72a2cjr3u8" path="res://src/modules/interaction_system/interactor.gd" id="8_njwrn"]
 [ext_resource type="Script" uid="uid://clyypf1rhthc" path="res://src/features/components/inputs_component.gd" id="9_502ij"]
+[ext_resource type="Script" uid="uid://c5b6w7fffwk2o" path="res://src/modules/inventory_system/components/inventory_component.gd" id="10_si01v"]
+[ext_resource type="Script" uid="uid://dhioq5g0akhqd" path="res://src/modules/inventory_system/components/item_manager_component.gd" id="12_ri5lk"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0ph83"]
 height = 1.5
@@ -51,7 +54,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_502ij"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aco40"]
 resource_local_to_scene = true
 render_priority = 0
 shader = SubResource("Shader_dqvdr")
@@ -216,34 +219,34 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, -
 script = ExtResource("3_ti7vc")
 
 [node name="Skeleton3D" parent="Visual/godot_plush_model/Rig" parent_id_path=PackedInt32Array(1080972857, 1940519781) index="0" unique_id=1131176568]
-bones/0/position = Vector3(-1.2551249e-22, 0.77108467, -8.5302543e-10)
-bones/0/rotation = Quaternion(0.9982667, -0.00017329422, -0.058852196, 7.76824e-06)
+bones/0/position = Vector3(-2.635759e-22, 0.78474444, -3.8547146e-10)
+bones/0/rotation = Quaternion(0.9998144, 0.009099668, -0.016984813, -0.00016295027)
 bones/1/position = Vector3(-2.3597598e-17, 0, -6.18693e-17)
 bones/1/rotation = Quaternion(1, -2.2923515e-15, -3.4519715e-08, -5.960464e-08)
-bones/2/rotation = Quaternion(0.12521605, -0.22649424, 0.90771127, -0.33027506)
-bones/3/rotation = Quaternion(0.124796376, 0.028884092, -0.0036355313, 0.9917553)
-bones/5/rotation = Quaternion(0.07386754, 0.16043034, 0.9237601, 0.3398133)
-bones/6/rotation = Quaternion(0.27379894, 0.027998297, -0.0079732165, 0.96134627)
-bones/8/rotation = Quaternion(-0.13861258, -0.006342418, -0.09259207, 0.9859883)
-bones/9/position = Vector3(-1.8502229e-08, 0.15143901, -2.019724e-09)
-bones/9/rotation = Quaternion(0.3397144, -0.190532, 0.07046569, 0.91832805)
-bones/10/position = Vector3(1.1976368e-08, 0.20522776, 4.853052e-09)
-bones/10/rotation = Quaternion(-0.5689109, 0.04852911, 0.040194895, 0.81998146)
+bones/2/rotation = Quaternion(-0.026308432, 0.06872154, 0.93783134, -0.3392015)
+bones/3/rotation = Quaternion(0.30192125, -0.014415784, 0.0045779934, 0.9532129)
+bones/5/rotation = Quaternion(-0.07888104, -0.13571748, 0.9293517, 0.33416152)
+bones/6/rotation = Quaternion(0.09573565, -0.015057323, 0.0014367941, 0.9952919)
+bones/8/rotation = Quaternion(-0.026584303, -0.0021813381, -0.030469766, 0.9991798)
+bones/9/position = Vector3(-3.720504e-08, 0.15358973, -1.1536873e-08)
+bones/9/rotation = Quaternion(0.17608438, -0.20723374, 0.03791491, 0.961567)
+bones/10/position = Vector3(2.4753206e-08, 0.20744996, -2.9960514e-09)
+bones/10/rotation = Quaternion(-0.5280813, 0.0066049853, 0.028128674, 0.84870213)
 bones/11/position = Vector3(-1.9200796e-08, 0.2512119, -4.9427776e-08)
 bones/11/rotation = Quaternion(-0.000102671445, 0.9324488, -0.36130223, 4.626674e-05)
-bones/12/rotation = Quaternion(-0.044647302, 0.003769294, 0.058351167, 0.99729013)
-bones/13/position = Vector3(4.0831363e-08, 0.1518779, -2.2378233e-08)
-bones/13/rotation = Quaternion(0.2868361, 0.19624409, -0.060173076, 0.935731)
-bones/14/position = Vector3(-3.5577261e-09, 0.20568857, -5.4072576e-08)
-bones/14/rotation = Quaternion(-0.6005677, 0.069611855, -0.023071216, 0.7962038)
+bones/12/rotation = Quaternion(-0.03489077, 0.0044081407, 0.06788511, 0.9970731)
+bones/13/position = Vector3(-1.2520504e-08, 0.15299425, 1.2884138e-08)
+bones/13/rotation = Quaternion(0.22531566, 0.19838023, -0.046908792, 0.9527212)
+bones/14/position = Vector3(-6.8137984e-09, 0.2066191, -9.782987e-09)
+bones/14/rotation = Quaternion(-0.55677867, 0.031602368, -0.03298687, 0.8294039)
 bones/15/position = Vector3(-4.8419313e-10, 0.25120693, -5.0023658e-08)
 bones/15/rotation = Quaternion(-2.7789587e-05, 0.9324604, -0.36127216, 0.0002779076)
 
 [node name="GodotPlushMesh" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="0" unique_id=1009443981]
-material_override = SubResource("ShaderMaterial_502ij")
+material_override = SubResource("ShaderMaterial_aco40")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="1" unique_id=1198560524]
-transform = Transform3D(-0.7687792, -0.36583927, 0.52453786, 0.63634396, -0.5191742, 0.57054716, 0.063597985, 0.77241147, 0.63193, -0.6480545, 0.61696243, 0.24114457)
+transform = Transform3D(-0.7829639, -0.610072, -0.121573135, 0.62206715, -0.7680301, -0.15219185, -0.0005238181, -0.19478735, 0.9808453, -0.6996781, 0.5718613, -0.040833488)
 bone_name = "DEF-hand.R"
 bone_idx = 7
 
@@ -261,6 +264,10 @@ parameters/Tilt/blend_position = 1.0
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Visual/godot_plush_model" unique_id=1122505844]
 replication_config = SubResource("SceneReplicationConfig_ti7vc")
 
+[node name="Ray_Drop" type="RayCast3D" parent="Visual" unique_id=1922833415]
+unique_name_in_owner = true
+target_position = Vector3(0, 0, -2)
+
 [node name="CameraPivot" type="Node3D" parent="." unique_id=1647000280]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -273,6 +280,41 @@ spring_length = 6.0
 unique_name_in_owner = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1461624240]
+
+[node name="GameHUD" type="Control" parent="CanvasLayer" unique_id=1327301443]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_behavior_recursive = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/GameHUD" unique_id=364566448]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="UI" type="Control" parent="CanvasLayer/GameHUD/MarginContainer" unique_id=327957057]
+layout_mode = 2
+
+[node name="Box_InventorySlots" type="HBoxContainer" parent="CanvasLayer/GameHUD/MarginContainer/UI" unique_id=1704260367 node_paths=PackedStringArray("inventory_component")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -81.77777
+offset_top = -92.0
+offset_right = 81.77777
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("7_aco40")
+inventory_component = NodePath("../../../../../InventoryComponent")
 
 [node name="PauseMenu" parent="CanvasLayer" unique_id=1912501345 instance=ExtResource("4_p2vpv")]
 unique_name_in_owner = true
@@ -309,7 +351,19 @@ shape = SubResource("SphereShape3D_1mqja")
 script = ExtResource("9_502ij")
 metadata/_custom_type_script = "uid://clyypf1rhthc"
 
+[node name="InventoryComponent" type="Node" parent="." unique_id=1468872756]
+script = ExtResource("10_si01v")
+slot_count = 2
+
+[node name="ItemManagerComponent" type="Node" parent="." unique_id=1625932705 node_paths=PackedStringArray("inventory_component", "model", "raycast")]
+script = ExtResource("12_ri5lk")
+inventory_component = NodePath("../InventoryComponent")
+model = NodePath("../Visual")
+raycast = NodePath("../Visual/Ray_Drop")
+metadata/_custom_type_script = "uid://dhioq5g0akhqd"
+
 [connection signal="water_entered" from="Buoyancy" to="." method="_on_buoyancy_water_entered"]
 [connection signal="water_exited" from="Buoyancy" to="." method="_on_buoyancy_water_exited"]
+[connection signal="item_added" from="InventoryComponent" to="." method="_on_inventory_component_item_added"]
 
 [editable path="Visual/godot_plush_model"]

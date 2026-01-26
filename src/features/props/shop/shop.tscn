@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c6gs2tn0dm1oy" path="res://src/features/props/shop/shop.gd" id="1_agvbh"]
 [ext_resource type="PackedScene" uid="uid://df5j2dqjufsg0" path="res://assets/props/shop/shop.blend" id="2_3whs2"]
+[ext_resource type="PackedScene" uid="uid://k72aqu4aex3g" path="res://src/features/props/shop/particles/p_success_explosion.tscn" id="3_3whs2"]
 
 [sub_resource type="Shader" id="Shader_5qvxp"]
 code = "shader_type spatial;
@@ -1564,6 +1565,9 @@ font_size = 56
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=569405310]
 replication_config = SubResource("SceneReplicationConfig_5qvxp")
+
+[node name="PSuccessExplosion" parent="." unique_id=1296287428 instance=ExtResource("3_3whs2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3295859, 0.2444523)
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 

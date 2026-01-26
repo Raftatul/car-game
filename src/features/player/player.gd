@@ -30,8 +30,6 @@ enum MOVEMENT_STATE {WALKING, SWIMMING, FALLING, DIVING}
 var speed: float = walk_speed
 var movement_state: MOVEMENT_STATE = MOVEMENT_STATE.FALLING
 
-var item_in_hand: Node3D
-
 @onready var camera_pivot: Node3D = %CameraPivot
 @onready var spring_arm: SpringArm3D = %SpringArm3D
 @onready var camera: Camera3D = %Camera3D
@@ -41,10 +39,13 @@ var item_in_hand: Node3D
 @onready var buoyancy: Buoyancy = $Buoyancy
 @onready var label_3d: Label3D = $Label3D
 @onready var right_hand_socket: Marker3D = %RightHandSocket
+@onready var canvas_layer: CanvasLayer = $CanvasLayer
 
 ##Components
-@onready var inputs_comp: InputsComponent = $InputsComponent
+@onready var inputs_component: InputsComponent = $InputsComponent
 @onready var interactor: Interactor = $Interactor
+@onready var inventory_component: InventoryComponent = $InventoryComponent
+@onready var item_manager_component: ItemManagerComponent = $ItemManagerComponent
 
 
 func _enter_tree() -> void:
@@ -56,7 +57,9 @@ func _ready() -> void:
 		set_process(false)
 		set_physics_process(false)
 		set_process_input(false)
+		set_process_unhandled_input(false)
 		camera.current = false
+		canvas_layer.visible = false
 	else:
 		camera.current = true
 
@@ -79,9 +82,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	inputs_comp.update()
+	inputs_component.update()
 	
-	interactor.wants_interact = inputs_comp.interaction_pressed
+	interactor.wants_interact = inputs_component.interaction_pressed
 	interactor.update()
 	
 	match movement_state:
@@ -93,6 +96,13 @@ func _physics_process(delta: float) -> void:
 			_process_falling_state(delta)
 		MOVEMENT_STATE.DIVING:
 			_process_diving_state(delta)
+	
+	item_manager_component.wants_scroll_up = inputs_component.scroll_up_pressed
+	item_manager_component.wants_scroll_down = inputs_component.scroll_down_pressed
+	
+	item_manager_component.wants_item_use = inputs_component.use_item_pressed
+	item_manager_component.wants_item_drop = inputs_component.drop_pressed
+	item_manager_component.update()
 	
 	move_and_slide()
 	label_3d.text = str(MOVEMENT_STATE.find_key(movement_state))
@@ -108,22 +118,22 @@ func _process_walking_state(delta: float) -> void:
 		movement_state = MOVEMENT_STATE.FALLING
 		return
 	
-	if inputs_comp.run_pressed:
+	if inputs_component.run_pressed:
 		speed = run_speed
 	else:
 		speed = walk_speed
 	
-	if inputs_comp.jump_pressed:
+	if inputs_component.jump_pressed:
 		jump(jump_force)
 	
 	_process_movement(delta, speed, walking_acceleration)
 
 
 func _process_swimming_state(delta: float) -> void:
-	if inputs_comp.jump_pressed:
+	if inputs_component.jump_pressed:
 		jump(water_jump_force)
 	
-	if inputs_comp.dive_pressed or buoyancy.get_depth() > 3.5:
+	if inputs_component.dive_pressed or buoyancy.get_depth() > 3.5:
 		buoyancy.active = false
 		if abs(velocity.y) < 3.0:
 			velocity.y += -3.0
@@ -144,10 +154,10 @@ func _process_falling_state(delta: float) -> void:
 
 
 func _process_diving_state(delta: float) -> void:
-	var input: Vector2 = inputs_comp.flat_input
-	var up_input: float = inputs_comp.vertical_input
+	var input: Vector2 = inputs_component.flat_input
+	var up_input: float = inputs_component.vertical_input
 	
-	if !inputs_comp.dive_pressed and buoyancy.get_depth() < 2.0:
+	if !inputs_component.dive_pressed and buoyancy.get_depth() < 2.0:
 		movement_state = MOVEMENT_STATE.SWIMMING
 		gravity_scale = 1.0
 		buoyancy.active = true
@@ -170,8 +180,8 @@ func _process_diving_state(delta: float) -> void:
 
 
 func _process_movement(delta: float, max_speed: float, acceleration: float) -> void:
-	if inputs_comp.move_dir:
-		var target_vel: Vector3 = camera_pivot.global_basis * inputs_comp.move_dir * max_speed
+	if inputs_component.move_dir:
+		var target_vel: Vector3 = camera_pivot.global_basis * inputs_component.move_dir * max_speed
 		velocity = velocity.move_toward(Vector3(target_vel.x, velocity.y, target_vel.z), acceleration)
 		visual.rotation.y = lerp_angle(visual.rotation.y, atan2(-target_vel.x, -target_vel.z), delta * rotation_speed)
 	else:
@@ -181,30 +191,14 @@ func _process_movement(delta: float, max_speed: float, acceleration: float) -> v
 	visual.rotation.z = lerp_angle(visual.rotation.z, 0.0, delta * rotation_speed)
 
 
-func set_item_in_hand(item: Node3D) -> bool:
-	if not is_instance_valid(item):
-		item_in_hand = null
-		return true
-		
-	if item_in_hand:
-		return false
-	
-	_rpc_set_item_in_hand.rpc(item.get_path())
-	return true
-
-
 @rpc("any_peer", "call_local")
-func _rpc_set_item_in_hand(node_path: NodePath) -> void:
-	var item: Node3D = get_tree().root.get_node(node_path)
-	item_in_hand = item
+func _rpc_set_item_in_hand(node_path: NodePath, should_be_visible: bool) -> void:
+	var item: Item = get_tree().root.get_node(node_path)
 	if item:
+		item.visible = should_be_visible
 		item.reparent.call_deferred(right_hand_socket)
 		item.set_deferred("position", Vector3.ZERO)
 		item.set_deferred("rotation", Vector3.ZERO)
-
-
-func get_item_in_hand() -> Node3D:
-	return item_in_hand
 
 
 func _on_buoyancy_water_entered() -> void:
@@ -215,3 +209,7 @@ func _on_buoyancy_water_exited() -> void:
 	movement_state = MOVEMENT_STATE.FALLING
 	gravity_scale = 1.0
 	buoyancy.active = true
+
+
+func _on_inventory_component_item_added(_idx: int, item: Item) -> void:
+	_rpc_set_item_in_hand.rpc(item.get_path(), item == inventory_component.get_selected_item())

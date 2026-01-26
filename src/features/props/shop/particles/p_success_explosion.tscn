@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://k72aqu4aex3g"]
+
+[sub_resource type="Gradient" id="Gradient_piihs"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.33, 0.66)
+colors = PackedColorArray(1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bic2r"]
+gradient = SubResource("Gradient_piihs")
+
+[sub_resource type="Curve" id="Curve_piihs"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.79562044, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_bic2r"]
+curve = SubResource("Curve_piihs")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_piihs"]
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 10.0
+initial_velocity_max = 15.0
+scale_min = 0.5
+scale_curve = SubResource("CurveTexture_bic2r")
+color_initial_ramp = SubResource("GradientTexture1D_bic2r")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_57vs1"]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_bic2r"]
+material = SubResource("StandardMaterial3D_57vs1")
+
+[node name="PSuccessExplosion" type="GPUParticles3D" unique_id=1296287428]
+emitting = false
+amount = 32
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+transform_align = 1
+process_material = SubResource("ParticleProcessMaterial_piihs")
+draw_pass_1 = SubResource("QuadMesh_bic2r")
