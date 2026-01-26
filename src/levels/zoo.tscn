@@ -9,7 +9,6 @@
 [ext_resource type="Resource" uid="uid://dkncrk53sn7jn" path="res://data/volumetric_points/zoo_volumetric_region.tres" id="6_arbid"]
 [ext_resource type="Script" uid="uid://yk07u3qi60wx" path="res://src/modules/volumetric_ai/volumetric_region_3d.gd" id="8_8q3s2"]
 [ext_resource type="PackedScene" uid="uid://b1n45j8c8vn4u" path="res://src/features/entities/fish.tscn" id="9_5tu61"]
-[ext_resource type="PackedScene" uid="uid://bkat1f5wawv7w" path="res://src/modules/inventory_system/item.tscn" id="11_jx7a4"]
 [ext_resource type="Script" uid="uid://bbfcrnb4wwgl2" path="res://src/modules/water_system/buoyancy.gd" id="11_rg4u2"]
 [ext_resource type="PackedScene" uid="uid://damvtojfd3dv6" path="res://src/features/props/items/item_cube.tscn" id="12_wt035"]
 [ext_resource type="PackedScene" uid="uid://c0ese4a7cdcip" path="res://src/features/props/items/item_sphere.tscn" id="13_h7jkl"]
@@ -135,7 +134,6 @@ size = Vector3(3, 1, 5)
 size = Vector3(3, 1, 5)
 
 [node name="Zoo" type="Node3D" unique_id=653414602]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.03106451, 0.00030100346)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=78625833]
 environment = SubResource("Environment_ffv3l")
@@ -190,6 +188,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.102928, 0.64090884, -28.5
 
 [node name="Clam" parent="Props" unique_id=1117318128 instance=ExtResource("6_6w2um")]
 transform = Transform3D(-0.8660254, 0, -0.50000006, 0, 1, 0, 0.50000006, 0, -0.8660254, -4.9948697, -19.372297, 19.92587)
+
+[node name="ItemTest3" parent="Props" unique_id=1407846572 instance=ExtResource("12_wt035")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1644125, 1.0986612, -28.437)
+
+[node name="ItemTest4" parent="Props" unique_id=236270191 instance=ExtResource("13_h7jkl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7959886, 1.6403608, -28.528831)
 
 [node name="Entities" type="Node" parent="." unique_id=1622361618]
 
@@ -271,15 +275,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -3)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 3)
 
 [node name="Pontoon5" type="Marker3D" parent="RigidBody3D/Buoyancy" unique_id=838499739]
-
-[node name="ItemTest" parent="." unique_id=1820969227 instance=ExtResource("11_jx7a4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0755613, 0.5310645, -26.825493)
-
-[node name="ItemTest2" parent="." unique_id=1960437093 instance=ExtResource("11_jx7a4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9851704, 0.5310645, -26.825493)
-
-[node name="ItemTest3" parent="." unique_id=1407846572 instance=ExtResource("12_wt035")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1644125, 1.1297257, -28.437302)
-
-[node name="ItemTest4" parent="." unique_id=236270191 instance=ExtResource("13_h7jkl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7959886, 1.6714253, -28.529133)
