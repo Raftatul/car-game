@@ -42,6 +42,12 @@ run/main_run_args="--no-header"
 
 enabled=PackedStringArray("res://addons/multiplayer_shortcuts/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
 
+[file_customization]
+
+folder_colors={
+"res://assets/": "purple"
+}
+
 [global_group]
 
 spawn_point=""

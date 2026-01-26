@@ -54,7 +54,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_aco40"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ri5lk"]
 resource_local_to_scene = true
 render_priority = 0
 shader = SubResource("Shader_dqvdr")
@@ -159,7 +159,6 @@ blend_point_1/pos = 1.0
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_p2vpv"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_hn5l5"]
-graph_offset = Vector2(-965.7344, 73.900085)
 nodes/TiltBlend/node = SubResource("AnimationNodeBlend2_p2vpv")
 nodes/TiltBlend/position = Vector2(60, 140)
 nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_2m83w")
@@ -219,40 +218,48 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, -
 script = ExtResource("3_ti7vc")
 
 [node name="Skeleton3D" parent="Visual/godot_plush_model/Rig" parent_id_path=PackedInt32Array(1080972857, 1940519781) index="0" unique_id=1131176568]
-bones/0/position = Vector3(-2.635759e-22, 0.78474444, -3.8547146e-10)
-bones/0/rotation = Quaternion(0.9998144, 0.009099668, -0.016984813, -0.00016295027)
+bones/0/position = Vector3(-1.7797458e-22, 0.78980434, -2.1227847e-10)
+bones/0/rotation = Quaternion(0.9974272, -0.010779668, 0.070868105, -0.0007637979)
 bones/1/position = Vector3(-2.3597598e-17, 0, -6.18693e-17)
 bones/1/rotation = Quaternion(1, -2.2923515e-15, -3.4519715e-08, -5.960464e-08)
-bones/2/rotation = Quaternion(-0.026308432, 0.06872154, 0.93783134, -0.3392015)
-bones/3/rotation = Quaternion(0.30192125, -0.014415784, 0.0045779934, 0.9532129)
-bones/5/rotation = Quaternion(-0.07888104, -0.13571748, 0.9293517, 0.33416152)
-bones/6/rotation = Quaternion(0.09573565, -0.015057323, 0.0014367941, 0.9952919)
-bones/8/rotation = Quaternion(-0.026584303, -0.0021813381, -0.030469766, 0.9991798)
-bones/9/position = Vector3(-3.720504e-08, 0.15358973, -1.1536873e-08)
-bones/9/rotation = Quaternion(0.17608438, -0.20723374, 0.03791491, 0.961567)
-bones/10/position = Vector3(2.4753206e-08, 0.20744996, -2.9960514e-09)
-bones/10/rotation = Quaternion(-0.5280813, 0.0066049853, 0.028128674, 0.84870213)
+bones/2/rotation = Quaternion(0.007259984, 0.003719342, 0.9410559, -0.33815268)
+bones/3/rotation = Quaternion(0.1433126, -0.0054370086, 0.00082752516, 0.98966223)
+bones/5/rotation = Quaternion(-0.04571777, -0.07102473, 0.9379559, 0.3363098)
+bones/6/rotation = Quaternion(0.25594303, -0.0053268746, 0.0013692863, 0.96667624)
+bones/8/rotation = Quaternion(0.040483274, -0.0026332266, -0.037225597, 0.9984831)
+bones/9/position = Vector3(-1.19895756e-08, 0.15285127, -1.2343815e-09)
+bones/9/rotation = Quaternion(0.13523516, -0.20577596, 0.028706828, 0.96878463)
+bones/10/position = Vector3(9.928135e-09, 0.20669739, -1.0273279e-08)
+bones/10/rotation = Quaternion(-0.5438053, -0.086242765, 0.019903949, 0.8345309)
 bones/11/position = Vector3(-1.9200796e-08, 0.2512119, -4.9427776e-08)
 bones/11/rotation = Quaternion(-0.000102671445, 0.9324488, -0.36130223, 4.626674e-05)
-bones/12/rotation = Quaternion(-0.03489077, 0.0044081407, 0.06788511, 0.9970731)
-bones/13/position = Vector3(-1.2520504e-08, 0.15299425, 1.2884138e-08)
-bones/13/rotation = Quaternion(0.22531566, 0.19838023, -0.046908792, 0.9527212)
-bones/14/position = Vector3(-6.8137984e-09, 0.2066191, -9.782987e-09)
-bones/14/rotation = Quaternion(-0.55677867, 0.031602368, -0.03298687, 0.8294039)
+bones/12/rotation = Quaternion(-0.03427055, 0.0014825235, 0.024219977, 0.99911803)
+bones/13/position = Vector3(-1.3074015e-08, 0.15259847, -2.3968116e-10)
+bones/13/rotation = Quaternion(0.13568014, 0.2101514, -0.02947249, 0.96775967)
+bones/14/position = Vector3(-1.4664428e-08, 0.20615377, 7.783645e-10)
+bones/14/rotation = Quaternion(-0.48733774, -0.059280835, -0.03833024, 0.87035537)
 bones/15/position = Vector3(-4.8419313e-10, 0.25120693, -5.0023658e-08)
 bones/15/rotation = Quaternion(-2.7789587e-05, 0.9324604, -0.36127216, 0.0002779076)
 
 [node name="GodotPlushMesh" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="0" unique_id=1009443981]
-material_override = SubResource("ShaderMaterial_aco40")
+material_override = SubResource("ShaderMaterial_ri5lk")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="1" unique_id=1198560524]
-transform = Transform3D(-0.7829639, -0.610072, -0.121573135, 0.62206715, -0.7680301, -0.15219185, -0.0005238181, -0.19478735, 0.9808453, -0.6996781, 0.5718613, -0.040833488)
+transform = Transform3D(-0.74561095, -0.6663552, 0.0059095547, 0.6527892, -0.7285919, 0.20741272, -0.133905, 0.1585069, 0.9782356, -0.70216197, 0.6079912, -0.078603104)
 bone_name = "DEF-hand.R"
 bone_idx = 7
 
 [node name="RightHandSocket" type="Marker3D" parent="Visual/godot_plush_model/Rig/Skeleton3D/BoneAttachment3D" unique_id=1731198154]
 unique_name_in_owner = true
 transform = Transform3D(1, 5.6311364e-09, 4.656613e-10, 5.6477347e-09, 1, -6.184564e-11, 0, 6.548362e-11, 1, 0.010235667, 0.14705995, 6.040046e-05)
+
+[node name="BoneAttachment3D2" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="2" unique_id=1331867321]
+transform = Transform3D(0.989723, -0.021395607, 0.14138798, -0.021612123, -0.9997664, -4.203524e-06, 0.14135507, -0.0030515343, -0.9899543, -1.7797458e-22, 0.78980434, -2.1227847e-10)
+bone_name = "DEF-hips"
+bone_idx = 0
+
+[node name="BackSocket" type="Marker3D" parent="Visual/godot_plush_model/Rig/Skeleton3D/BoneAttachment3D2" unique_id=1037657971]
+transform = Transform3D(-1, 8.742277e-08, 0, -8.742278e-08, -0.99999994, 0, 0, 0, 1.0000001, 0.06046414, -0.1489309, 0.51552385)
 
 [node name="AnimationTree" type="AnimationTree" parent="Visual/godot_plush_model" unique_id=1684553355]
 tree_root = SubResource("AnimationNodeBlendTree_hn5l5")
@@ -355,15 +362,18 @@ metadata/_custom_type_script = "uid://clyypf1rhthc"
 script = ExtResource("10_si01v")
 slot_count = 2
 
-[node name="ItemManagerComponent" type="Node" parent="." unique_id=1625932705 node_paths=PackedStringArray("inventory_component", "model", "raycast")]
+[node name="ItemManagerComponent" type="Node" parent="." unique_id=1625932705 node_paths=PackedStringArray("inventory_component", "model", "raycast", "sockets")]
 script = ExtResource("12_ri5lk")
 inventory_component = NodePath("../InventoryComponent")
 model = NodePath("../Visual")
 raycast = NodePath("../Visual/Ray_Drop")
+sockets = {
+0: NodePath("../Visual/godot_plush_model/Rig/Skeleton3D/BoneAttachment3D/RightHandSocket"),
+1: NodePath("../Visual/godot_plush_model/Rig/Skeleton3D/BoneAttachment3D2/BackSocket")
+}
 metadata/_custom_type_script = "uid://dhioq5g0akhqd"
 
 [connection signal="water_entered" from="Buoyancy" to="." method="_on_buoyancy_water_entered"]
 [connection signal="water_exited" from="Buoyancy" to="." method="_on_buoyancy_water_exited"]
-[connection signal="item_added" from="InventoryComponent" to="." method="_on_inventory_component_item_added"]
 
 [editable path="Visual/godot_plush_model"]

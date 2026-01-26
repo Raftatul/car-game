@@ -1,5 +1,6 @@
+@abstract
+class_name GameItem
 extends Item
-
 
 @onready var interactable: Interactable = $Interactable
 
@@ -8,8 +9,16 @@ func _ready() -> void:
 	interactable.interacted.connect(_on_interactable_interacted)
 
 
-func use(_node: Node) -> void:
-	print("use item")
+@abstract
+func pre_use(node: Node) -> void
+
+
+@abstract
+func use(delta: float, node: Node) -> void
+
+
+@abstract
+func post_use(node: Node) -> void
 
 
 func dropped() -> void:

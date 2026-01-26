@@ -10,8 +10,7 @@
 [ext_resource type="Script" uid="uid://yk07u3qi60wx" path="res://src/modules/volumetric_ai/volumetric_region_3d.gd" id="8_8q3s2"]
 [ext_resource type="PackedScene" uid="uid://b1n45j8c8vn4u" path="res://src/features/entities/fish.tscn" id="9_5tu61"]
 [ext_resource type="Script" uid="uid://bbfcrnb4wwgl2" path="res://src/modules/water_system/buoyancy.gd" id="11_rg4u2"]
-[ext_resource type="PackedScene" uid="uid://damvtojfd3dv6" path="res://src/features/props/items/item_cube.tscn" id="12_wt035"]
-[ext_resource type="PackedScene" uid="uid://c0ese4a7cdcip" path="res://src/features/props/items/item_sphere.tscn" id="13_h7jkl"]
+[ext_resource type="PackedScene" uid="uid://damvtojfd3dv6" path="res://src/features/props/items/item_jetpack.tscn" id="12_wt035"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2inr"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -189,11 +188,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.102928, 0.64090884, -28.5
 [node name="Clam" parent="Props" unique_id=1117318128 instance=ExtResource("6_6w2um")]
 transform = Transform3D(-0.8660254, 0, -0.50000006, 0, 1, 0, 0.50000006, 0, -0.8660254, -4.9948697, -19.372297, 19.92587)
 
-[node name="ItemTest3" parent="Props" unique_id=1407846572 instance=ExtResource("12_wt035")]
+[node name="Jetpack" parent="Props" unique_id=1407846572 instance=ExtResource("12_wt035")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1644125, 1.0986612, -28.437)
-
-[node name="ItemTest4" parent="Props" unique_id=236270191 instance=ExtResource("13_h7jkl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7959886, 1.6403608, -28.528831)
 
 [node name="Entities" type="Node" parent="." unique_id=1622361618]
 

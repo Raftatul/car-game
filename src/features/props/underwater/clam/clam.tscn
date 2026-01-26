@@ -2,8 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://2gvnnq7nubed" path="res://assets/props/underwater/clam/clam.blend" id="1_1anpo"]
 [ext_resource type="Script" uid="uid://cpihj5k2m88ka" path="res://src/features/props/underwater/clam/clam.gd" id="1_2q2sj"]
-[ext_resource type="PackedScene" uid="uid://bkat1f5wawv7w" path="res://src/modules/inventory_system/item.tscn" id="2_e224h"]
-[ext_resource type="PackedScene" uid="uid://bkat1f5wawv7w" path="res://src/modules/inventory_system/item.tscn" id="3_ixshm"]
+[ext_resource type="PackedScene" uid="uid://damvtojfd3dv6" path="res://src/features/props/items/item_jetpack.tscn" id="2_1krx6"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1krx6"]
 size = Vector3(1.8808594, 2.0722656, 0.6281738)
@@ -18,7 +17,7 @@ properties/0/replication_mode = 2
 
 [node name="Clam" type="Node3D" unique_id=114596885]
 script = ExtResource("1_2q2sj")
-items = Array[PackedScene]([ExtResource("2_e224h"), ExtResource("3_ixshm")])
+items = Array[PackedScene]([ExtResource("2_1krx6")])
 
 [node name="clam" parent="." unique_id=722669206 instance=ExtResource("1_1anpo")]
 
@@ -65,7 +64,7 @@ shape = SubResource("BoxShape3D_2q2sj")
 replication_config = SubResource("SceneReplicationConfig_2q2sj")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=434895951]
-_spawnable_scenes = PackedStringArray("uid://csk7bjrftxdy7", "uid://bkat1f5wawv7w")
+_spawnable_scenes = PackedStringArray("uid://bkat1f5wawv7w")
 spawn_path = NodePath("../clam/Armature/Skeleton3D/BoneAttachment3D/ItemSocket")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

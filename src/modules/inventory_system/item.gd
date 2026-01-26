@@ -2,12 +2,19 @@
 class_name Item
 extends Node3D
 
-@export var icon: Texture2D
+enum ATTACH_POINTS {HAND, BACK}
 
+@export var icon: Texture2D
+@export var attach_point: ATTACH_POINTS = ATTACH_POINTS.HAND
 
 @abstract
-func use(_node: Node) -> void
+func pre_use(node: Node) -> void
 
+@abstract
+func use(delta: float, node: Node) -> void
+
+@abstract
+func post_use(node: Node) -> void
 
 @abstract
 func dropped() -> void

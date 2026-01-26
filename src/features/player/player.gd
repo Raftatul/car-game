@@ -38,7 +38,6 @@ var movement_state: MOVEMENT_STATE = MOVEMENT_STATE.FALLING
 @onready var pause_menu: Control = %PauseMenu
 @onready var buoyancy: Buoyancy = $Buoyancy
 @onready var label_3d: Label3D = $Label3D
-@onready var right_hand_socket: Marker3D = %RightHandSocket
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
 
 ##Components
@@ -102,7 +101,7 @@ func _physics_process(delta: float) -> void:
 	
 	item_manager_component.wants_item_use = inputs_component.use_item_pressed
 	item_manager_component.wants_item_drop = inputs_component.drop_pressed
-	item_manager_component.update()
+	item_manager_component.tick(delta)
 	
 	move_and_slide()
 	label_3d.text = str(MOVEMENT_STATE.find_key(movement_state))
@@ -168,9 +167,9 @@ func _process_diving_state(delta: float) -> void:
 		
 		velocity = velocity.move_toward(target_vel, swimming_acceleration)
 		
-		var right_vec: Vector3 = Vector3.UP.cross(velocity.normalized()).normalized()
-		var forward_vec: Vector3 = velocity.normalized().cross(right_vec).normalized()
-		var target_basis: Basis = Basis(-right_vec, velocity.normalized(), forward_vec).orthonormalized()
+		var right_vec: Vector3 = Vector3.UP.cross(vel_dir.normalized()).normalized()
+		var forward_vec: Vector3 = vel_dir.normalized().cross(right_vec).normalized()
+		var target_basis: Basis = Basis(-right_vec, vel_dir.normalized(), forward_vec).orthonormalized()
 		
 		if target_basis.is_conformal():
 			var quat_target: Quaternion = target_basis.get_rotation_quaternion()
@@ -191,16 +190,6 @@ func _process_movement(delta: float, max_speed: float, acceleration: float) -> v
 	visual.rotation.z = lerp_angle(visual.rotation.z, 0.0, delta * rotation_speed)
 
 
-@rpc("any_peer", "call_local")
-func _rpc_set_item_in_hand(node_path: NodePath, should_be_visible: bool) -> void:
-	var item: Item = get_tree().root.get_node(node_path)
-	if item:
-		item.visible = should_be_visible
-		item.reparent.call_deferred(right_hand_socket)
-		item.set_deferred("position", Vector3.ZERO)
-		item.set_deferred("rotation", Vector3.ZERO)
-
-
 func _on_buoyancy_water_entered() -> void:
 	movement_state = MOVEMENT_STATE.SWIMMING
 
@@ -209,7 +198,3 @@ func _on_buoyancy_water_exited() -> void:
 	movement_state = MOVEMENT_STATE.FALLING
 	gravity_scale = 1.0
 	buoyancy.active = true
-
-
-func _on_inventory_component_item_added(_idx: int, item: Item) -> void:
-	_rpc_set_item_in_hand.rpc(item.get_path(), item == inventory_component.get_selected_item())
