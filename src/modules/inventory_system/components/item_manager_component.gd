@@ -36,7 +36,7 @@ func tick(delta: float) -> void:
 		if wants_item_use:
 			_handle_item_use(delta, selected_item)
 		elif is_instance_valid(item_in_use):
-			item_in_use.post_use(get_parent())
+			item_in_use.post_use()
 			item_in_use = null
 		elif wants_item_drop:
 			drop_item(selected_item)
@@ -47,7 +47,7 @@ func drop_item(item: Item) -> void:
 	
 	var drop_pos: Vector3 = model.to_global(raycast.target_position)
 	if raycast.is_colliding():
-		drop_pos = raycast.position
+		drop_pos = raycast.get_collision_point()
 	inventory_component.remove_item_via_index(inventory_component.active_slot)
 	_rpc_drop_item.rpc(item.get_path(), drop_pos)
 	item.dropped()
@@ -56,9 +56,9 @@ func drop_item(item: Item) -> void:
 func _handle_item_use(delta: float, item: Item) -> void:
 	if !is_instance_valid(item_in_use):
 		item_in_use = item
-		item.pre_use(get_parent())
+		item.pre_use()
 	else:
-		item.use(delta, get_parent())
+		item.use(delta)
 
 
 func _get_socket(item: Item) -> Node3D:
@@ -85,6 +85,8 @@ func _rpc_set_item_in_hand(node_path: NodePath, should_be_visible: bool) -> void
 	var item: Item = get_tree().root.get_node(node_path)
 	if item:
 		item.visible = should_be_visible
+		if should_be_visible:
+			item.selected()
 		item.reparent.call_deferred(_get_socket(item))
 		item.set_deferred("position", Vector3.ZERO)
 		item.set_deferred("rotation", Vector3.ZERO)
@@ -99,6 +101,8 @@ func _on_inventory_component_active_slot_changed(old_idx: int, idx: int) -> void
 	var new_item: Item = inventory_component.inventory[idx]
 	
 	if old_item:
+		old_item.unselected()
 		_rpc_set_item_visible.rpc(old_item.get_path(), false)
 	if new_item:
+		new_item.selected()
 		_rpc_set_item_visible.rpc(new_item.get_path(), true)

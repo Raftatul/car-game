@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://yk07u3qi60wx" path="res://src/modules/volumetric_ai/volumetric_region_3d.gd" id="8_8q3s2"]
 [ext_resource type="PackedScene" uid="uid://b1n45j8c8vn4u" path="res://src/features/entities/fish.tscn" id="9_5tu61"]
 [ext_resource type="Script" uid="uid://bbfcrnb4wwgl2" path="res://src/modules/water_system/buoyancy.gd" id="11_rg4u2"]
+[ext_resource type="PackedScene" uid="uid://cyxx4ngsn7fe3" path="res://src/features/props/items/item_mask.tscn" id="12_jx7a4"]
 [ext_resource type="PackedScene" uid="uid://damvtojfd3dv6" path="res://src/features/props/items/item_jetpack.tscn" id="12_wt035"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2inr"]
@@ -271,3 +272,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -3)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 3)
 
 [node name="Pontoon5" type="Marker3D" parent="RigidBody3D/Buoyancy" unique_id=838499739]
+
+[node name="Item" parent="." unique_id=2042596339 instance=ExtResource("12_jx7a4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7955132, 1.0903444, -28.910213)

@@ -2,23 +2,13 @@
 class_name GameItem
 extends Item
 
+@export var anim_player: AnimationPlayer
+
 @onready var interactable: Interactable = $Interactable
 
 
 func _ready() -> void:
 	interactable.interacted.connect(_on_interactable_interacted)
-
-
-@abstract
-func pre_use(node: Node) -> void
-
-
-@abstract
-func use(delta: float, node: Node) -> void
-
-
-@abstract
-func post_use(node: Node) -> void
 
 
 func dropped() -> void:
@@ -33,6 +23,18 @@ func _rpc_enable_node() -> void:
 @rpc("any_peer", "call_local", "reliable")
 func _rpc_disable_node() -> void:
 	set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
+
+
+@rpc("any_peer", "call_local", "reliable")
+func _rpc_play_animation(anim: String) -> void:
+	if anim_player:
+		anim_player.play(anim)
+
+
+@rpc("any_peer", "call_local", "reliable")
+func _rpc_stop_animation() -> void:
+	if anim_player:
+		anim_player.stop()
 
 
 func _on_interactable_interacted(node: Node) -> void:

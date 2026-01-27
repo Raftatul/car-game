@@ -1,10 +1,12 @@
 class_name InventorySlot
-extends AspectRatioContainer
+extends Control
 
 @export var default_icon: Texture
+@export var slot_focus: TextureRect
+@export var slot_icon: TextureRect
+@export var progress_bar: ProgressBar
 
-@onready var slot_focus: TextureRect = $SlotFocus
-@onready var slot_icon: TextureRect = $SlotIcon
+var _item: Item
 
 
 func _ready() -> void:
@@ -15,8 +17,27 @@ func set_active(active: bool) -> void:
 	slot_focus.visible = active
 
 
-func set_texture(texture: Texture) -> void:
-	if texture:
-		slot_icon.texture = texture
+func set_item(item: Item) -> void:
+	if _item:
+		_item.lifetime_changed.disconnect(_on_lifetime_changed)
+	
+	_item = item
+	if _item:
+		if _item.lifetime > 0.0:
+			progress_bar.value = _item.get_lifetime_percent()
+			progress_bar.visibility_layer = 1
+			_item.lifetime_changed.connect(_on_lifetime_changed)
+		else:
+			progress_bar.visibility_layer = 0
+		
+		if item.texture:
+			slot_icon.texture = item.texture
+		else:
+			slot_icon.texture = default_icon
 	else:
+		progress_bar.visibility_layer = 0
 		slot_icon.texture = default_icon
+
+
+func _on_lifetime_changed(percent: float) -> void:
+	progress_bar.value = percent

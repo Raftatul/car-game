@@ -10,8 +10,8 @@ config_version=5
 
 [Network]
 
-general/instances_count=2.0
-general/net_mode=1
+general/instances_count=1.0
+general/net_mode=0
 
 [animation]
 
@@ -45,7 +45,8 @@ enabled=PackedStringArray("res://addons/multiplayer_shortcuts/plugin.cfg", "res:
 [file_customization]
 
 folder_colors={
-"res://assets/": "purple"
+"res://assets/": "purple",
+"res://src/": "red"
 }
 
 [global_group]

@@ -30,6 +30,8 @@ enum MOVEMENT_STATE {WALKING, SWIMMING, FALLING, DIVING}
 var speed: float = walk_speed
 var movement_state: MOVEMENT_STATE = MOVEMENT_STATE.FALLING
 
+var masked: bool = false
+
 @onready var camera_pivot: Node3D = %CameraPivot
 @onready var spring_arm: SpringArm3D = %SpringArm3D
 @onready var camera: Camera3D = %Camera3D

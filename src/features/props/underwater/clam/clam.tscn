@@ -22,11 +22,11 @@ items = Array[PackedScene]([ExtResource("2_1krx6")])
 [node name="clam" parent="." unique_id=722669206 instance=ExtResource("1_1anpo")]
 
 [node name="Skeleton3D" parent="clam/Armature" parent_id_path=PackedInt32Array(722669206, 2064030438) index="0" unique_id=1179913468]
-bones/0/rotation = Quaternion(0.7531649, -3.920958e-07, -4.4891794e-07, 0.6578319)
-bones/1/rotation = Quaternion(-4.5386837e-08, 0.9944943, 0.104791135, -4.307417e-07)
+bones/0/rotation = Quaternion(0.76185334, -3.8608616e-07, -4.5409652e-07, 0.64774954)
+bones/1/rotation = Quaternion(5.8849544e-08, 0.9907267, -0.13587034, -4.29111e-07)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="clam/Armature/Skeleton3D" index="1" unique_id=1304821876]
-transform = Transform3D(1, -5.115907e-13, -1.1920764e-06, -1.1812506e-06, -0.13451456, -0.99090475, -1.6035222e-07, 0.99091154, -0.13451365, 0, 0, 0)
+transform = Transform3D(1, -3.979039e-13, -1.1920761e-06, -1.1765637e-06, -0.16084097, -0.9869735, -1.9173564e-07, 0.98698026, -0.16083987, 0, 0, 0)
 bone_name = "Down"
 bone_idx = 0
 
@@ -39,10 +39,10 @@ shape = SubResource("BoxShape3D_1krx6")
 
 [node name="ItemSocket" type="Node3D" parent="clam/Armature/Skeleton3D/BoneAttachment3D" unique_id=1804048912]
 unique_name_in_owner = true
-transform = Transform3D(1, 3.0004924e-07, 2.4141341e-08, 2.4141341e-08, -0.15988088, 0.9871363, 3.0004924e-07, -0.9871363, -0.15988088, -2.1257377e-07, 1.0942471, -0.1783227)
+transform = Transform3D(1, 3.0004924e-07, 2.4141308e-08, 2.4141308e-08, -0.15988065, 0.98713636, 3.0004924e-07, -0.98713636, -0.15988065, -2.1257377e-07, 1.0942471, -0.1783227)
 
 [node name="BoneAttachment3D2" type="BoneAttachment3D" parent="clam/Armature/Skeleton3D" index="2" unique_id=1617103461]
-transform = Transform3D(-1, 1.9184652e-12, -8.662491e-07, -1.805497e-07, 0.97803754, 0.20842752, 8.4722797e-07, 0.20842832, -0.9780338, 0, 0, 0)
+transform = Transform3D(-1, 7.1764805e-13, -8.662517e-07, 2.3321451e-07, 0.9630784, -0.26921964, 8.3427153e-07, -0.26922068, -0.96307474, 0, 0, 0)
 bone_name = "Up"
 bone_idx = 1
 
@@ -66,8 +66,5 @@ replication_config = SubResource("SceneReplicationConfig_2q2sj")
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=434895951]
 _spawnable_scenes = PackedStringArray("uid://bkat1f5wawv7w")
 spawn_path = NodePath("../clam/Armature/Skeleton3D/BoneAttachment3D/ItemSocket")
-
-[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
-[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
 
 [editable path="clam"]

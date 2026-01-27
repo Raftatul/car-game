@@ -14,9 +14,9 @@ var closed: bool = true :
 		closed = v
 		
 		if closed:
-			animation_player.play("close")
+			animation_player.play("close", 0.2)
 		else:
-			animation_player.play("open")
+			animation_player.play("open", 0.2)
 
 @onready var animation_player: AnimationPlayer = $clam/AnimationPlayer
 @onready var area: Area3D = $Area3D
@@ -29,28 +29,22 @@ func _ready() -> void:
 	closed = false
 
 
+func _physics_process(_delta: float) -> void:
+	if !is_multiplayer_authority(): return
+	
+	var bodies: Array = area.get_overlapping_bodies().filter(_filter_players)
+	if bodies.is_empty() and closed:
+		closed = false
+	if !bodies.is_empty() and !closed:
+		closed = true
+
+
 func _spawn_item() -> void:
 	item = items.pick_random().instantiate()
 	item_socket.add_child(item)
 
 
-func _on_area_3d_body_entered(body: Node3D) -> void:
-	if not is_multiplayer_authority():
-		return
-	
-	if not body is PlayerCharacter:
-		return
-	
-	player_count += 1
-	closed = true
-
-
-func _on_area_3d_body_exited(body: Node3D) -> void:
-	if not is_multiplayer_authority():
-		return
-	
-	if not body is PlayerCharacter:
-		return
-	
-	player_count -= 1
-	closed = player_count != 0
+func _filter_players(a: Node) -> bool:
+	if not a is PlayerCharacter:
+		return false
+	return not a.masked

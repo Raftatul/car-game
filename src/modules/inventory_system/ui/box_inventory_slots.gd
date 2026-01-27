@@ -29,8 +29,8 @@ func _on_active_slot_changed(_old_idx: int, idx: int) -> void:
 
 
 func _on_item_added(idx: int, item: Item) -> void:
-	slots[idx].set_texture(item.icon)
+	slots[idx].set_item(item)
 
 
 func _on_item_removed(idx: int) -> void:
-	slots[idx].set_texture(null)
+	slots[idx].set_item(null)

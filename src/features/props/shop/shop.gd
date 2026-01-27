@@ -39,6 +39,7 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 		if item:
 			stored_fish += 1
 			body.inventory_component.remove_item(item)
+			item.sold()
 			_rpc_destroy_item.rpc(item.get_path())
 
 

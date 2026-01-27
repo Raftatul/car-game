@@ -13,6 +13,8 @@ signal water_exited
 @export_tool_button("Add Point") var add_point_delegate = _add_point
 
 @export_range(0.0, 1.0, 0.01) var submerge_floor := 0.5
+
+@export_group("Forces")
 @export var bounciness := 1.0
 
 @export_group("Drags")
@@ -91,7 +93,7 @@ func _apply_force(delta: float, force: float, relative_position: Vector3) -> voi
 	elif parent is CharacterBody3D:
 		parent.velocity += Vector3.UP * force * delta
 		
-		if parent.velocity.y > 0.0:
+		if parent.velocity.y >= 0.0:
 			parent.velocity.y *= 1.0 - buo_damping / points_count
 
 

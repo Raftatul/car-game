@@ -4,23 +4,54 @@
 [ext_resource type="Texture2D" uid="uid://buh3mnd8sg3oc" path="res://icon.svg" id="1_wotv3"]
 [ext_resource type="Texture2D" uid="uid://c7abq0ivc2au2" path="res://assets/icons/Circle.png" id="3_m4oo0"]
 
-[node name="InventorySlot" type="AspectRatioContainer" unique_id=298223587]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jdbe8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jdbe8"]
+bg_color = Color(0, 0, 0, 0.35000002)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mj262"]
+bg_color = Color(0.8570065, 0.7547807, 0, 1)
+
+[node name="InventorySlot" type="PanelContainer" unique_id=190380502 node_paths=PackedStringArray("slot_focus", "slot_icon", "progress_bar")]
+custom_minimum_size = Vector2(100, 100)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_jdbe8")
 script = ExtResource("1_glv70")
 default_icon = ExtResource("1_wotv3")
+slot_focus = NodePath("VBoxContainer/AspectRatioContainer/SlotFocus")
+slot_icon = NodePath("VBoxContainer/AspectRatioContainer/SlotIcon")
+progress_bar = NodePath("VBoxContainer/ProgressBar")
 
-[node name="SlotIcon" type="TextureRect" parent="." unique_id=399191943]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1112486943]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer" unique_id=1304815992]
+visibility_layer = 0
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_jdbe8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_mj262")
+max_value = 1.0
+value = 0.5
+show_percentage = false
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="VBoxContainer" unique_id=1204870410]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SlotIcon" type="TextureRect" parent="VBoxContainer/AspectRatioContainer" unique_id=399191943]
 layout_mode = 2
 texture = ExtResource("1_wotv3")
 expand_mode = 1
 
-[node name="SlotFocus" type="TextureRect" parent="." unique_id=1922135467]
+[node name="SlotFocus" type="TextureRect" parent="VBoxContainer/AspectRatioContainer" unique_id=1922135467]
 visible = false
 layout_mode = 2
 texture = ExtResource("3_m4oo0")

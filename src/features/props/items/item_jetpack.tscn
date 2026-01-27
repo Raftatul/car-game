@@ -1,28 +1,30 @@
 [gd_scene format=3 uid="uid://damvtojfd3dv6"]
 
-[ext_resource type="PackedScene" uid="uid://bkat1f5wawv7w" path="res://src/modules/inventory_system/item.tscn" id="1_5hxq2"]
+[ext_resource type="PackedScene" uid="uid://sqqy6h3uyogf" path="res://src/features/props/items/game_item.tscn" id="1_5hxq2"]
 [ext_resource type="Texture2D" uid="uid://dts2qgujqag2b" path="res://assets/PlayerCharacter/GodotPlush/Material/godot_plush_normal.png" id="2_n6ulx"]
 [ext_resource type="Script" uid="uid://c4qkpfgkb20v1" path="res://src/features/props/items/jetpack.gd" id="2_y11rr"]
 [ext_resource type="PackedScene" uid="uid://b5gdd8dgna1nj" path="res://assets/props/items/jetpack.blend" id="4_yg212"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_y11rr"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_yg212"]
 resource_local_to_scene = true
 radius = 2.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5hxq2"]
 size = Vector3(0.618, 0.739, 0.618)
 
-[node name="Jetpack" unique_id=1407846572 instance=ExtResource("1_5hxq2")]
+[node name="Jetpack" unique_id=1407846572 node_paths=PackedStringArray("anim_player") instance=ExtResource("1_5hxq2")]
 script = ExtResource("2_y11rr")
 force = 10.0
-icon = ExtResource("2_n6ulx")
+anim_player = NodePath("jetpack/AnimationPlayer")
+texture = ExtResource("2_n6ulx")
 attach_point = 1
+lifetime = 10.0
 
-[node name="Interactable" parent="." index="0" unique_id=616402960]
+[node name="Interactable" parent="." index="1" unique_id=672757197]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.3)
 
-[node name="CollisionShape3D" parent="Interactable" index="0" unique_id=1309856409]
-shape = SubResource("SphereShape3D_y11rr")
+[node name="CollisionShape3D" parent="Interactable" index="0" unique_id=717160102]
+shape = SubResource("SphereShape3D_yg212")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=1446513883]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.008392334, 0.3088379)
@@ -31,8 +33,11 @@ shape = SubResource("BoxShape3D_5hxq2")
 [node name="jetpack" parent="." index="3" unique_id=238647238 instance=ExtResource("4_yg212")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0.3)
 
-[node name="AnimationPlayer" parent="jetpack" index="1" unique_id=156471256]
+[node name="AnimationPlayer" parent="jetpack" index="1" unique_id=1824428490]
 process_mode = 3
 speed_scale = 4.0
+
+[node name="Pontoon" parent="Buoyancy" parent_id_path=PackedInt32Array(116906752) index="0" unique_id=1398220722]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.3)
 
 [editable path="jetpack"]

@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://cyxx4ngsn7fe3"]
+
+[ext_resource type="PackedScene" uid="uid://sqqy6h3uyogf" path="res://src/features/props/items/game_item.tscn" id="1_05xfk"]
+[ext_resource type="Script" uid="uid://dfgny5ipa1xa3" path="res://src/features/props/items/item_mask.gd" id="2_rjyx3"]
+[ext_resource type="Texture2D" uid="uid://buh3mnd8sg3oc" path="res://icon.svg" id="3_1rojh"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_1rojh"]
+resource_local_to_scene = true
+radius = 2.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vsiaw"]
+size = Vector3(1, 1, 0.20214844)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ys8up"]
+albedo_texture = ExtResource("3_1rojh")
+uv1_scale = Vector3(2, 2, 2)
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_vsiaw"]
+size = Vector3(1, 1, 0.2)
+
+[node name="ItemMask" unique_id=1407846572 instance=ExtResource("1_05xfk")]
+script = ExtResource("2_rjyx3")
+attach_point = 2
+
+[node name="CollisionShape3D" parent="Interactable" parent_id_path=PackedInt32Array(672757197) index="0" unique_id=717160102]
+shape = SubResource("SphereShape3D_1rojh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=755109261]
+shape = SubResource("BoxShape3D_vsiaw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="3" unique_id=1549710314]
+material_override = SubResource("StandardMaterial3D_ys8up")
+mesh = SubResource("BoxMesh_vsiaw")
