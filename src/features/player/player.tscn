@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://drijhg0g7ak1n" path="res://assets/PlayerCharacter/GodotPlush/Material/godot_plush_albedo.png" id="4_1mqja"]
 [ext_resource type="PackedScene" uid="uid://bwccmirxmpnbb" path="res://src/ui/pause_menu/pause_menu.tscn" id="4_p2vpv"]
 [ext_resource type="Texture2D" uid="uid://dts2qgujqag2b" path="res://assets/PlayerCharacter/GodotPlush/Material/godot_plush_normal.png" id="5_njwrn"]
-[ext_resource type="Script" uid="uid://bbfcrnb4wwgl2" path="res://src/modules/water_system/buoyancy.gd" id="6_rybn4"]
 [ext_resource type="Script" uid="uid://c6b34boy1rxu1" path="res://src/modules/inventory_system/ui/box_inventory_slots.gd" id="7_aco40"]
 [ext_resource type="Script" uid="uid://dss72a2cjr3u8" path="res://src/modules/interaction_system/interactor.gd" id="8_njwrn"]
 [ext_resource type="Script" uid="uid://clyypf1rhthc" path="res://src/features/components/inputs_component.gd" id="9_502ij"]
@@ -218,26 +217,26 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, -
 script = ExtResource("3_ti7vc")
 
 [node name="Skeleton3D" parent="Visual/godot_plush_model/Rig" parent_id_path=PackedInt32Array(1080972857, 1940519781) index="0" unique_id=1131176568]
-bones/0/position = Vector3(-1.7524652e-22, 0.7722222, -8.1408735e-10)
-bones/0/rotation = Quaternion(0.99747837, -0.002145011, 0.07093896, -0.00016087884)
+bones/0/position = Vector3(-1.3325354e-22, 0.77308214, -7.8465423e-10)
+bones/0/rotation = Quaternion(0.99717885, -0.0030457627, 0.075000785, -0.0002368393)
 bones/1/position = Vector3(-2.3597598e-17, 0, -6.18693e-17)
 bones/1/rotation = Quaternion(1, -2.2923515e-15, -3.4519715e-08, -5.960464e-08)
-bones/2/rotation = Quaternion(-0.07078907, 0.15450805, 0.92501324, -0.33980417)
-bones/3/rotation = Quaternion(0.25571734, -0.027245708, 0.0072217747, 0.9663406)
-bones/5/rotation = Quaternion(-0.12224026, -0.22065017, 0.90945256, 0.33055562)
-bones/6/rotation = Quaternion(0.14338875, -0.027897231, 0.004031925, 0.98926497)
-bones/8/rotation = Quaternion(-0.0328306, -0.003945567, -0.056805603, 0.9978376)
-bones/9/position = Vector3(-2.4423324e-08, 0.1532154, -6.31454e-09)
-bones/9/rotation = Quaternion(0.27645722, -0.19649443, 0.05783709, 0.9389443)
-bones/10/position = Vector3(1.7238378e-08, 0.20706849, -6.684878e-09)
-bones/10/rotation = Quaternion(-0.6006297, -0.082249425, 0.02214694, 0.794977)
+bones/2/rotation = Quaternion(-0.06837956, 0.14987148, 0.925961, -0.33979267)
+bones/3/rotation = Quaternion(0.24797639, -0.026602283, 0.006827933, 0.96837676)
+bones/5/rotation = Quaternion(-0.11990898, -0.21607287, 0.9107825, 0.33077112)
+bones/6/rotation = Quaternion(0.15130855, -0.02715092, 0.004142186, 0.988105)
+bones/8/rotation = Quaternion(-0.026969815, -0.0038631423, -0.05557553, 0.9980827)
+bones/9/position = Vector3(-2.3488552e-08, 0.15318802, -5.9326126e-09)
+bones/9/rotation = Quaternion(0.2693166, -0.19694175, 0.056345828, 0.9410143)
+bones/10/position = Vector3(1.668879e-08, 0.20704058, -6.954655e-09)
+bones/10/rotation = Quaternion(-0.5991888, -0.08660681, 0.021655856, 0.79561496)
 bones/11/position = Vector3(-1.9200796e-08, 0.2512119, -4.9427776e-08)
 bones/11/rotation = Quaternion(-0.000102671445, 0.9324488, -0.36130223, 4.626674e-05)
-bones/12/rotation = Quaternion(-0.1391227, 0.0056967176, 0.08711146, 0.98641986)
-bones/13/position = Vector3(-1.9356264e-08, 0.15223493, 7.883006e-09)
-bones/13/rotation = Quaternion(0.32844314, 0.19301274, -0.06875937, 0.9220322)
-bones/14/position = Vector3(-8.168056e-09, 0.20575672, -7.112739e-09)
-bones/14/rotation = Quaternion(-0.5593165, -0.06085705, -0.040246077, 0.8257371)
+bones/12/rotation = Quaternion(-0.13710392, 0.005490151, 0.0840291, 0.98697084)
+bones/13/position = Vector3(-1.9856186e-08, 0.15217939, 7.517258e-09)
+bones/13/rotation = Quaternion(0.32071707, 0.19422685, -0.067373484, 0.92459583)
+bones/14/position = Vector3(-8.267097e-09, 0.20569365, -6.917454e-09)
+bones/14/rotation = Quaternion(-0.5545874, -0.06498176, -0.04029875, 0.828605)
 bones/15/position = Vector3(-4.8419313e-10, 0.25120693, -5.0023658e-08)
 bones/15/rotation = Quaternion(-2.7789587e-05, 0.9324604, -0.36127216, 0.0002779076)
 
@@ -245,7 +244,7 @@ bones/15/rotation = Quaternion(-2.7789587e-05, 0.9324604, -0.36127216, 0.0002779
 material_override = SubResource("ShaderMaterial_ri5lk")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="1" unique_id=1198560524]
-transform = Transform3D(-0.75680304, -0.5520522, -0.34998238, 0.63941926, -0.7363619, -0.22116613, -0.1356184, -0.39116463, 0.91027343, -0.67050135, 0.5853656, -0.20276274)
+transform = Transform3D(-0.7545213, -0.559474, -0.34305453, 0.64081776, -0.7408623, -0.2011855, -0.14159815, -0.3716343, 0.9175171, -0.67098933, 0.5863935, -0.20345098)
 bone_name = "DEF-hand.R"
 bone_idx = 7
 
@@ -254,7 +253,7 @@ unique_name_in_owner = true
 transform = Transform3D(1, 5.6311364e-09, 4.656613e-10, 5.6477347e-09, 1, -6.184564e-11, 0, 6.548362e-11, 1, 0.010235667, 0.14705995, 6.040046e-05)
 
 [node name="BoneAttachment3D2" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="2" unique_id=1331867321]
-transform = Transform3D(0.9899261, -0.0042563784, 0.14152083, -0.0043020295, -0.9999909, 1.6616626e-05, 0.14151947, -0.00062527595, -0.98993534, -1.7524652e-22, 0.7722222, -8.1408735e-10)
+transform = Transform3D(0.9887312, -0.0060388125, 0.14957981, -0.0061098654, -0.99998134, 1.5473108e-05, 0.14957693, -0.0009292113, -0.9887497, -1.3325354e-22, 0.77308214, -7.8465423e-10)
 bone_name = "DEF-hips"
 bone_idx = 0
 
@@ -262,7 +261,7 @@ bone_idx = 0
 transform = Transform3D(-1, 8.742277e-08, 0, -8.742278e-08, -0.99999994, 0, 0, 0, 1.0000001, 0.06046414, -0.1489309, 0.51552385)
 
 [node name="BoneAttachment3D3" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="3" unique_id=216061842]
-transform = Transform3D(0.9899261, 0.0042563616, -0.1415209, -0.0043020295, 0.9999909, -1.6735537e-05, 0.14151955, 0.00062539394, 0.98993534, -3.2115846e-17, 0.7722222, -8.140873e-10)
+transform = Transform3D(0.9887312, 0.0060387948, -0.14957988, -0.0061098654, 0.99998134, -1.5591893e-05, 0.149577, 0.0009293292, 0.9887497, -3.258621e-17, 0.77308214, -7.846542e-10)
 bone_name = "DEF-head"
 bone_idx = 1
 
@@ -339,18 +338,6 @@ visible = false
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=871392169]
 replication_config = SubResource("SceneReplicationConfig_rybn4")
 
-[node name="Buoyancy" type="Node3D" parent="." unique_id=1772111575 node_paths=PackedStringArray("points")]
-script = ExtResource("6_rybn4")
-points = [NodePath("Pontoon"), NodePath("Pontoon2")]
-submerge_floor = 1.0
-bounciness = 0.5
-buo_damping = 0.15
-
-[node name="Pontoon" type="Marker3D" parent="Buoyancy" unique_id=1145496784]
-
-[node name="Pontoon2" type="Marker3D" parent="Buoyancy" unique_id=1915947604]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-
 [node name="Label3D" type="Label3D" parent="." unique_id=403355102]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 billboard = 1
@@ -383,7 +370,9 @@ sockets = {
 }
 metadata/_custom_type_script = "uid://dhioq5g0akhqd"
 
-[connection signal="water_entered" from="Buoyancy" to="." method="_on_buoyancy_water_entered"]
-[connection signal="water_exited" from="Buoyancy" to="." method="_on_buoyancy_water_exited"]
+[node name="Buoyancy" type="CharacterBuoyancy" parent="." unique_id=695218304]
+probes = PackedVector3Array(0, 0, 1)
+
+[connection signal="submerged_changed" from="Buoyancy" to="." method="_on_buoyancy_submerged_changed"]
 
 [editable path="Visual/godot_plush_model"]

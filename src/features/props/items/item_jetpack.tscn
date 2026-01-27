@@ -13,6 +13,9 @@ radius = 2.0
 size = Vector3(0.618, 0.739, 0.618)
 
 [node name="Jetpack" unique_id=1407846572 node_paths=PackedStringArray("anim_player") instance=ExtResource("1_5hxq2")]
+mass = 100.0
+center_of_mass_mode = 1
+center_of_mass = Vector3(0, 0, 0.3)
 script = ExtResource("2_y11rr")
 force = 10.0
 anim_player = NodePath("jetpack/AnimationPlayer")
@@ -37,7 +40,11 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0.3)
 process_mode = 3
 speed_scale = 4.0
 
-[node name="Pontoon" parent="Buoyancy" parent_id_path=PackedInt32Array(116906752) index="0" unique_id=1398220722]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.3)
+[node name="Buoyancy" parent="." index="4" unique_id=2115545408 node_paths=PackedStringArray("collider")]
+collider = NodePath("../CollisionShape3D")
+buoyancy_probes = PackedVector3Array(0.3, -0.3, 0.45, -0.3, -0.3, 0.45, 0, 0.3, 0.45)
+submerged_linear_drag = 5.0
+submerged_angular_drag = 10.0
+show_debug = true
 
 [editable path="jetpack"]

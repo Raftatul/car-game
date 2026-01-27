@@ -251,9 +251,8 @@ shape = SubResource("BoxShape3D_jx7a4")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D" unique_id=1303931389]
 mesh = SubResource("BoxMesh_wt035")
 
-[node name="Buoyancy" type="Node3D" parent="RigidBody3D" unique_id=1817207288 node_paths=PackedStringArray("points")]
+[node name="Buoyancy" type="Node3D" parent="RigidBody3D" unique_id=1817207288]
 script = ExtResource("11_rg4u2")
-points = [NodePath("Pontoon"), NodePath("Pontoon2"), NodePath("Pontoon3"), NodePath("Pontoon4"), NodePath("Pontoon5")]
 bounciness = 30.0
 buo_damping = 0.15
 debug = true

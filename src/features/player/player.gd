@@ -31,6 +31,7 @@ var speed: float = walk_speed
 var movement_state: MOVEMENT_STATE = MOVEMENT_STATE.FALLING
 
 var masked: bool = false
+var is_in_water: bool = false
 
 @onready var camera_pivot: Node3D = %CameraPivot
 @onready var spring_arm: SpringArm3D = %SpringArm3D
@@ -38,7 +39,7 @@ var masked: bool = false
 @onready var visual: Node3D = %Visual
 
 @onready var pause_menu: Control = %PauseMenu
-@onready var buoyancy: Buoyancy = $Buoyancy
+@onready var buoyancy: CharacterBuoyancy = $Buoyancy
 @onready var label_3d: Label3D = $Label3D
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
 
@@ -54,6 +55,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	buoyancy.liquid_area = get_tree().get_first_node_in_group("water")
 	if get_multiplayer_authority() != 0 and not is_multiplayer_authority():
 		set_process(false)
 		set_physics_process(false)
@@ -134,8 +136,8 @@ func _process_swimming_state(delta: float) -> void:
 	if inputs_component.jump_pressed:
 		jump(water_jump_force)
 	
-	if inputs_component.dive_pressed or buoyancy.get_depth() > 3.5:
-		buoyancy.active = false
+	if inputs_component.dive_pressed or buoyancy.get_submerged_ratio() > 0.5:
+		buoyancy.apply_forces = false
 		if abs(velocity.y) < 3.0:
 			velocity.y += -3.0
 		gravity_scale = 0.0
@@ -158,10 +160,10 @@ func _process_diving_state(delta: float) -> void:
 	var input: Vector2 = inputs_component.flat_input
 	var up_input: float = inputs_component.vertical_input
 	
-	if !inputs_component.dive_pressed and buoyancy.get_depth() < 2.0:
+	if !inputs_component.dive_pressed and buoyancy.get_submerged_ratio() < 0.5:
 		movement_state = MOVEMENT_STATE.SWIMMING
 		gravity_scale = 1.0
-		buoyancy.active = true
+		buoyancy.apply_forces = true
 	
 	if input or up_input:
 		var vel_dir: Vector3 = (camera.global_basis * Vector3(input.x, 0.0, input.y) + Vector3.UP * up_input).normalized()
@@ -192,11 +194,13 @@ func _process_movement(delta: float, max_speed: float, acceleration: float) -> v
 	visual.rotation.z = lerp_angle(visual.rotation.z, 0.0, delta * rotation_speed)
 
 
-func _on_buoyancy_water_entered() -> void:
-	movement_state = MOVEMENT_STATE.SWIMMING
-
-
-func _on_buoyancy_water_exited() -> void:
-	movement_state = MOVEMENT_STATE.FALLING
-	gravity_scale = 1.0
-	buoyancy.active = true
+func _on_buoyancy_submerged_changed() -> void:
+	print(buoyancy.get_submerged_ratio())
+	if buoyancy.get_submerged_ratio() > 0.5 and !is_in_water:
+		is_in_water = true
+		movement_state = MOVEMENT_STATE.SWIMMING
+	elif is_in_water:
+		is_in_water = false
+		movement_state = MOVEMENT_STATE.FALLING
+		gravity_scale = 1.0
+		buoyancy.active = true

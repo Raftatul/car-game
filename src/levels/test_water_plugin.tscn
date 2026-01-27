@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://dwv3sidvlr22g"]
+
+[ext_resource type="Material" uid="uid://pbw4j4s2e6cy" path="res://assets/shaders/water/water_shader_material.tres" id="1_1xkqr"]
+[ext_resource type="PackedScene" uid="uid://h8ktknpf0t7p" path="res://src/modules/multiplayer/spawn_point.tscn" id="1_4v410"]
+[ext_resource type="Script" uid="uid://bghr8k1brlvc2" path="res://tmp/liquid_test.gd" id="1_44rgr"]
+[ext_resource type="PackedScene" uid="uid://damvtojfd3dv6" path="res://src/features/props/items/item_jetpack.tscn" id="2_e4ag3"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e4ag3"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_uprws"]
+sky_material = SubResource("ProceduralSkyMaterial_e4ag3")
+
+[sub_resource type="Environment" id="Environment_1xkqr"]
+background_mode = 2
+sky = SubResource("Sky_uprws")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_aedju"]
+lightmap_size_hint = Vector2i(127, 127)
+size = Vector2(60, 60)
+subdivide_width = 120
+subdivide_depth = 120
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_uwscl"]
+properties/0/path = NodePath(".:time")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[sub_resource type="FogMaterial" id="FogMaterial_yb1wo"]
+density = 0.1
+albedo = Color(0.44, 1, 1, 1)
+edge_fade = 0.7727469
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_1xkqr"]
+resource_local_to_scene = true
+radius = 2.0
+
+[node name="TestWaterPlugin" type="Node3D" unique_id=210102136]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=949296283]
+environment = SubResource("Environment_1xkqr")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1144559291]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="LiquidArea" type="LiquidArea" parent="." unique_id=780065606 node_paths=PackedStringArray("mesh") groups=["water"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.4258943, 0)
+script = ExtResource("1_44rgr")
+mesh = NodePath("MeshInstance3D")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LiquidArea" unique_id=1055270887]
+transform = Transform3D(3.9246202, 0, 0, 0, 1, 0, 0, 0, 3.9246202, 0, 0, 0)
+material_override = ExtResource("1_1xkqr")
+mesh = SubResource("PlaneMesh_aedju")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="LiquidArea/MeshInstance3D" unique_id=1779433879]
+replication_config = SubResource("SceneReplicationConfig_uwscl")
+
+[node name="FogVolume" type="FogVolume" parent="LiquidArea/MeshInstance3D" unique_id=1746051259]
+transform = Transform3D(0.9999984, 0, 0, 0, 1, 0, 0, 0, 0.9999984, -0.42719245, -14.898192, -1.1706371)
+size = Vector3(52.200516, 31.796387, 71.39932)
+material = SubResource("FogMaterial_yb1wo")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=2098199237]
+use_collision = true
+size = Vector3(5, 1, 5)
+
+[node name="SpawnPoint" parent="." unique_id=139071677 instance=ExtResource("1_4v410")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.50000024, 0)
+
+[node name="Jetpack" parent="." unique_id=1407846572 instance=ExtResource("2_e4ag3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8197892, 1.292774, -2.059104)
+
+[node name="CollisionShape3D" parent="Jetpack/Interactable" parent_id_path=PackedInt32Array(1407846572, 672757197) index="0" unique_id=717160102]
+shape = SubResource("SphereShape3D_1xkqr")
+
+[editable path="Jetpack"]
+[editable path="Jetpack/jetpack"]

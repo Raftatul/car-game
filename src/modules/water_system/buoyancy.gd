@@ -1,5 +1,4 @@
 @tool
-class_name Buoyancy
 extends Node3D
 
 signal water_entered
