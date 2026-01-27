@@ -52,6 +52,7 @@ func add_item(item: Item) -> int:
 	if is_slot_full(idx):
 		idx = inventory.keys().filter(_filter_empty_slots)[0]
 	item.actor = get_parent()
+	item.pick()
 	inventory[idx] = item
 	item_added.emit(idx, item)
 	return idx

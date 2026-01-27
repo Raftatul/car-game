@@ -4,7 +4,7 @@ extends Node3D
 
 var player_count: int = 0
 
-var item: Node3D = null
+var item: GameItem = null
 
 var closed: bool = true :
 	set(v):
@@ -14,8 +14,10 @@ var closed: bool = true :
 		closed = v
 		
 		if closed:
+			if item: item.interactable.process_mode = Node.PROCESS_MODE_DISABLED
 			animation_player.play("close", 0.2)
 		else:
+			if item: item.interactable.process_mode = Node.PROCESS_MODE_INHERIT
 			animation_player.play("open", 0.2)
 
 @onready var animation_player: AnimationPlayer = $clam/AnimationPlayer
@@ -41,6 +43,8 @@ func _physics_process(_delta: float) -> void:
 
 func _spawn_item() -> void:
 	item = items.pick_random().instantiate()
+	item.buoyancy.active = false
+	item.picked_up.connect(item.buoyancy.set.bind("active", true))
 	item_socket.add_child(item)
 
 

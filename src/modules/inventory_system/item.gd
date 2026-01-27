@@ -4,6 +4,7 @@ extends Node3D
 
 enum ATTACH_POINTS {HAND, BACK, HEAD}
 
+signal picked_up
 signal lifetime_changed(percent: float)
 
 @export var texture: Texture2D
@@ -19,6 +20,10 @@ var actor: Node
 			if current_lifetime == 0.0:
 				_lifetime_drained()
 			lifetime_changed.emit(get_lifetime_percent())
+
+
+func pick() -> void:
+	picked_up.emit()
 
 
 func pre_use() -> void:

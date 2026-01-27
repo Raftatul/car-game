@@ -2,13 +2,17 @@
 
 [ext_resource type="PackedScene" uid="uid://bkat1f5wawv7w" path="res://src/modules/inventory_system/item.tscn" id="1_k5n3e"]
 [ext_resource type="Script" uid="uid://dbhxlu164ckm8" path="res://src/features/props/items/interactable_item.gd" id="2_72lmu"]
+[ext_resource type="Script" uid="uid://cbfe6i340nlye" path="res://src/features/props/items/game_item.gd" id="2_m5cl1"]
 [ext_resource type="Script" uid="uid://bbfcrnb4wwgl2" path="res://src/modules/water_system/buoyancy.gd" id="3_nnl8x"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_nnl8x"]
 resource_local_to_scene = true
 radius = 2.0
 
-[node name="Item" unique_id=1407846572 instance=ExtResource("1_k5n3e")]
+[node name="Item" unique_id=1407846572 node_paths=PackedStringArray("buoyancy") instance=ExtResource("1_k5n3e")]
+collision_layer = 2
+script = ExtResource("2_m5cl1")
+buoyancy = NodePath("Buoyancy")
 
 [node name="Interactable" type="Area3D" parent="." index="1" unique_id=672757197]
 script = ExtResource("2_72lmu")
