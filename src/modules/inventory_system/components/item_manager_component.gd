@@ -7,6 +7,10 @@ extends Node
 
 @export var sockets: Dictionary[Item.ATTACH_POINTS, Node3D]
 
+@export var scroll_delay: float = 0.25 :
+	get:
+		return scroll_delay * 1000.0
+
 var wants_item_use: bool = false
 var wants_item_drop: bool = false
 
@@ -14,6 +18,8 @@ var wants_scroll_up: bool = false
 var wants_scroll_down: bool = false
 
 var item_in_use: Item
+
+var last_scroll_time: int = 0
 
 
 func _ready() -> void:
@@ -26,10 +32,13 @@ func _ready() -> void:
 func tick(delta: float) -> void:
 	if !is_instance_valid(inventory_component): return
 	
-	if wants_scroll_up:
-		inventory_component.select_next_slot()
-	elif wants_scroll_down:
-		inventory_component.select_previous_slot()
+	if Time.get_ticks_msec() - last_scroll_time > scroll_delay:
+		if wants_scroll_up:
+			last_scroll_time = Time.get_ticks_msec()
+			inventory_component.select_next_slot()
+		elif wants_scroll_down:
+			last_scroll_time = Time.get_ticks_msec()
+			inventory_component.select_previous_slot()
 	
 	var selected_item: Item = inventory_component.get_selected_item()
 	if selected_item:
