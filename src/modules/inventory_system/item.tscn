@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://bkat1f5wawv7w"]
 
+[ext_resource type="Script" uid="uid://cjhtodj4q1jc1" path="res://src/modules/inventory_system/item.gd" id="1_swpng"]
+
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_8886b"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
@@ -9,6 +11,9 @@ properties/1/spawn = true
 properties/1/replication_mode = 1
 
 [node name="Item" type="RigidBody3D" unique_id=1407846572]
+script = ExtResource("1_swpng")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=789134189]
 replication_config = SubResource("SceneReplicationConfig_8886b")
+
+[node name="Offset" type="Marker3D" parent="." unique_id=2041991875]

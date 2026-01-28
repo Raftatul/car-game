@@ -20,24 +20,20 @@ texture = ExtResource("2_n6ulx")
 attach_point = 1
 lifetime = 20.0
 
-[node name="Interactable" parent="." index="1" unique_id=672757197]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.3)
-
-[node name="CollisionShape3D" parent="Interactable" index="0" unique_id=717160102]
+[node name="CollisionShape3D" parent="Interactable" parent_id_path=PackedInt32Array(672757197) index="0" unique_id=717160102]
 shape = SubResource("SphereShape3D_yg212")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=1446513883]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.008392334, 0.3088379)
+[node name="Offset" parent="." index="3" unique_id=2041991875]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="4" unique_id=1446513883]
 shape = SubResource("BoxShape3D_5hxq2")
 
-[node name="jetpack" parent="." index="3" unique_id=238647238 instance=ExtResource("4_yg212")]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0.3)
+[node name="jetpack" parent="." index="5" unique_id=238647238 instance=ExtResource("4_yg212")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="AnimationPlayer" parent="jetpack" index="1" unique_id=1824428490]
 process_mode = 3
 speed_scale = 4.0
-
-[node name="Pontoon" parent="Buoyancy" parent_id_path=PackedInt32Array(116906752) index="0" unique_id=1398220722]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.3)
 
 [editable path="jetpack"]

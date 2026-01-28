@@ -97,7 +97,7 @@ func _rpc_set_item_in_hand(node_path: NodePath, should_be_visible: bool) -> void
 		if should_be_visible:
 			item.selected()
 		item.reparent.call_deferred(_get_socket(item))
-		item.set_deferred("position", Vector3.ZERO)
+		item.set_deferred("position", -item.offset.position)
 		item.set_deferred("rotation", Vector3.ZERO)
 
 

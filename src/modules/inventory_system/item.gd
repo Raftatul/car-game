@@ -1,4 +1,3 @@
-@abstract
 class_name Item
 extends Node3D
 
@@ -21,6 +20,8 @@ var actor: Node
 			if current_lifetime == 0.0:
 				_lifetime_drained()
 			lifetime_changed.emit(get_lifetime_percent())
+
+@onready var offset: Marker3D = $Offset
 
 
 func pick() -> void:
