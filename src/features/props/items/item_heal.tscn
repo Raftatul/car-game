@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://h8skvj2d6nk6"]
+
+[ext_resource type="PackedScene" uid="uid://sqqy6h3uyogf" path="res://src/features/props/items/game_item.tscn" id="1_n8fau"]
+[ext_resource type="Script" uid="uid://kat6o6piohut" path="res://src/features/props/items/item_heal.gd" id="2_jnibr"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_jnibr"]
+resource_local_to_scene = true
+radius = 2.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_n8fau"]
+size = Vector3(0.5, 0.5, 0.25)
+
+[sub_resource type="BoxMesh" id="BoxMesh_jnibr"]
+size = Vector3(0.25, 0.25, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jnibr"]
+size = Vector3(0.5078125, 0.6386719, 0.24902344)
+
+[node name="HealthPack" unique_id=1407846572 instance=ExtResource("1_n8fau")]
+script = ExtResource("2_jnibr")
+heal_delta = 0.5
+lifetime = 5.0
+
+[node name="CollisionShape3D" parent="Interactable" parent_id_path=PackedInt32Array(672757197) index="0" unique_id=717160102]
+shape = SubResource("SphereShape3D_jnibr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="3" unique_id=1431820457]
+mesh = SubResource("BoxMesh_n8fau")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." index="4" unique_id=1293798234]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26296973, 0)
+mesh = SubResource("BoxMesh_jnibr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="5" unique_id=1787519680]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.068359375, 0)
+shape = SubResource("BoxShape3D_jnibr")

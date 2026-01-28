@@ -9,6 +9,7 @@ signal lifetime_changed(percent: float)
 
 @export var texture: Texture2D
 @export var attach_point: ATTACH_POINTS = ATTACH_POINTS.HAND
+
 @export var lifetime: float = 0.0
 
 var actor: Node
@@ -32,9 +33,10 @@ func pre_use() -> void:
 
 
 func use(delta: float) -> void:
-	current_lifetime -= delta
-	if can_be_used():
-		_use(delta)
+	if _can_consume_lifetime():
+		current_lifetime -= delta
+		if can_be_used():
+			_use(delta)
 
 
 func post_use() -> void:
@@ -68,3 +70,5 @@ func _use(_delta: float) -> void: pass
 func _post_use() -> void: pass
 
 func _lifetime_drained() -> void: pass
+
+func _can_consume_lifetime() -> bool: return true

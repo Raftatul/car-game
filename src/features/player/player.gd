@@ -29,6 +29,7 @@ enum MOVEMENT_STATE {WALKING, SWIMMING, FALLING, DIVING}
 @export_group("Config/Values")
 @export var stamina_consume_rate: float = -10.0
 @export var oxygen_consume_rate: float = -10.0
+@export var no_oxy_health_consume_rate: float = -10.0
 
 @export_group("")
 
@@ -225,7 +226,7 @@ func _process_diving_state(delta: float) -> void:
 	if oxygen_component.get_percent() > 0.0:
 		oxygen_component.modify(delta * oxygen_consume_rate)
 	else:
-		health_component.modify(delta * oxygen_consume_rate)
+		health_component.modify(delta * no_oxy_health_consume_rate)
 	
 	if inputs_component.run_pressed and stamina_component.has_amount(delta * stamina_consume_rate):
 		stamina_component.modify(delta * stamina_consume_rate)
