@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://bj87j7b2cfw0b"]
+
+[ext_resource type="Script" uid="uid://ihi1bafbios7" path="res://assets/scenes/kelp/kelp.gd" id="1_a6e7u"]
+
+[sub_resource type="Curve3D" id="Curve3D_u2jhx"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, -3.2886996, -2.3819494, 0.5043063, 3.2886996, 2.3819494, -0.5043063, 0.22975802, 9.388543, 0.04105854),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u2jhx"]
+albedo_color = Color(0, 0.5, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_u2jhx"]
+material = SubResource("StandardMaterial3D_u2jhx")
+top_radius = 0.05
+bottom_radius = 0.05
+
+[node name="Kelp" type="Path3D" unique_id=1475737754]
+curve = SubResource("Curve3D_u2jhx")
+script = ExtResource("1_a6e7u")
+
+[node name="PathMesh3D" type="PathMesh3D" parent="." unique_id=594311087 node_paths=PackedStringArray("path_3d")]
+path_3d = NodePath("..")
+mesh = SubResource("CylinderMesh_u2jhx")
+surface_0/tile_rotation = Vector3(1.5707964, 0, 0)
+surface_0/tile_rotation_order = 2
+surface_0/distribution = 0
+surface_0/alignment = 0
+surface_0/warp_along_curve = true
+surface_0/mesh_length_offset = 0.0
+surface_0/sample_cubic = false
+surface_0/tilt = true
+surface_0/offset = Vector2(0, 0)
+surface_0/triangle_count = 870
+
+[connection signal="curve_changed" from="." to="." method="_on_curve_changed"]

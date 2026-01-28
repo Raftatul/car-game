@@ -5,10 +5,15 @@
 [ext_resource type="PackedScene" uid="uid://h8ktknpf0t7p" path="res://src/modules/multiplayer/spawn_point.tscn" id="1_n2inr"]
 [ext_resource type="Material" uid="uid://pbw4j4s2e6cy" path="res://assets/shaders/water/water_shader_material.tres" id="2_arbid"]
 [ext_resource type="PackedScene" uid="uid://6442jxq5hu73" path="res://src/features/props/shop/shop.tscn" id="5_l54tx"]
+[ext_resource type="Texture2D" uid="uid://b4dm3fke104q1" path="res://assets/terrains/sand/Ground054_4K-PNG_Color.png" id="5_wt035"]
 [ext_resource type="PackedScene" uid="uid://npk8f4u7ipp0" path="res://src/features/props/underwater/clam/clam.tscn" id="6_6w2um"]
+[ext_resource type="Texture2D" uid="uid://bgu1hy4lqucah" path="res://assets/terrains/sand/Ground054_4K-PNG_NormalGL.png" id="6_h7jkl"]
+[ext_resource type="Texture2D" uid="uid://ehdtw8gqyqhd" path="res://assets/terrains/grass/Grass001_4K-PNG_Color.png" id="7_jseuq"]
+[ext_resource type="Texture2D" uid="uid://c6sanv5cn4v62" path="res://assets/terrains/grass/Grass001_4K-PNG_NormalGL.png" id="8_ihxu1"]
 [ext_resource type="Script" uid="uid://bbfcrnb4wwgl2" path="res://src/modules/water_system/buoyancy.gd" id="11_rg4u2"]
 [ext_resource type="PackedScene" uid="uid://cyxx4ngsn7fe3" path="res://src/features/props/items/item_mask.tscn" id="12_jx7a4"]
 [ext_resource type="PackedScene" uid="uid://damvtojfd3dv6" path="res://src/features/props/items/item_jetpack.tscn" id="12_wt035"]
+[ext_resource type="PackedScene" uid="uid://bj87j7b2cfw0b" path="res://assets/scenes/kelp/kelp.tscn" id="14_h7jkl"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2inr"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -94,9 +99,17 @@ _shader_parameters = {
 &"noise1_scale": 0.04,
 &"noise2_scale": 0.076,
 &"noise_texture": SubResource("NoiseTexture2D_l54tx"),
-&"projection_threshold": 0.8
+&"projection_threshold": 0.8,
+&"world_noise_fragment_normals": false,
+&"world_noise_height": 64.0,
+&"world_noise_lod_distance": 7500.0,
+&"world_noise_max_octaves": 4,
+&"world_noise_min_octaves": 2,
+&"world_noise_offset": Vector3(0, 0, 0),
+&"world_noise_region_blend": 0.33,
+&"world_noise_scale": 5.0
 }
-show_checkered = true
+world_background = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fkfc3"]
 transparency = 4
@@ -116,8 +129,21 @@ last_lod = 0
 last_shadow_lod = 0
 lod0_range = 128.0
 
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_cj628"]
+name = "Ground054_4K-PNG_Color"
+albedo_texture = ExtResource("5_wt035")
+normal_texture = ExtResource("6_h7jkl")
+normal_depth = 0.75
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_ndggs"]
+name = "Grass001_4K-PNG_Color"
+id = 1
+albedo_texture = ExtResource("7_jseuq")
+normal_texture = ExtResource("8_ihxu1")
+
 [sub_resource type="Terrain3DAssets" id="Terrain3DAssets_5tu61"]
 mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_8q3s2")])
+texture_list = Array[Terrain3DTextureAsset]([SubResource("Terrain3DTextureAsset_cj628"), SubResource("Terrain3DTextureAsset_ndggs")])
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jx7a4"]
 size = Vector3(3, 1, 5)
@@ -145,8 +171,8 @@ script = ExtResource("1_60fgb")
 replication_config = SubResource("SceneReplicationConfig_ygn0o")
 
 [node name="FogVolume" type="FogVolume" parent="MeshInstance3D" unique_id=811447449]
-transform = Transform3D(0.9999984, 0, 0, 0, 1, 0, 0, 0, 0.9999984, -0.42719245, -14.898192, -1.1706371)
-size = Vector3(52.200516, 31.796387, 71.39932)
+transform = Transform3D(0.9999984, 0, 0, 0, 1, 0, 0, 0, 0.9999984, -0.42719245, -33.843624, -1.170639)
+size = Vector3(52.200516, 69.687256, 71.39932)
 material = SubResource("FogMaterial_t72cs")
 
 [node name="SpawnPoint" parent="." unique_id=1528174475 instance=ExtResource("1_n2inr")]
@@ -166,7 +192,6 @@ data_directory = "res://data/terrains/zoo"
 material = SubResource("Terrain3DMaterial_6w2um")
 assets = SubResource("Terrain3DAssets_5tu61")
 collision_mode = 2
-show_checkered = true
 top_level = true
 metadata/_edit_lock_ = true
 
@@ -176,10 +201,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0638666, 0.07600493, -24.0
 [node name="Props" type="Node" parent="." unique_id=1444304400]
 
 [node name="Clam" parent="Props" unique_id=868280557 instance=ExtResource("6_6w2um")]
-transform = Transform3D(-0.8660254, 0, -0.50000006, 0, 1, 0, 0.50000006, 0, -0.8660254, 19.710669, -19.104155, 44.496544)
+transform = Transform3D(0.25881907, 0, -0.9659258, 0, 1, 0, 0.9659258, 0, 0.25881907, 19.710669, -59.160526, 44.496544)
 
 [node name="Clam2" parent="Props" unique_id=114596885 instance=ExtResource("6_6w2um")]
-transform = Transform3D(-0.7071068, 0, 0.7071067, 0, 1, 0, -0.7071067, 0, -0.7071068, -10.02309, -19.104155, 41.42396)
+transform = Transform3D(0.9659258, 0, 0.25881907, 0, 1, 0, -0.25881907, 0, 0.9659258, -10.02309, -59.415188, 41.42396)
 
 [node name="Jetpack" parent="Props" unique_id=1407846572 instance=ExtResource("12_wt035")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1644125, 1.0986612, -28.437)
@@ -188,6 +213,9 @@ collision_layer = 1
 [node name="Item" parent="Props" unique_id=2042596339 instance=ExtResource("12_jx7a4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7955132, 1.0903444, -28.910213)
 collision_layer = 1
+
+[node name="Clam3" parent="Props" unique_id=51543013 instance=ExtResource("6_6w2um")]
+transform = Transform3D(0.84510326, 0, 0.5346031, 0, 1, 0, -0.5346031, 0, 0.84510326, -13.358941, 0.98107266, -23.203278)
 
 [node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=1073481347]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.708191, 7.2118993)
@@ -220,3 +248,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -3)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 3)
 
 [node name="Pontoon5" type="Marker3D" parent="RigidBody3D/Buoyancy" unique_id=838499739]
+
+[node name="Kelp" parent="." unique_id=1475737754 instance=ExtResource("14_h7jkl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.61925, -19.998905, 17.383507)

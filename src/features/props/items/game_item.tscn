@@ -25,8 +25,7 @@ shape = SubResource("SphereShape3D_nnl8x")
 [node name="Buoyancy" type="Node3D" parent="." index="2" unique_id=116906752 node_paths=PackedStringArray("points")]
 script = ExtResource("3_nnl8x")
 points = [NodePath("Pontoon")]
-bounciness = 5.0
-buo_damping = 0.25
+bounciness = 3.0
 debug = true
 metadata/_custom_type_script = "uid://bbfcrnb4wwgl2"
 

@@ -50,7 +50,7 @@ func _physics_process(delta: float) -> void:
 		var depth = water_body.compute_wave_height(point_position) - point_position.y
 		
 		if depth > 0.0:
-			var force = bounciness * gravity * depth
+			var force = bounciness * gravity * min(depth, 1.0)
 			
 			if active:
 				if debug:
