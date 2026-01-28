@@ -2,14 +2,11 @@ class_name PlayerCharacter
 extends CharacterBody3D
 
 signal jumped
-signal health_changed(percent: float)
-signal stamina_changed(percent: float)
 
 enum MOVEMENT_STATE {WALKING, SWIMMING, FALLING, DIVING}
 
 @export var sensitivity: float = 0.5
 @export var rotation_speed: float = 1.0
-@export var walk_speed: float = 10.0
 @export var run_speed: float = 10.0
 @export var jump_force: float = 10.0
 @export var water_jump_force: float = 10.0
@@ -18,6 +15,7 @@ enum MOVEMENT_STATE {WALKING, SWIMMING, FALLING, DIVING}
 
 @export_group("Config/Walking", "walking_")
 @export var walking_acceleration: float = 5.0
+@export var walking_speed: float = 10.0
 
 @export_group("Config/Falling", "falling_")
 @export var falling_acceleration: float = 5.0
@@ -30,10 +28,11 @@ enum MOVEMENT_STATE {WALKING, SWIMMING, FALLING, DIVING}
 
 @export_group("Config/Values")
 @export var stamina_consume_rate: float = -10.0
+@export var oxygen_consume_rate: float = -10.0
 
 @export_group("")
 
-var speed: float = walk_speed
+var speed: float = walking_speed
 var movement_state: MOVEMENT_STATE = MOVEMENT_STATE.FALLING
 
 var masked: bool = false
@@ -62,6 +61,7 @@ var dead: bool = false
 @onready var item_manager_component: ItemManagerComponent = $ItemManagerComponent
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var stamina_component: StaminaComponent = $StaminaComponent
+@onready var oxygen_component: OxygenComponent = $OxygenComponent
 
 
 func _enter_tree() -> void:
@@ -98,7 +98,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	inputs_component.update()
+	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		inputs_component.update()
 	
 	if dead:
 		if dead_focus:
@@ -143,7 +144,8 @@ func revive() -> void:
 	collision_shape.set_deferred("disabled", false)
 	godot_plush_model.visible = true
 	dead_mesh.visible = false
-	dead_focus = self
+	dead_focus = null
+	spring_arm.collision_mask = 1
 
 
 @rpc("any_peer", "call_local", "reliable")
@@ -152,8 +154,13 @@ func kill() -> void:
 	collision_shape.set_deferred("disabled", true)
 	godot_plush_model.visible = false
 	dead_mesh.visible = true
+	spring_arm.collision_mask = 0
 	
-	var other_player: Node3D = get_tree().get_nodes_in_group("players").filter(func(a): return a != self)[0]
+	var other_players: Array = get_tree().get_nodes_in_group("players").filter(func(a): return a != self)
+	if other_players.is_empty():
+		return
+	
+	var other_player: Node3D = other_players[0]
 	if is_instance_valid(other_player):
 		dead_focus = other_player
 
@@ -163,11 +170,13 @@ func _process_walking_state(delta: float) -> void:
 		movement_state = MOVEMENT_STATE.FALLING
 		return
 	
+	oxygen_component.tick(delta)
+	
 	if inputs_component.run_pressed and stamina_component.has_amount(delta * stamina_consume_rate):
 		stamina_component.modify(delta * stamina_consume_rate)
 		speed = run_speed
 	else:
-		speed = walk_speed
+		speed = walking_speed
 	
 	if inputs_component.jump_pressed:
 		jump(jump_force)
@@ -178,6 +187,8 @@ func _process_walking_state(delta: float) -> void:
 func _process_swimming_state(delta: float) -> void:
 	if inputs_component.jump_pressed:
 		jump(water_jump_force)
+	
+	oxygen_component.tick(delta)
 	
 	if inputs_component.run_pressed and stamina_component.has_amount(delta * stamina_consume_rate):
 		stamina_component.modify(delta * stamina_consume_rate)
@@ -200,14 +211,21 @@ func _process_falling_state(delta: float) -> void:
 		movement_state = MOVEMENT_STATE.WALKING
 		return
 	
+	oxygen_component.tick(delta)
+	
 	velocity += get_gravity() * delta * gravity_scale
 	
-	_process_movement(delta, walk_speed, falling_acceleration)
+	_process_movement(delta, walking_speed, falling_acceleration)
 
 
 func _process_diving_state(delta: float) -> void:
 	var input: Vector2 = inputs_component.flat_input
 	var up_input: float = inputs_component.vertical_input
+	
+	if oxygen_component.get_percent() > 0.0:
+		oxygen_component.modify(delta * oxygen_consume_rate)
+	else:
+		health_component.modify(delta * oxygen_consume_rate)
 	
 	if inputs_component.run_pressed and stamina_component.has_amount(delta * stamina_consume_rate):
 		stamina_component.modify(delta * stamina_consume_rate)

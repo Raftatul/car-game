@@ -30,7 +30,7 @@ func _process(delta: float) -> void:
 
 
 func _update_movement_blend(delta: float) -> void:
-	movement_blend = lerp(movement_blend, remap(character.speed, character.walk_speed, character.run_speed, 0.0, 1.0), delta * movement_blend_speed)
+	movement_blend = lerp(movement_blend, remap(character.speed, character.walking_speed, character.run_speed, 0.0, 1.0), delta * movement_blend_speed)
 
 
 func _on_jumped() -> void:

@@ -12,7 +12,7 @@ signal health_changed(percent: float)
 @onready var current_health: float = max_health :
 	set(v):
 		if current_health != v:
-			current_health = v
+			current_health = clamp(v, 0.0, max_health)
 			health_changed.emit(get_percent())
 
 
