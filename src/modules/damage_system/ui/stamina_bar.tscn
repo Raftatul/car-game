@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://debtuleobx1iw"]
+
+[ext_resource type="Script" uid="uid://fdin234d522q" path="res://src/modules/damage_system/ui/stamina_bar.gd" id="1_3mfr3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ekxib"]
+bg_color = Color(0.8602326, 0.87612945, 0, 1)
+
+[node name="StaminaBar" type="ProgressBar" unique_id=131215041]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_ekxib")
+max_value = 1.0
+value = 1.0
+script = ExtResource("1_3mfr3")

@@ -12,8 +12,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if get_tree().get_first_node_in_group("player"):
-		set_target_position(get_tree().get_first_node_in_group("player").global_position)
+	if get_tree().get_first_node_in_group("players"):
+		set_target_position(get_tree().get_first_node_in_group("players").global_position)
 	
 	if path.size() > 0:
 		DebugDraw3D.draw_points(path, DebugDraw3D.POINT_TYPE_SPHERE, 0.5, Color.RED)

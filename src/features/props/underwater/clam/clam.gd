@@ -23,6 +23,7 @@ var closed: bool = true :
 @onready var animation_player: AnimationPlayer = $clam/AnimationPlayer
 @onready var area: Area3D = $Area3D
 @onready var item_socket: Node3D = %ItemSocket
+@onready var player_killer: Area3D = $PlayerKiller
 
 
 func _ready() -> void:
@@ -34,11 +35,17 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	if !is_multiplayer_authority(): return
 	
-	var bodies: Array = area.get_overlapping_bodies().filter(_filter_players)
+	var bodies: Array = area.get_overlapping_bodies().filter(_filter_masked_players)
 	if bodies.is_empty() and closed:
 		closed = false
 	if !bodies.is_empty() and !closed:
 		closed = true
+
+
+func kill_overlapping_players() -> void:
+	var bodies: Array = player_killer.get_overlapping_bodies().filter(_filter_players)
+	for body in bodies:
+		body.health_component.modify(-body.health_component.current_health)
 
 
 func _spawn_item() -> void:
@@ -49,6 +56,10 @@ func _spawn_item() -> void:
 
 
 func _filter_players(a: Node) -> bool:
+	return a is PlayerCharacter
+
+
+func _filter_masked_players(a: Node) -> bool:
 	if not a is PlayerCharacter:
 		return false
 	return not a.masked

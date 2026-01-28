@@ -10,7 +10,7 @@ config_version=5
 
 [Network]
 
-general/instances_count=1.0
+general/instances_count=3.0
 general/net_mode=1
 
 [animation]
@@ -29,6 +29,7 @@ config/icon="res://icon.svg"
 MultiplayerBackend="*res://src/modules/multiplayer/multiplayer_backend.gd"
 Global="*res://src/modules/windows_placement/global.gd"
 VolumetricNavigation="*uid://jmkpr6osphnj"
+MultiplayerUtility="*uid://ckr0l5f570wmc"
 
 [debug_draw_3d]
 
@@ -40,7 +41,7 @@ run/main_run_args="--no-header"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/multiplayer_shortcuts/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
+enabled=PackedStringArray("res://addons/PathMesh3D/plugin.cfg", "res://addons/multiplayer_shortcuts/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
 
 [file_customization]
 
@@ -54,7 +55,7 @@ folder_colors={
 spawn_point=""
 fish=""
 volumetric_nav=""
-player=""
+players=""
 
 [input]
 

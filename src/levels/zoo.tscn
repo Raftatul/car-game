@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://cyxx4ngsn7fe3" path="res://src/features/props/items/item_mask.tscn" id="12_jx7a4"]
 [ext_resource type="PackedScene" uid="uid://damvtojfd3dv6" path="res://src/features/props/items/item_jetpack.tscn" id="12_wt035"]
 [ext_resource type="PackedScene" uid="uid://bj87j7b2cfw0b" path="res://assets/scenes/kelp/kelp.tscn" id="14_h7jkl"]
+[ext_resource type="PackedScene" uid="uid://bgoiai11g65yt" path="res://src/features/props/respawner/respawner.tscn" id="15_jseuq"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2inr"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -214,6 +215,10 @@ collision_layer = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7955132, 1.0903444, -28.910213)
 collision_layer = 1
 
+[node name="Item2" parent="Props" unique_id=232007303 instance=ExtResource("12_jx7a4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.478939, 1.0903444, -28.910213)
+collision_layer = 1
+
 [node name="Clam3" parent="Props" unique_id=51543013 instance=ExtResource("6_6w2um")]
 transform = Transform3D(0.84510326, 0, 0.5346031, 0, 1, 0, -0.5346031, 0, 0.84510326, -13.358941, 0.98107266, -23.203278)
 
@@ -251,3 +256,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 3)
 
 [node name="Kelp" parent="." unique_id=1475737754 instance=ExtResource("14_h7jkl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.61925, -19.998905, 17.383507)
+
+[node name="Respawner" parent="." unique_id=656192070 instance=ExtResource("15_jseuq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8629675, 0.49977738, -17.243597)

@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bgoiai11g65yt"]
+
+[ext_resource type="Script" uid="uid://dcsggj5vcfrb2" path="res://src/features/props/respawner/respawner.gd" id="1_r5c30"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yqk1t"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_r5c30"]
+
+[node name="Respawner" type="Node3D" unique_id=656192070 node_paths=PackedStringArray("point")]
+script = ExtResource("1_r5c30")
+point = NodePath("Marker3D")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=981241862]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1396891729]
+shape = SubResource("BoxShape3D_yqk1t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D" unique_id=457076796]
+mesh = SubResource("BoxMesh_r5c30")
+
+[node name="Marker3D" type="Marker3D" parent="." unique_id=236959245]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

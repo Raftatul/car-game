@@ -2,6 +2,8 @@ class_name PlayerCharacter
 extends CharacterBody3D
 
 signal jumped
+signal health_changed(percent: float)
+signal stamina_changed(percent: float)
 
 enum MOVEMENT_STATE {WALKING, SWIMMING, FALLING, DIVING}
 
@@ -22,8 +24,12 @@ enum MOVEMENT_STATE {WALKING, SWIMMING, FALLING, DIVING}
 
 @export_group("Config/Swimming", "swimming_")
 @export var swimming_speed: float = 1.0
+@export var swimming_fast_speed: float = 1.0
 @export var swimming_acceleration: float = 0.05
 @export var swimming_rotation_speed: float = 0.05
+
+@export_group("Config/Values")
+@export var stamina_consume_rate: float = -10.0
 
 @export_group("")
 
@@ -31,11 +37,18 @@ var speed: float = walk_speed
 var movement_state: MOVEMENT_STATE = MOVEMENT_STATE.FALLING
 
 var masked: bool = false
+var dead: bool = false
+
+@onready var dead_focus: Node3D = self
 
 @onready var camera_pivot: Node3D = %CameraPivot
 @onready var spring_arm: SpringArm3D = %SpringArm3D
 @onready var camera: Camera3D = %Camera3D
 @onready var visual: Node3D = %Visual
+
+@onready var godot_plush_model: Node3D = $Visual/godot_plush_model
+@onready var dead_mesh: MeshInstance3D = %DeadMesh
+@onready var collision_shape: CollisionShape3D = $CollisionShape3D
 
 @onready var pause_menu: Control = %PauseMenu
 @onready var buoyancy: Buoyancy = $Buoyancy
@@ -47,6 +60,8 @@ var masked: bool = false
 @onready var interactor: Interactor = $Interactor
 @onready var inventory_component: InventoryComponent = $InventoryComponent
 @onready var item_manager_component: ItemManagerComponent = $ItemManagerComponent
+@onready var health_component: HealthComponent = $HealthComponent
+@onready var stamina_component: StaminaComponent = $StaminaComponent
 
 
 func _enter_tree() -> void:
@@ -85,6 +100,11 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	inputs_component.update()
 	
+	if dead:
+		if dead_focus:
+			global_position = dead_focus.global_position
+		return
+	
 	interactor.wants_interact = inputs_component.interaction_pressed
 	interactor.update()
 	
@@ -105,6 +125,9 @@ func _physics_process(delta: float) -> void:
 	item_manager_component.wants_item_drop = inputs_component.drop_pressed
 	item_manager_component.tick(delta)
 	
+	if !inputs_component.run_pressed:
+		stamina_component.tick(delta)
+	
 	move_and_slide()
 	label_3d.text = str(MOVEMENT_STATE.find_key(movement_state))
 
@@ -114,12 +137,34 @@ func jump(force: float) -> void:
 	velocity.y = force
 
 
+@rpc("any_peer", "call_local", "reliable")
+func revive() -> void:
+	dead = false
+	collision_shape.set_deferred("disabled", false)
+	godot_plush_model.visible = true
+	dead_mesh.visible = false
+	dead_focus = self
+
+
+@rpc("any_peer", "call_local", "reliable")
+func kill() -> void:
+	dead = true
+	collision_shape.set_deferred("disabled", true)
+	godot_plush_model.visible = false
+	dead_mesh.visible = true
+	
+	var other_player: Node3D = get_tree().get_nodes_in_group("players").filter(func(a): return a != self)[0]
+	if is_instance_valid(other_player):
+		dead_focus = other_player
+
+
 func _process_walking_state(delta: float) -> void:
 	if not is_on_floor():
 		movement_state = MOVEMENT_STATE.FALLING
 		return
 	
-	if inputs_component.run_pressed:
+	if inputs_component.run_pressed and stamina_component.has_amount(delta * stamina_consume_rate):
+		stamina_component.modify(delta * stamina_consume_rate)
 		speed = run_speed
 	else:
 		speed = walk_speed
@@ -133,6 +178,12 @@ func _process_walking_state(delta: float) -> void:
 func _process_swimming_state(delta: float) -> void:
 	if inputs_component.jump_pressed:
 		jump(water_jump_force)
+	
+	if inputs_component.run_pressed and stamina_component.has_amount(delta * stamina_consume_rate):
+		stamina_component.modify(delta * stamina_consume_rate)
+		speed = swimming_fast_speed
+	else:
+		speed = swimming_speed
 	
 	if inputs_component.dive_pressed or buoyancy.get_depth() > 3.5:
 		buoyancy.active = false
@@ -158,6 +209,12 @@ func _process_diving_state(delta: float) -> void:
 	var input: Vector2 = inputs_component.flat_input
 	var up_input: float = inputs_component.vertical_input
 	
+	if inputs_component.run_pressed and stamina_component.has_amount(delta * stamina_consume_rate):
+		stamina_component.modify(delta * stamina_consume_rate)
+		speed = swimming_fast_speed
+	else:
+		speed = swimming_speed
+	
 	if !inputs_component.dive_pressed and buoyancy.get_depth() < 2.0:
 		movement_state = MOVEMENT_STATE.SWIMMING
 		gravity_scale = 1.0
@@ -165,7 +222,7 @@ func _process_diving_state(delta: float) -> void:
 	
 	if input or up_input:
 		var vel_dir: Vector3 = (camera.global_basis * Vector3(input.x, 0.0, input.y) + Vector3.UP * up_input).normalized()
-		var target_vel: Vector3 = vel_dir * swimming_speed
+		var target_vel: Vector3 = vel_dir * speed
 		
 		velocity = velocity.move_toward(target_vel, swimming_acceleration)
 		
@@ -200,3 +257,8 @@ func _on_buoyancy_water_exited() -> void:
 	movement_state = MOVEMENT_STATE.FALLING
 	gravity_scale = 1.0
 	buoyancy.active = true
+
+
+func _on_health_component_health_changed(percent: float) -> void:
+	if percent == 0.0:
+		kill.rpc()
