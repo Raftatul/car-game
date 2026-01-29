@@ -246,13 +246,12 @@ func _process_diving_state(delta: float) -> void:
 		
 		velocity = velocity.move_toward(target_vel, swimming_acceleration)
 		
-		var right_vec: Vector3 = Vector3.UP.cross(vel_dir.normalized()).normalized()
+		var right_vec: Vector3 = Vector3.UP.cross(-camera.global_basis.z).normalized()
 		var forward_vec: Vector3 = vel_dir.normalized().cross(right_vec).normalized()
 		var target_basis: Basis = Basis(-right_vec, vel_dir.normalized(), forward_vec).orthonormalized()
 		
-		if target_basis.is_conformal():
-			var quat_target: Quaternion = target_basis.get_rotation_quaternion()
-			visual.quaternion = visual.quaternion.slerp(quat_target, delta * swimming_rotation_speed)
+		var quat_target: Quaternion = target_basis.get_rotation_quaternion()
+		visual.quaternion = visual.quaternion.slerp(quat_target, delta * swimming_rotation_speed)
 	else:
 		velocity = velocity.move_toward(Vector3(0.0, 0.0, 0.0), swimming_acceleration / 2.0)
 
