@@ -32,4 +32,5 @@ func has_amount(amount: float) -> bool:
 
 
 func modify(delta: float) -> void:
-	current_stamina += delta
+	if is_multiplayer_authority():
+		current_stamina += delta

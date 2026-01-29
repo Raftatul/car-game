@@ -18,7 +18,7 @@ func set_active(active: bool) -> void:
 
 
 func set_item(item: Item) -> void:
-	if _item:
+	if _item and _item.lifetime_changed.is_connected(_on_lifetime_changed):
 		_item.lifetime_changed.disconnect(_on_lifetime_changed)
 	
 	_item = item

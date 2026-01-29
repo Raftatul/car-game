@@ -78,7 +78,8 @@ func _get_socket(item: Item) -> Node3D:
 func _rpc_drop_item(node_path: NodePath, drop_pos: Vector3) -> void:
 	var item: Item = get_tree().root.get_node(node_path)
 	if !is_instance_valid(item): return
-	item.reparent(get_tree().current_scene)
+	item.process_mode = Node.PROCESS_MODE_DISABLED
+	item.remote_transform.reparent(item)
 	item.global_position = drop_pos
 
 
@@ -96,9 +97,11 @@ func _rpc_set_item_in_hand(node_path: NodePath, should_be_visible: bool) -> void
 		item.visible = should_be_visible
 		if should_be_visible:
 			item.selected()
-		item.reparent.call_deferred(_get_socket(item))
-		item.set_deferred("position", -item.offset.position)
-		item.set_deferred("rotation", Vector3.ZERO)
+		item.remote_transform.reparent(_get_socket(item))
+		item.remote_transform.set_deferred("position", -item.offset.position)
+		item.remote_transform.set_deferred("rotation", Vector3.ZERO)
+		item.remote_transform.set_deferred("remote_path", item.get_path())
+		item.process_mode = Node.PROCESS_MODE_INHERIT
 
 
 func _on_inventory_component_item_added(_idx: int, item: Item) -> void:

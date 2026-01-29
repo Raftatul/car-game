@@ -22,6 +22,7 @@ var actor: Node
 			lifetime_changed.emit(get_lifetime_percent())
 
 @onready var offset: Marker3D = $Offset
+@onready var remote_transform: RemoteTransform3D = $RemoteTransform3D
 
 
 func pick() -> void:
@@ -35,7 +36,7 @@ func pre_use() -> void:
 
 func use(delta: float) -> void:
 	if _can_consume_lifetime():
-		current_lifetime -= delta
+		_rpc_drain_lifetime.rpc(delta)
 		if can_be_used():
 			_use(delta)
 
@@ -61,6 +62,11 @@ func can_be_used() -> bool:
 func get_lifetime_percent() -> float:
 	return current_lifetime / lifetime
 
+## Rpc
+
+@rpc("any_peer", "call_local", "reliable")
+func _rpc_drain_lifetime(delta: float) -> void:
+	current_lifetime -= delta
 
 ## Virtuals
 

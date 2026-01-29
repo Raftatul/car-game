@@ -142,6 +142,7 @@ func jump(force: float) -> void:
 @rpc("any_peer", "call_local", "reliable")
 func revive() -> void:
 	dead = false
+	health_component.current_health = health_component.max_health
 	collision_shape.set_deferred("disabled", false)
 	godot_plush_model.visible = true
 	dead_mesh.visible = false
