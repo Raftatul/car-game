@@ -13,6 +13,8 @@ signal lifetime_changed(percent: float)
 
 var actor: Node
 
+var pre_visible: bool = true
+
 @onready var current_lifetime: float = lifetime :
 	set(v):
 		if v != current_lifetime:
@@ -22,7 +24,12 @@ var actor: Node
 			lifetime_changed.emit(get_lifetime_percent())
 
 @onready var offset: Marker3D = $Offset
-@onready var remote_transform: RemoteTransform3D = $RemoteTransform3D
+@onready var remote_transform: ItemTrans = $RemoteTransform3D
+
+
+func _ready() -> void:
+	remote_transform.freed.connect(queue_free)
+	remote_transform.visibility_changed.connect(_on_remote_visibility_changed)
 
 
 func pick() -> void:
@@ -79,3 +86,13 @@ func _post_use() -> void: pass
 func _lifetime_drained() -> void: pass
 
 func _can_consume_lifetime() -> bool: return true
+
+
+## On signals
+
+func _on_remote_visibility_changed() -> void:
+	if !remote_transform.is_visible_in_tree():
+		pre_visible = visible
+		visible = false
+	else:
+		visible = pre_visible

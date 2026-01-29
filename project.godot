@@ -11,7 +11,7 @@ config_version=5
 [Network]
 
 general/instances_count=2.0
-general/net_mode=0
+general/net_mode=1
 
 [animation]
 

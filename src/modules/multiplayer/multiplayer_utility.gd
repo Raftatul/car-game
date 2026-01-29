@@ -20,3 +20,14 @@ func _set_node3d_position_reliable(path: NodePath, global_pos: Vector3) -> void:
 	var node: Node3D = get_tree().root.get_node(path)
 	if node:
 		node.global_position = global_pos
+
+
+func destroy_node(node: Node) -> void:
+	_rpc_destroy_node.rpc(node.get_path())
+
+
+@rpc("authority", "call_local", "reliable")
+func _rpc_destroy_node(path: NodePath) -> void:
+	var node: Node = get_tree().root.get_node(path)
+	if !is_instance_valid(node): return
+	node.queue_free()

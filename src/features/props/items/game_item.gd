@@ -8,6 +8,7 @@ extends Item
 
 
 func _ready() -> void:
+	super()
 	interactable.interacted.connect(_on_interactable_interacted)
 
 

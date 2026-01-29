@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bkat1f5wawv7w"]
 
 [ext_resource type="Script" uid="uid://cjhtodj4q1jc1" path="res://src/modules/inventory_system/item.gd" id="1_swpng"]
+[ext_resource type="Script" uid="uid://46o48wcoi2df" path="res://src/modules/inventory_system/item_remote.gd" id="2_5sb4j"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_8886b"]
 properties/0/path = NodePath(".:position")
@@ -31,3 +32,4 @@ replication_config = SubResource("SceneReplicationConfig_8886b")
 process_mode = 4
 remote_path = NodePath("..")
 update_scale = false
+script = ExtResource("2_5sb4j")
