@@ -39,6 +39,8 @@ var movement_state: MOVEMENT_STATE = MOVEMENT_STATE.FALLING
 var masked: bool = false
 var dead: bool = false
 
+var diving_right_axis: Vector3 = Vector3.ZERO
+
 @onready var dead_focus: Node3D = self
 
 @onready var camera_pivot: Node3D = %CameraPivot
@@ -246,7 +248,14 @@ func _process_diving_state(delta: float) -> void:
 		
 		velocity = velocity.move_toward(target_vel, swimming_acceleration)
 		
-		var right_vec: Vector3 = Vector3.UP.cross(-camera.global_basis.z).normalized()
+		var right_vec: Vector3 = Vector3.UP.cross(vel_dir).normalized()
+		if vel_dir.abs() == Vector3.UP:
+			if diving_right_axis == Vector3.ZERO:
+				diving_right_axis = -visual.global_basis.x
+			right_vec = diving_right_axis
+		else:
+			diving_right_axis = Vector3.ZERO
+		
 		var forward_vec: Vector3 = vel_dir.normalized().cross(right_vec).normalized()
 		var target_basis: Basis = Basis(-right_vec, vel_dir.normalized(), forward_vec).orthonormalized()
 		

@@ -26,7 +26,6 @@ shape = SubResource("SphereShape3D_nnl8x")
 script = ExtResource("3_nnl8x")
 points = [NodePath("Pontoon")]
 bounciness = 3.0
-debug = true
 metadata/_custom_type_script = "uid://bbfcrnb4wwgl2"
 
 [node name="Pontoon" type="Marker3D" parent="Buoyancy" index="0" unique_id=1398220722]
