@@ -10,7 +10,7 @@ func _pre_use() -> void:
 func _use(delta: float) -> void:
 	if actor is PlayerCharacter:
 		if actor.buoyancy.is_in_water():
-			actor.velocity += actor.visual.global_basis.y * force * delta
+			actor.velocity += actor.model.global_basis.y * force * delta
 
 
 func _post_use() -> void:

@@ -1,5 +1,5 @@
 class_name AIMovement
-extends Node
+extends Node3D
 
 @export var body: CharacterBody3D
 @export var model: Node3D
@@ -7,9 +7,9 @@ extends Node
 @export var move_speed: float = 1.0
 @export var model_rotation_speed: float = 1.0
 
-var target_pos: Vector3
-
 var path: PackedVector3Array = []
+
+@onready var target_pos: Vector3 = owner.global_position
 
 
 func tick(delta: float) -> void:
@@ -49,3 +49,7 @@ func get_next_path_position() -> Vector3:
 	if path.is_empty():
 		return get_parent().global_position
 	return path[0]
+
+
+func distance_to_target() -> float:
+	return global_position.distance_to(target_pos)

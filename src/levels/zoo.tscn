@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://dlvou2knjwpo8"]
+[gd_scene format=3 uid="uid://bpxy5l6ohinqp"]
 
 [ext_resource type="Script" uid="uid://fhu7ra8j7ufq" path="res://src/modules/water_system/water_body.gd" id="1_60fgb"]
 [ext_resource type="Script" uid="uid://d1x52urwedobx" path="res://compositor/water_effect.gd" id="1_fkfc3"]
@@ -13,10 +13,13 @@
 [ext_resource type="Script" uid="uid://bbfcrnb4wwgl2" path="res://src/modules/water_system/buoyancy.gd" id="11_rg4u2"]
 [ext_resource type="PackedScene" uid="uid://cyxx4ngsn7fe3" path="res://src/features/props/items/item_mask.tscn" id="12_jx7a4"]
 [ext_resource type="PackedScene" uid="uid://damvtojfd3dv6" path="res://src/features/props/items/item_jetpack.tscn" id="12_wt035"]
+[ext_resource type="PackedScene" uid="uid://b1n45j8c8vn4u" path="res://src/features/entities/fish.tscn" id="13_ndggs"]
 [ext_resource type="PackedScene" uid="uid://bj87j7b2cfw0b" path="res://assets/scenes/kelp/kelp.tscn" id="14_h7jkl"]
 [ext_resource type="PackedScene" uid="uid://bgoiai11g65yt" path="res://src/features/props/respawner/respawner.tscn" id="15_jseuq"]
 [ext_resource type="Script" uid="uid://decph3w7n7q4s" path="res://src/modules/basic_attributes/components/health/hit_box.gd" id="16_ihxu1"]
 [ext_resource type="PackedScene" uid="uid://h8skvj2d6nk6" path="res://src/features/props/items/item_heal.tscn" id="17_cj628"]
+[ext_resource type="Script" uid="uid://yk07u3qi60wx" path="res://src/modules/volumetric_ai/volumetric_region_3d.gd" id="19_rep4f"]
+[ext_resource type="Resource" uid="uid://dv5edm3o01jiv" path="res://data/volumetric_points/zoo/zoo_volumetric_region.tres" id="20_2ybnr"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2inr"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -186,17 +189,20 @@ transform = Transform3D(0.9999984, 0, 0, 0, 1, 0, 0, 0, 0.9999984, -0.42719245, 
 size = Vector3(52.200516, 69.687256, 71.39932)
 material = SubResource("FogMaterial_t72cs")
 
-[node name="SpawnPoint" parent="." unique_id=1528174475 instance=ExtResource("1_n2inr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.822722, 0.5388713, -25.424324)
+[node name="Spawners" type="Node3D" parent="." unique_id=900345733]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.166407, 1.8177831, -21.862795)
 
-[node name="SpawnPoint2" parent="." unique_id=1387630213 instance=ExtResource("1_n2inr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.8227215, 0.5388713, -25.424324)
+[node name="SpawnPoint" parent="Spawners" unique_id=1528174475 instance=ExtResource("1_n2inr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
 
-[node name="SpawnPoint3" parent="." unique_id=1475003789 instance=ExtResource("1_n2inr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.822722, 0.5388713, -17.424324)
+[node name="SpawnPoint2" parent="Spawners" unique_id=1387630213 instance=ExtResource("1_n2inr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -4)
 
-[node name="SpawnPoint4" parent="." unique_id=450857441 instance=ExtResource("1_n2inr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.8227215, 0.5388713, -17.424324)
+[node name="SpawnPoint3" parent="Spawners" unique_id=1475003789 instance=ExtResource("1_n2inr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4)
+
+[node name="SpawnPoint4" parent="Spawners" unique_id=450857441 instance=ExtResource("1_n2inr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 4)
 
 [node name="Terrain3D" type="Terrain3D" parent="." unique_id=723942474]
 data_directory = "res://data/terrains/zoo"
@@ -232,6 +238,11 @@ transform = Transform3D(0.9659258, 0, 0.25881907, 0, 1, 0, -0.25881907, 0, 0.965
 
 [node name="Clam3" parent="Props" unique_id=51543013 instance=ExtResource("6_6w2um")]
 transform = Transform3D(0.84510326, 0, 0.5346031, 0, 1, 0, -0.5346031, 0, 0.84510326, -13.358941, 0.98107266, -23.203278)
+
+[node name="Entities" type="Node" parent="." unique_id=1124970320]
+
+[node name="Fish" parent="Entities" unique_id=1622872921 instance=ExtResource("13_ndggs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -19.539486, 38.127575)
 
 [node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=1073481347]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.708191, 7.2118993)
@@ -285,3 +296,13 @@ mesh = SubResource("BoxMesh_ndggs")
 
 [node name="HealthPack" parent="HitBox" unique_id=2083422672 instance=ExtResource("17_cj628")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.049517155, -0.20766616, -11.996941)
+
+[node name="VolumetricRegion" type="CSGBox3D" parent="." unique_id=1232111153 node_paths=PackedStringArray("terrain")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -33.710876, 45.534912)
+visible = false
+size = Vector3(200, 60, 230)
+script = ExtResource("19_rep4f")
+terrain = NodePath("../Terrain3D")
+save_path = "res://data/volumetric_points/zoo"
+data = ExtResource("20_2ybnr")
+metadata/_custom_type_script = "uid://yk07u3qi60wx"

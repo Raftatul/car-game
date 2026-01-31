@@ -6,36 +6,46 @@
 [ext_resource type="Script" uid="uid://b5bs6krcd5okm" path="res://src/features/components/ai_sensor.gd" id="3_uf7ap"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hrakw"]
-size = Vector3(0.69750977, 1.1494141, 2.538086)
+size = Vector3(2, 2, 5.111)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_uf7ap"]
 radius = 15.0
 
 [node name="Fish" type="CharacterBody3D" unique_id=1622872921]
 script = ExtResource("1_n5usi")
+attack_range = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=274703941]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2783203)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
 shape = SubResource("BoxShape3D_hrakw")
 
-[node name="fish" parent="." unique_id=733237128 instance=ExtResource("2_2udg4")]
+[node name="fish" parent="." unique_id=1585523010 instance=ExtResource("2_2udg4")]
 
-[node name="AIMovement" type="Node" parent="." unique_id=1552874068 node_paths=PackedStringArray("body", "model")]
+[node name="AIMovement" type="Node3D" parent="." unique_id=689458592 node_paths=PackedStringArray("body", "model")]
 script = ExtResource("1_aoro2")
 body = NodePath("..")
 model = NodePath("..")
-move_speed = 5.0
-metadata/_custom_type_script = "uid://yn4evwv47j"
+acceleration = 4.0
+move_speed = 10.0
+model_rotation_speed = 3.0
 
 [node name="AISensor" type="Area3D" parent="." unique_id=1769036220]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("3_uf7ap")
-target_group = &"player"
+target_group = &"players"
 metadata/_custom_type_script = "uid://b5bs6krcd5okm"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AISensor" unique_id=1128461660]
 shape = SubResource("SphereShape3D_uf7ap")
 
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="." unique_id=550038137]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.229128)
+update_scale = false
+
+[node name="TimerAttack" type="Timer" parent="." unique_id=583627080]
+wait_time = 0.5
+
 [connection signal="target_in_range" from="AISensor" to="." method="_on_ai_sensor_target_in_range"]
 [connection signal="target_out_of_range" from="AISensor" to="." method="_on_ai_sensor_target_out_of_range"]
+[connection signal="timeout" from="TimerAttack" to="." method="_on_timer_attack_timeout"]

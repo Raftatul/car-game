@@ -2,6 +2,7 @@ class_name PlayerCharacter
 extends CharacterBody3D
 
 signal jumped
+signal death
 
 enum MOVEMENT_STATE {WALKING, SWIMMING, FALLING, DIVING}
 
@@ -31,7 +32,8 @@ enum MOVEMENT_STATE {WALKING, SWIMMING, FALLING, DIVING}
 @export var oxygen_consume_rate: float = -10.0
 @export var no_oxy_health_consume_rate: float = -10.0
 
-@export_group("")
+@export_group("Nodes")
+@export var model: Node3D
 
 var speed: float = walking_speed
 var movement_state: MOVEMENT_STATE = MOVEMENT_STATE.FALLING
@@ -46,7 +48,6 @@ var diving_right_axis: Vector3 = Vector3.ZERO
 @onready var camera_pivot: Node3D = %CameraPivot
 @onready var spring_arm: SpringArm3D = %SpringArm3D
 @onready var camera: Camera3D = %Camera3D
-@onready var visual: Node3D = %Visual
 
 @onready var godot_plush_model: Node3D = $Visual/godot_plush_model
 @onready var dead_mesh: MeshInstance3D = %DeadMesh
@@ -155,8 +156,10 @@ func revive() -> void:
 @rpc("any_peer", "call_local", "reliable")
 func kill() -> void:
 	dead = true
+	death.emit()
 	collision_shape.set_deferred("disabled", true)
 	godot_plush_model.visible = false
+	model.global_rotation = Vector3.ZERO
 	dead_mesh.visible = true
 	spring_arm.collision_mask = 0
 	
@@ -251,7 +254,7 @@ func _process_diving_state(delta: float) -> void:
 		var right_vec: Vector3 = Vector3.UP.cross(vel_dir).normalized()
 		if vel_dir.abs() == Vector3.UP:
 			if diving_right_axis == Vector3.ZERO:
-				diving_right_axis = -visual.global_basis.x
+				diving_right_axis = -model.global_basis.x
 			right_vec = diving_right_axis
 		else:
 			diving_right_axis = Vector3.ZERO
@@ -260,7 +263,7 @@ func _process_diving_state(delta: float) -> void:
 		var target_basis: Basis = Basis(-right_vec, vel_dir.normalized(), forward_vec).orthonormalized()
 		
 		var quat_target: Quaternion = target_basis.get_rotation_quaternion()
-		visual.quaternion = visual.quaternion.slerp(quat_target, delta * swimming_rotation_speed)
+		model.quaternion = model.quaternion.slerp(quat_target, delta * swimming_rotation_speed)
 	else:
 		velocity = velocity.move_toward(Vector3(0.0, 0.0, 0.0), swimming_acceleration / 2.0)
 
@@ -269,12 +272,12 @@ func _process_movement(delta: float, max_speed: float, acceleration: float) -> v
 	if inputs_component.move_dir:
 		var target_vel: Vector3 = camera_pivot.global_basis * inputs_component.move_dir * max_speed
 		velocity = velocity.move_toward(Vector3(target_vel.x, velocity.y, target_vel.z), acceleration)
-		visual.rotation.y = lerp_angle(visual.rotation.y, atan2(-target_vel.x, -target_vel.z), delta * rotation_speed)
+		model.rotation.y = lerp_angle(model.rotation.y, atan2(-target_vel.x, -target_vel.z), delta * rotation_speed)
 	else:
 		velocity = velocity.move_toward(Vector3(0.0, velocity.y, 0.0), acceleration)
 	
-	visual.rotation.x = lerp_angle(visual.rotation.x, 0.0, delta * rotation_speed)
-	visual.rotation.z = lerp_angle(visual.rotation.z, 0.0, delta * rotation_speed)
+	model.rotation.x = lerp_angle(model.rotation.x, 0.0, delta * rotation_speed)
+	model.rotation.z = lerp_angle(model.rotation.z, 0.0, delta * rotation_speed)
 
 
 func _on_buoyancy_water_entered() -> void:
