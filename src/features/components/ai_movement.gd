@@ -7,29 +7,41 @@ extends Node3D
 @export var move_speed: float = 1.0
 @export var model_rotation_speed: float = 1.0
 
+@export_group("Debug")
+@export var debug: bool = false
+
 var _path: PackedVector3Array = []
 
 @onready var target_pos: Vector3 = owner.global_position
+@onready var nav_region: VolumetricRegion
+
+
+func _ready() -> void:
+	var parent: Node = get_parent()
+	while parent is not VolumetricRegion and parent != get_tree().current_scene:
+		parent = parent.get_parent()
+		if parent is VolumetricRegion:
+			nav_region = parent
 
 
 func tick(delta: float) -> void:
 	if !is_instance_valid(body): return
 	
 	if _path.is_empty() or target_pos != _path[-1]:
-		_path = _get_shortest_path(VolumetricNavigation.find_path(owner.global_position, target_pos))
+		_path = nav_region.get_shortest_path(owner.global_position, target_pos)
 		if !_path.is_empty():
 			_path.remove_at(0)
 	
 	if _path.size() > 0:
-		var debug: PackedVector3Array = [global_position]
-		debug.append_array(_path)
-		DebugDraw3D.draw_arrow_path(debug, Color.RED)
+		if debug:
+			var debug_path: PackedVector3Array = [global_position]
+			debug_path.append_array(_path)
+			DebugDraw3D.draw_arrow_path(debug_path, Color.RED)
+		
 		var move_dir: Vector3 = body.global_position.direction_to(get_next_path_position())
 		var target_vel: Vector3 = move_dir * move_speed
 		
-		body.velocity.x = move_toward(body.velocity.x, target_vel.x, delta * acceleration)
-		body.velocity.y = move_toward(body.velocity.y, target_vel.y, delta * acceleration)
-		body.velocity.z = move_toward(body.velocity.z, target_vel.z, delta * acceleration)
+		body.velocity = body.velocity.move_toward(target_vel + body.velocity * 0.1, delta * acceleration)
 		
 		if model:
 			var right_vec: Vector3 = Vector3.UP.cross(move_dir.normalized()).normalized()
@@ -48,6 +60,12 @@ func tick(delta: float) -> void:
 		body.velocity.z = move_toward(body.velocity.z, 0.0, delta * acceleration)
 
 
+func force_update_path() -> void:
+	_path = nav_region.get_shortest_path(owner.global_position, target_pos)
+	if !_path.is_empty():
+		_path.remove_at(0)
+
+
 func get_next_path_position() -> Vector3:
 	if _path.is_empty():
 		return get_parent().global_position
@@ -56,45 +74,3 @@ func get_next_path_position() -> Vector3:
 
 func distance_to_target() -> float:
 	return global_position.distance_to(target_pos)
-
-
-func _get_shortest_path(path: PackedVector3Array) -> PackedVector3Array:
-	
-	DebugDraw3D.draw_arrow_path(path, Color.WHITE)
-	
-	if path.is_empty() || path.size() < 3:
-		return path
-	
-	var idx: int = 0
-	var short_path: PackedVector3Array = []
-	for i in range(path.size()):
-		var p: Vector3 = path[idx]
-		short_path.append(p)
-		
-		if idx == path.size() - 1: break
-		
-		var flag: bool = false
-		for j in range(path.size() - 1, idx, -1):
-			var p_last: Vector3 = path[j]
-			if _is_shortcut_valid(p, p_last):
-				idx = j
-				flag = true
-				break
-		
-		if !flag:
-			idx += 1
-	
-	if VolumetricNavigation.has_point(target_pos, 4.0):
-		short_path[-1] = target_pos
-	
-	return short_path
-
-
-func _is_shortcut_valid(p1: Vector3, p2: Vector3) -> bool:
-	var distance: float = p1.distance_to(p2)
-	var loop_count: int = floor(distance / 2.0)
-	for i in range(loop_count):
-		var p_lerp: Vector3 = lerp(p1, p2, i / float(loop_count))
-		if !VolumetricNavigation.has_point(p_lerp, 4.0):
-			return false
-	return true

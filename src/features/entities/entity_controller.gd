@@ -3,6 +3,9 @@ extends CharacterBody3D
 @export var attack_range: float = 1.0
 @export var damage_delta: float = -10.0
 
+@export var a: Node3D
+@export var b: Node3D
+
 var target: PlayerCharacter
 var flipflop: bool = false
 
@@ -12,7 +15,7 @@ var flipflop: bool = false
 
 
 func _ready() -> void:
-	ai_movement.target_pos = global_position - Vector3(16.0, 8.0, 0.0)
+	ai_movement.target_pos = a.global_position
 
 
 func _physics_process(delta: float) -> void:
@@ -29,9 +32,11 @@ func _physics_process(delta: float) -> void:
 	#if ai_movement.distance_to_target() < attack_range:
 		#flipflop = !flipflop
 		#if flipflop:
-			#ai_movement.target_pos = ai_movement.target_pos + Vector3(16.0, 8.0, 0.0)
+			#ai_movement.target_pos = b.global_position
 		#else:
-			#ai_movement.target_pos = ai_movement.target_pos - Vector3(16.0, 8.0, 0.0)
+			#ai_movement.target_pos = a.global_position
+	
+	ai_movement.force_update_path()
 	ai_movement.tick(delta)
 	
 	move_and_slide()

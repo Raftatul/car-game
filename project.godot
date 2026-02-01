@@ -28,7 +28,6 @@ config/icon="res://icon.svg"
 
 MultiplayerBackend="*res://src/modules/multiplayer/multiplayer_backend.gd"
 Global="*res://src/modules/windows_placement/global.gd"
-VolumetricNavigation="*uid://jmkpr6osphnj"
 MultiplayerUtility="*uid://ckr0l5f570wmc"
 
 [debug_draw_3d]
@@ -54,7 +53,6 @@ folder_colors={
 
 spawn_point=""
 fish=""
-volumetric_nav=""
 players=""
 
 [input]

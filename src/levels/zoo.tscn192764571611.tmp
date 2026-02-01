@@ -1,0 +1,317 @@
+[gd_scene format=3 uid="uid://b6l71avpa0tex"]
+
+[ext_resource type="Script" uid="uid://fhu7ra8j7ufq" path="res://src/modules/water_system/water_body.gd" id="1_60fgb"]
+[ext_resource type="Script" uid="uid://d1x52urwedobx" path="res://compositor/water_effect.gd" id="1_fkfc3"]
+[ext_resource type="PackedScene" uid="uid://h8ktknpf0t7p" path="res://src/modules/multiplayer/spawn_point.tscn" id="1_n2inr"]
+[ext_resource type="Material" uid="uid://pbw4j4s2e6cy" path="res://assets/shaders/water/water_shader_material.tres" id="2_arbid"]
+[ext_resource type="PackedScene" uid="uid://6442jxq5hu73" path="res://src/features/props/shop/shop.tscn" id="5_l54tx"]
+[ext_resource type="Texture2D" uid="uid://b4dm3fke104q1" path="res://assets/terrains/sand/Ground054_4K-PNG_Color.png" id="5_wt035"]
+[ext_resource type="PackedScene" uid="uid://npk8f4u7ipp0" path="res://src/features/props/underwater/clam/clam.tscn" id="6_6w2um"]
+[ext_resource type="Texture2D" uid="uid://bgu1hy4lqucah" path="res://assets/terrains/sand/Ground054_4K-PNG_NormalGL.png" id="6_h7jkl"]
+[ext_resource type="Texture2D" uid="uid://ehdtw8gqyqhd" path="res://assets/terrains/grass/Grass001_4K-PNG_Color.png" id="7_jseuq"]
+[ext_resource type="Texture2D" uid="uid://c6sanv5cn4v62" path="res://assets/terrains/grass/Grass001_4K-PNG_NormalGL.png" id="8_ihxu1"]
+[ext_resource type="Script" uid="uid://bbfcrnb4wwgl2" path="res://src/modules/water_system/buoyancy.gd" id="11_rg4u2"]
+[ext_resource type="PackedScene" uid="uid://cyxx4ngsn7fe3" path="res://src/features/props/items/item_mask.tscn" id="12_jx7a4"]
+[ext_resource type="PackedScene" uid="uid://damvtojfd3dv6" path="res://src/features/props/items/item_jetpack.tscn" id="12_wt035"]
+[ext_resource type="PackedScene" uid="uid://b1n45j8c8vn4u" path="res://src/features/entities/fish.tscn" id="13_ndggs"]
+[ext_resource type="PackedScene" uid="uid://bj87j7b2cfw0b" path="res://assets/scenes/kelp/kelp.tscn" id="14_h7jkl"]
+[ext_resource type="PackedScene" uid="uid://bgoiai11g65yt" path="res://src/features/props/respawner/respawner.tscn" id="15_jseuq"]
+[ext_resource type="Script" uid="uid://decph3w7n7q4s" path="res://src/modules/basic_attributes/components/health/hit_box.gd" id="16_ihxu1"]
+[ext_resource type="PackedScene" uid="uid://h8skvj2d6nk6" path="res://src/features/props/items/item_heal.tscn" id="17_cj628"]
+[ext_resource type="Script" uid="uid://yk07u3qi60wx" path="res://src/modules/volumetric_ai/volumetric_region_3d.gd" id="19_rep4f"]
+[ext_resource type="Resource" uid="uid://dv5edm3o01jiv" path="res://data/volumetric_points/zoo/zoo_volumetric_region.tres" id="20_2ybnr"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2inr"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_cn1qa"]
+sky_material = SubResource("ProceduralSkyMaterial_n2inr")
+
+[sub_resource type="Environment" id="Environment_ffv3l"]
+background_mode = 2
+sky = SubResource("Sky_cn1qa")
+tonemap_mode = 2
+ssr_enabled = true
+glow_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_8q3s2"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("1_fkfc3")
+shader_code = "color.a = depth;"
+metadata/_custom_type_script = "uid://d1x52urwedobx"
+
+[sub_resource type="Compositor" id="Compositor_5tu61"]
+compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_8q3s2")])
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1s5vw"]
+lightmap_size_hint = Vector2i(127, 127)
+size = Vector2(60, 60)
+subdivide_width = 120
+subdivide_depth = 120
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ygn0o"]
+properties/0/path = NodePath(".:time")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[sub_resource type="FogMaterial" id="FogMaterial_t72cs"]
+density = 0.1
+albedo = Color(0.44, 1, 1, 1)
+edge_fade = 0.7727469
+
+[sub_resource type="Gradient" id="Gradient_ygn0o"]
+offsets = PackedFloat32Array(0.2, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_t72cs"]
+noise_type = 2
+frequency = 0.03
+cellular_jitter = 3.0
+cellular_return_type = 0
+domain_warp_enabled = true
+domain_warp_type = 1
+domain_warp_amplitude = 50.0
+domain_warp_fractal_type = 2
+domain_warp_fractal_lacunarity = 1.5
+domain_warp_fractal_gain = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_l54tx"]
+noise = SubResource("FastNoiseLite_t72cs")
+color_ramp = SubResource("Gradient_ygn0o")
+seamless = true
+
+[sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_6w2um"]
+_shader_parameters = {
+&"bias_distance": 512.0,
+&"blend_sharpness": 0.5,
+&"depth_blur": 0.0,
+&"enable_macro_variation": true,
+&"enable_projection": true,
+&"flat_terrain_normals": false,
+&"macro_variation1": Color(1, 1, 1, 1),
+&"macro_variation2": Color(1, 1, 1, 1),
+&"macro_variation_slope": 0.333,
+&"mipmap_bias": 1.0,
+&"noise1_angle": 0.0,
+&"noise1_offset": Vector2(0.5, 0.5),
+&"noise1_scale": 0.04,
+&"noise2_scale": 0.076,
+&"noise_texture": SubResource("NoiseTexture2D_l54tx"),
+&"projection_threshold": 0.8,
+&"world_noise_fragment_normals": false,
+&"world_noise_height": 64.0,
+&"world_noise_lod_distance": 7500.0,
+&"world_noise_max_octaves": 4,
+&"world_noise_min_octaves": 2,
+&"world_noise_offset": Vector3(0, 0, 0),
+&"world_noise_region_blend": 0.33,
+&"world_noise_scale": 5.0
+}
+world_background = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fkfc3"]
+transparency = 4
+cull_mode = 2
+vertex_color_use_as_albedo = true
+backlight_enabled = true
+backlight = Color(0.5, 0.5, 0.5, 1)
+distance_fade_mode = 1
+distance_fade_min_distance = 128.0
+distance_fade_max_distance = 96.0
+
+[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_8q3s2"]
+generated_type = 1
+height_offset = 0.5
+material_override = SubResource("StandardMaterial3D_fkfc3")
+last_lod = 0
+last_shadow_lod = 0
+lod0_range = 128.0
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_cj628"]
+name = "Ground054_4K-PNG_Color"
+albedo_texture = ExtResource("5_wt035")
+normal_texture = ExtResource("6_h7jkl")
+normal_depth = 0.75
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_ndggs"]
+name = "Grass001_4K-PNG_Color"
+id = 1
+albedo_texture = ExtResource("7_jseuq")
+normal_texture = ExtResource("8_ihxu1")
+
+[sub_resource type="Terrain3DAssets" id="Terrain3DAssets_5tu61"]
+mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_8q3s2")])
+texture_list = Array[Terrain3DTextureAsset]([SubResource("Terrain3DTextureAsset_cj628"), SubResource("Terrain3DTextureAsset_ndggs")])
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jx7a4"]
+size = Vector3(3, 1, 5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wt035"]
+size = Vector3(3, 1, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cj628"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ihxu1"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ndggs"]
+material = SubResource("StandardMaterial3D_ihxu1")
+
+[node name="Zoo" type="Node3D" unique_id=653414602]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=78625833]
+environment = SubResource("Environment_ffv3l")
+compositor = SubResource("Compositor_5tu61")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1199532417]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=521056906]
+transform = Transform3D(3.9246202, 0, 0, 0, 1, 0, 0, 0, 3.9246202, -3.6661868, -3.2049365, 36.64286)
+visible = false
+material_override = ExtResource("2_arbid")
+mesh = SubResource("PlaneMesh_1s5vw")
+script = ExtResource("1_60fgb")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="MeshInstance3D" unique_id=1392848849]
+replication_config = SubResource("SceneReplicationConfig_ygn0o")
+
+[node name="FogVolume" type="FogVolume" parent="MeshInstance3D" unique_id=811447449]
+transform = Transform3D(0.9999984, 0, 0, 0, 1, 0, 0, 0, 0.9999984, -0.42719245, -33.843624, -1.170639)
+size = Vector3(52.200516, 69.687256, 71.39932)
+material = SubResource("FogMaterial_t72cs")
+
+[node name="Spawners" type="Node3D" parent="." unique_id=900345733]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.166407, 1.8177831, -21.862795)
+
+[node name="SpawnPoint" parent="Spawners" unique_id=1528174475 instance=ExtResource("1_n2inr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
+
+[node name="SpawnPoint2" parent="Spawners" unique_id=1387630213 instance=ExtResource("1_n2inr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -4)
+
+[node name="SpawnPoint3" parent="Spawners" unique_id=1475003789 instance=ExtResource("1_n2inr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4)
+
+[node name="SpawnPoint4" parent="Spawners" unique_id=450857441 instance=ExtResource("1_n2inr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 4)
+
+[node name="Terrain3D" type="Terrain3D" parent="." unique_id=723942474]
+data_directory = "res://data/terrains/zoo"
+material = SubResource("Terrain3DMaterial_6w2um")
+assets = SubResource("Terrain3DAssets_5tu61")
+collision_mode = 2
+top_level = true
+metadata/_edit_lock_ = true
+
+[node name="Shop" parent="." unique_id=565984807 instance=ExtResource("5_l54tx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0638666, 0.07600493, -24.050888)
+
+[node name="Items" type="MultiplayerSpawner" parent="." unique_id=1605815653]
+_spawnable_scenes = PackedStringArray("uid://cyxx4ngsn7fe3", "uid://h8skvj2d6nk6", "uid://damvtojfd3dv6")
+spawn_path = NodePath("../Props")
+
+[node name="Jetpack" parent="Items" unique_id=1407846572 instance=ExtResource("12_wt035")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1644125, 1.0986612, -28.437)
+acceleration = 10.0
+
+[node name="Item" parent="Items" unique_id=2042596339 instance=ExtResource("12_jx7a4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7955132, 1.0903444, -28.910213)
+
+[node name="Item2" parent="Items" unique_id=232007303 instance=ExtResource("12_jx7a4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.478939, 1.0903444, -28.910213)
+
+[node name="Props" type="Node" parent="." unique_id=1444304400]
+
+[node name="Clam" parent="Props" unique_id=868280557 instance=ExtResource("6_6w2um")]
+transform = Transform3D(0.25881907, 0, -0.9659258, 0, 1, 0, 0.9659258, 0, 0.25881907, 19.710669, -59.160526, 44.496544)
+
+[node name="Clam2" parent="Props" unique_id=114596885 instance=ExtResource("6_6w2um")]
+transform = Transform3D(0.9659258, 0, 0.25881907, 0, 1, 0, -0.25881907, 0, 0.9659258, -10.02309, -59.415188, 41.42396)
+
+[node name="Clam3" parent="Props" unique_id=51543013 instance=ExtResource("6_6w2um")]
+transform = Transform3D(0.84510326, 0, 0.5346031, 0, 1, 0, -0.5346031, 0, 0.84510326, -13.358941, 0.98107266, -23.203278)
+
+[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=1073481347]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.708191, 7.2118993)
+mass = 30.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=272943150]
+shape = SubResource("BoxShape3D_jx7a4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D" unique_id=1303931389]
+mesh = SubResource("BoxMesh_wt035")
+
+[node name="Buoyancy" type="Node3D" parent="RigidBody3D" unique_id=1817207288 node_paths=PackedStringArray("points")]
+script = ExtResource("11_rg4u2")
+points = [NodePath("Pontoon"), NodePath("Pontoon2"), NodePath("Pontoon3"), NodePath("Pontoon4"), NodePath("Pontoon5")]
+bounciness = 30.0
+buo_damping = 0.15
+debug = true
+metadata/_custom_type_script = "uid://bbfcrnb4wwgl2"
+
+[node name="Pontoon" type="Marker3D" parent="RigidBody3D/Buoyancy" unique_id=458994416]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -3)
+
+[node name="Pontoon2" type="Marker3D" parent="RigidBody3D/Buoyancy" unique_id=1310413834]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3)
+
+[node name="Pontoon3" type="Marker3D" parent="RigidBody3D/Buoyancy" unique_id=2071970920]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -3)
+
+[node name="Pontoon4" type="Marker3D" parent="RigidBody3D/Buoyancy" unique_id=689263708]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 3)
+
+[node name="Pontoon5" type="Marker3D" parent="RigidBody3D/Buoyancy" unique_id=838499739]
+
+[node name="Kelp" parent="." unique_id=1475737754 instance=ExtResource("14_h7jkl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.61925, -19.998905, 17.383507)
+
+[node name="Respawner" parent="." unique_id=656192070 instance=ExtResource("15_jseuq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8629675, 0.49977738, -17.243597)
+
+[node name="HitBox" type="Area3D" parent="." unique_id=1802997076]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6470399, 0.84492683, -13.621)
+script = ExtResource("16_ihxu1")
+metadata/_custom_type_script = "uid://decph3w7n7q4s"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox" unique_id=359291921]
+shape = SubResource("BoxShape3D_cj628")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HitBox" unique_id=17139131]
+transparency = 0.5
+mesh = SubResource("BoxMesh_ndggs")
+
+[node name="HealthPack" parent="HitBox" unique_id=2083422672 instance=ExtResource("17_cj628")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.049517155, -0.20766616, -11.996941)
+
+[node name="VolumetricRegion" type="Node3D" parent="." unique_id=714562671 node_paths=PackedStringArray("volume", "terrain")]
+script = ExtResource("19_rep4f")
+volume = NodePath("Volume")
+terrain = NodePath("../Terrain3D")
+grid_step = 4.0
+save_path = "res://data/volumetric_points/zoo"
+data = ExtResource("20_2ybnr")
+metadata/_custom_type_script = "uid://yk07u3qi60wx"
+
+[node name="Volume" type="CSGBox3D" parent="VolumetricRegion" unique_id=736670715]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1455536, -36.946716, 44.553467)
+visible = false
+size = Vector3(189.54092, 68.09119, 230.29932)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="VolumetricRegion" unique_id=348403419]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -25, 70)
+use_collision = true
+size = Vector3(26.326172, 27.498047, 27.353577)
+
+[node name="Fish" parent="VolumetricRegion" unique_id=1622872921 instance=ExtResource("13_ndggs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -19.539486, 38.127575)

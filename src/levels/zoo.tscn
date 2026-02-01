@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bpxy5l6ohinqp"]
+[gd_scene format=3 uid="uid://dkq6kmx71qexr"]
 
 [ext_resource type="Script" uid="uid://fhu7ra8j7ufq" path="res://src/modules/water_system/water_body.gd" id="1_60fgb"]
 [ext_resource type="Script" uid="uid://d1x52urwedobx" path="res://compositor/water_effect.gd" id="1_fkfc3"]
@@ -186,6 +186,7 @@ replication_config = SubResource("SceneReplicationConfig_ygn0o")
 
 [node name="FogVolume" type="FogVolume" parent="MeshInstance3D" unique_id=811447449]
 transform = Transform3D(0.9999984, 0, 0, 0, 1, 0, 0, 0, 0.9999984, -0.42719245, -33.843624, -1.170639)
+visible = false
 size = Vector3(52.200516, 69.687256, 71.39932)
 material = SubResource("FogMaterial_t72cs")
 
@@ -240,11 +241,6 @@ transform = Transform3D(0.9659258, 0, 0.25881907, 0, 1, 0, -0.25881907, 0, 0.965
 [node name="Clam3" parent="Props" unique_id=51543013 instance=ExtResource("6_6w2um")]
 transform = Transform3D(0.84510326, 0, 0.5346031, 0, 1, 0, -0.5346031, 0, 0.84510326, -13.358941, 0.98107266, -23.203278)
 
-[node name="Entities" type="Node" parent="." unique_id=1124970320]
-
-[node name="Fish" parent="Entities" unique_id=1622872921 instance=ExtResource("13_ndggs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -19.539486, 38.127575)
-
 [node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=1073481347]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.708191, 7.2118993)
 mass = 30.0
@@ -298,17 +294,34 @@ mesh = SubResource("BoxMesh_ndggs")
 [node name="HealthPack" parent="HitBox" unique_id=2083422672 instance=ExtResource("17_cj628")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.049517155, -0.20766616, -11.996941)
 
-[node name="VolumetricRegion" type="CSGBox3D" parent="." unique_id=1232111153 node_paths=PackedStringArray("terrain")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -33.710876, 45.534912)
-visible = false
-size = Vector3(200, 60, 230)
+[node name="VolumetricRegion" type="Node3D" parent="." unique_id=714562671 node_paths=PackedStringArray("volume", "terrain")]
 script = ExtResource("19_rep4f")
+volume = NodePath("Volume")
 terrain = NodePath("../Terrain3D")
 grid_step = 4.0
 save_path = "res://data/volumetric_points/zoo"
+debug = true
 data = ExtResource("20_2ybnr")
 metadata/_custom_type_script = "uid://yk07u3qi60wx"
 
+[node name="Volume" type="CSGBox3D" parent="VolumetricRegion" unique_id=736670715]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.41817284, -38.262794, 35.54555)
+visible = false
+size = Vector3(183.61417, 65.45903, 218.81317)
+
 [node name="CSGBox3D" type="CSGBox3D" parent="VolumetricRegion" unique_id=348403419]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.376574, 19.224396)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -25, 70)
+transparency = 0.5
+use_collision = true
 size = Vector3(26.326172, 27.498047, 27.353577)
+
+[node name="Fish" parent="VolumetricRegion" unique_id=1622872921 instance=ExtResource("13_ndggs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -19.539486, 38.127575)
+
+[node name="Marker3D" parent="VolumetricRegion/Fish" index="6" unique_id=1442995016]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.779713, -24.502918, 89.96777)
+
+[node name="Marker3D2" parent="VolumetricRegion/Fish" index="7" unique_id=1844331373]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.399046, -25.492933, 45.66452)
+
+[editable path="VolumetricRegion/Fish"]
