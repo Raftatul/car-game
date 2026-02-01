@@ -221,6 +221,7 @@ spawn_path = NodePath("../Props")
 
 [node name="Jetpack" parent="Items" unique_id=1407846572 instance=ExtResource("12_wt035")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1644125, 1.0986612, -28.437)
+acceleration = 10.0
 
 [node name="Item" parent="Items" unique_id=2042596339 instance=ExtResource("12_jx7a4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7955132, 1.0903444, -28.910213)
@@ -303,6 +304,11 @@ visible = false
 size = Vector3(200, 60, 230)
 script = ExtResource("19_rep4f")
 terrain = NodePath("../Terrain3D")
+grid_step = 4.0
 save_path = "res://data/volumetric_points/zoo"
 data = ExtResource("20_2ybnr")
 metadata/_custom_type_script = "uid://yk07u3qi60wx"
+
+[node name="CSGBox3D" type="CSGBox3D" parent="VolumetricRegion" unique_id=348403419]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.376574, 19.224396)
+size = Vector3(26.326172, 27.498047, 27.353577)

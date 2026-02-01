@@ -9,7 +9,7 @@
 size = Vector3(2, 2, 5.111)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_uf7ap"]
-radius = 15.0
+radius = 30.0
 
 [node name="Fish" type="CharacterBody3D" unique_id=1622872921]
 script = ExtResource("1_n5usi")
@@ -26,8 +26,8 @@ script = ExtResource("1_aoro2")
 body = NodePath("..")
 model = NodePath("..")
 acceleration = 4.0
-move_speed = 10.0
-model_rotation_speed = 3.0
+move_speed = 3.0
+model_rotation_speed = 1.5
 
 [node name="AISensor" type="Area3D" parent="." unique_id=1769036220]
 collision_layer = 0

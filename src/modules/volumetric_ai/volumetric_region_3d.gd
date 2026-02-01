@@ -20,7 +20,7 @@ func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	
 	#visible = false
-	VolumetricNavigation.add_points(data)
+	VolumetricNavigation.add_points(data, grid_step)
 	set_process(false)
 
 
@@ -52,7 +52,6 @@ func _generate_points() -> void:
 	
 	if save_path:
 		var path: String = "%s/%s_%s.tres" % [save_path, owner.name.to_snake_case(), name.to_snake_case()]
-		print(path)
 		var error: Error = ResourceSaver.save(_data, path)
 		if error == OK:
 			data = ResourceLoader.load(path)

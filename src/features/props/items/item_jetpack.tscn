@@ -14,7 +14,8 @@ size = Vector3(0.618, 0.739, 0.618)
 
 [node name="Jetpack" unique_id=1407846572 node_paths=PackedStringArray("anim_player") instance=ExtResource("1_5hxq2")]
 script = ExtResource("2_y11rr")
-force = 7.0
+force = 20.0
+acceleration = 20.0
 anim_player = NodePath("jetpack/AnimationPlayer")
 texture = ExtResource("2_n6ulx")
 attach_point = 1
