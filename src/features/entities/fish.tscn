@@ -11,11 +11,10 @@ size = Vector3(2, 2, 5.111)
 [sub_resource type="SphereShape3D" id="SphereShape3D_uf7ap"]
 radius = 30.0
 
-[node name="Fish" type="CharacterBody3D" unique_id=1622872921 node_paths=PackedStringArray("a", "b")]
+[node name="Fish" type="CharacterBody3D" unique_id=1622872921]
 script = ExtResource("1_n5usi")
+wandering_range = 20.0
 attack_range = 3.0
-a = NodePath("Marker3D")
-b = NodePath("Marker3D2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=274703941]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
@@ -49,12 +48,7 @@ update_scale = false
 [node name="TimerAttack" type="Timer" parent="." unique_id=583627080]
 wait_time = 0.5
 
-[node name="Marker3D" type="Marker3D" parent="." unique_id=1442995016]
-top_level = true
-
-[node name="Marker3D2" type="Marker3D" parent="." unique_id=1844331373]
-top_level = true
-
+[connection signal="target_reached" from="AIMovement" to="." method="_on_ai_movement_target_reached"]
 [connection signal="target_in_range" from="AISensor" to="." method="_on_ai_sensor_target_in_range"]
 [connection signal="target_out_of_range" from="AISensor" to="." method="_on_ai_sensor_target_out_of_range"]
 [connection signal="timeout" from="TimerAttack" to="." method="_on_timer_attack_timeout"]

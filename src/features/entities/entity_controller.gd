@@ -1,13 +1,13 @@
 extends CharacterBody3D
 
+@export var wandering_range: float = 1.0
 @export var attack_range: float = 1.0
 @export var damage_delta: float = -10.0
 
-@export var a: Node3D
-@export var b: Node3D
-
 var target: PlayerCharacter
-var flipflop: bool = false
+
+var start_pos: Vector3
+var attacking: bool = false
 
 @onready var ai_movement: AIMovement = $AIMovement
 @onready var remote_transform: RemoteTransform3D = $RemoteTransform3D
@@ -15,7 +15,8 @@ var flipflop: bool = false
 
 
 func _ready() -> void:
-	ai_movement.target_pos = a.global_position
+	start_pos = global_position
+	ai_movement.target_pos = start_pos + Vector3(randf_range(-wandering_range, wandering_range), randf_range(-wandering_range, wandering_range), randf_range(-wandering_range, wandering_range))
 
 
 func _physics_process(delta: float) -> void:
@@ -24,19 +25,7 @@ func _physics_process(delta: float) -> void:
 			ai_movement.target_pos = global_position + Vector3(0.0, -10.0, 0.0)
 		else:
 			ai_movement.target_pos = target.global_position
-		if ai_movement.distance_to_target() < attack_range and remote_transform.remote_path == NodePath(""):
-			target.death.connect(_on_target_death)
-			remote_transform.remote_path = target.get_path()
-			timer_attack.start()
 	
-	#if ai_movement.distance_to_target() < attack_range:
-		#flipflop = !flipflop
-		#if flipflop:
-			#ai_movement.target_pos = b.global_position
-		#else:
-			#ai_movement.target_pos = a.global_position
-	
-	ai_movement.force_update_path()
 	ai_movement.tick(delta)
 	
 	move_and_slide()
@@ -60,3 +49,13 @@ func _on_target_death() -> void:
 func _on_timer_attack_timeout() -> void:
 	if target:
 		target.health_component.modify(damage_delta)
+
+
+func _on_ai_movement_target_reached() -> void:
+	if target and !attacking:
+		attacking = true
+		target.death.connect(_on_target_death)
+		remote_transform.remote_path = target.get_path()
+		timer_attack.start()
+	else:
+		ai_movement.target_pos = start_pos + Vector3(randf_range(-wandering_range, wandering_range), randf_range(-wandering_range, wandering_range), randf_range(-wandering_range, wandering_range))

@@ -1,6 +1,8 @@
 class_name AIMovement
 extends Node3D
 
+signal target_reached
+
 @export var body: CharacterBody3D
 @export var model: Node3D
 @export var acceleration: float = 1.0
@@ -55,6 +57,7 @@ func tick(delta: float) -> void:
 		if body.global_position.distance_to(_path[0]) < 0.5:
 			_path.remove_at(0)
 	else:
+		target_reached.emit()
 		body.velocity.x = move_toward(body.velocity.x, 0.0, delta * acceleration)
 		body.velocity.y = move_toward(body.velocity.y, 0.0, delta * acceleration)
 		body.velocity.z = move_toward(body.velocity.z, 0.0, delta * acceleration)

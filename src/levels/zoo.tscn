@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://dkq6kmx71qexr"]
+[gd_scene format=3 uid="uid://5mpygrtqvfxe"]
 
 [ext_resource type="Script" uid="uid://fhu7ra8j7ufq" path="res://src/modules/water_system/water_body.gd" id="1_60fgb"]
 [ext_resource type="Script" uid="uid://d1x52urwedobx" path="res://compositor/water_effect.gd" id="1_fkfc3"]
@@ -186,7 +186,6 @@ replication_config = SubResource("SceneReplicationConfig_ygn0o")
 
 [node name="FogVolume" type="FogVolume" parent="MeshInstance3D" unique_id=811447449]
 transform = Transform3D(0.9999984, 0, 0, 0, 1, 0, 0, 0, 0.9999984, -0.42719245, -33.843624, -1.170639)
-visible = false
 size = Vector3(52.200516, 69.687256, 71.39932)
 material = SubResource("FogMaterial_t72cs")
 
@@ -317,11 +316,5 @@ size = Vector3(26.326172, 27.498047, 27.353577)
 
 [node name="Fish" parent="VolumetricRegion" unique_id=1622872921 instance=ExtResource("13_ndggs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -19.539486, 38.127575)
-
-[node name="Marker3D" parent="VolumetricRegion/Fish" index="6" unique_id=1442995016]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.779713, -24.502918, 89.96777)
-
-[node name="Marker3D2" parent="VolumetricRegion/Fish" index="7" unique_id=1844331373]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.399046, -25.492933, 45.66452)
 
 [editable path="VolumetricRegion/Fish"]
