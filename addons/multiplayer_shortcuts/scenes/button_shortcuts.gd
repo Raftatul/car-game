@@ -1,5 +1,5 @@
 @tool
-extends Button
+extends BaseButton
 
 const PANEL_SHORTCUTS = preload("uid://c1mvlmqh655rm")
 

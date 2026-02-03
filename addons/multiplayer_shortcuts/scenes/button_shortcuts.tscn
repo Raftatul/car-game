@@ -1,14 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://bkp6som2rqyuo"]
+[gd_scene format=3 uid="uid://bkp6som2rqyuo"]
 
 [ext_resource type="Script" uid="uid://moqy8mfn1qmg" path="res://addons/multiplayer_shortcuts/scenes/button_shortcuts.gd" id="1_3mift"]
+[ext_resource type="Texture2D" uid="uid://cf5ew36n6xc77" path="res://addons/multiplayer_shortcuts/circle-nodes-solid-full.svg" id="1_wgyu3"]
 
-[node name="ButtonShortcuts" type="Button"]
+[node name="ButtonShortcuts" type="Button" unique_id=1783813553]
+custom_minimum_size = Vector2(30, 30)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = ">"
+size_flags_horizontal = 4
+size_flags_vertical = 4
+icon = ExtResource("1_wgyu3")
+icon_alignment = 1
+expand_icon = true
 script = ExtResource("1_3mift")
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]
