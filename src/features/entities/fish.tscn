@@ -26,10 +26,9 @@ shape = SubResource("BoxShape3D_hrakw")
 script = ExtResource("1_aoro2")
 body = NodePath("..")
 model = NodePath("..")
-acceleration = 5.0
-move_speed = 5.0
+acceleration = 2.0
+move_speed = 3.0
 model_rotation_speed = 1.5
-debug = true
 
 [node name="AISensor" type="Area3D" parent="." unique_id=1769036220]
 collision_layer = 0

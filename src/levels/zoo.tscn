@@ -1,16 +1,13 @@
 [gd_scene format=3 uid="uid://5mpygrtqvfxe"]
 
 [ext_resource type="Script" uid="uid://fhu7ra8j7ufq" path="res://src/modules/water_system/water_body.gd" id="1_60fgb"]
-[ext_resource type="Script" uid="uid://d1x52urwedobx" path="res://compositor/water_effect.gd" id="1_fkfc3"]
 [ext_resource type="PackedScene" uid="uid://h8ktknpf0t7p" path="res://src/modules/multiplayer/spawn_point.tscn" id="1_n2inr"]
 [ext_resource type="Material" uid="uid://pbw4j4s2e6cy" path="res://assets/shaders/water/water_shader_material.tres" id="2_arbid"]
+[ext_resource type="Texture2D" uid="uid://8yt7p4okxtp5" path="res://assets/terrains/sand/sand_color.png" id="4_rep4f"]
+[ext_resource type="Texture2D" uid="uid://cfupmk6hv8em6" path="res://assets/terrains/sand/sand_normal.png" id="5_2ybnr"]
 [ext_resource type="PackedScene" uid="uid://6442jxq5hu73" path="res://src/features/props/shop/shop.tscn" id="5_l54tx"]
-[ext_resource type="Texture2D" uid="uid://b4dm3fke104q1" path="res://assets/terrains/sand/Ground054_4K-PNG_Color.png" id="5_wt035"]
 [ext_resource type="PackedScene" uid="uid://npk8f4u7ipp0" path="res://src/features/props/underwater/clam/clam.tscn" id="6_6w2um"]
-[ext_resource type="Texture2D" uid="uid://bgu1hy4lqucah" path="res://assets/terrains/sand/Ground054_4K-PNG_NormalGL.png" id="6_h7jkl"]
-[ext_resource type="Texture2D" uid="uid://ehdtw8gqyqhd" path="res://assets/terrains/grass/Grass001_4K-PNG_Color.png" id="7_jseuq"]
-[ext_resource type="Texture2D" uid="uid://c6sanv5cn4v62" path="res://assets/terrains/grass/Grass001_4K-PNG_NormalGL.png" id="8_ihxu1"]
-[ext_resource type="Script" uid="uid://bbfcrnb4wwgl2" path="res://src/modules/water_system/buoyancy.gd" id="11_rg4u2"]
+[ext_resource type="PackedScene" uid="uid://4boofnvrgpae" path="res://src/features/props/raft/raft.tscn" id="10_cj628"]
 [ext_resource type="PackedScene" uid="uid://cyxx4ngsn7fe3" path="res://src/features/props/items/item_mask.tscn" id="12_jx7a4"]
 [ext_resource type="PackedScene" uid="uid://damvtojfd3dv6" path="res://src/features/props/items/item_jetpack.tscn" id="12_wt035"]
 [ext_resource type="PackedScene" uid="uid://b1n45j8c8vn4u" path="res://src/features/entities/fish.tscn" id="13_ndggs"]
@@ -37,25 +34,11 @@ glow_enabled = true
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.0
 
-[sub_resource type="CompositorEffect" id="CompositorEffect_8q3s2"]
-resource_local_to_scene = false
-resource_name = ""
-enabled = true
-effect_callback_type = 4
-needs_motion_vectors = false
-needs_normal_roughness = false
-script = ExtResource("1_fkfc3")
-shader_code = "color.a = depth;"
-metadata/_custom_type_script = "uid://d1x52urwedobx"
-
-[sub_resource type="Compositor" id="Compositor_5tu61"]
-compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_8q3s2")])
-
 [sub_resource type="PlaneMesh" id="PlaneMesh_1s5vw"]
 lightmap_size_hint = Vector2i(127, 127)
-size = Vector2(60, 60)
-subdivide_width = 120
-subdivide_depth = 120
+size = Vector2(300, 300)
+subdivide_width = 600
+subdivide_depth = 600
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ygn0o"]
 properties/0/path = NodePath(".:time")
@@ -63,9 +46,10 @@ properties/0/spawn = true
 properties/0/replication_mode = 1
 
 [sub_resource type="FogMaterial" id="FogMaterial_t72cs"]
-density = 0.1
-albedo = Color(0.44, 1, 1, 1)
-edge_fade = 0.7727469
+density = 0.2
+albedo = Color(1.4439225e-06, 0.6007146, 0.74289006, 1)
+height_falloff = 10.0
+edge_fade = 0.0517
 
 [sub_resource type="Gradient" id="Gradient_ygn0o"]
 offsets = PackedFloat32Array(0.2, 1)
@@ -136,26 +120,15 @@ last_shadow_lod = 0
 lod0_range = 128.0
 
 [sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_cj628"]
-name = "Ground054_4K-PNG_Color"
-albedo_texture = ExtResource("5_wt035")
-normal_texture = ExtResource("6_h7jkl")
+name = "Sand"
+albedo_texture = ExtResource("4_rep4f")
+normal_texture = ExtResource("5_2ybnr")
 normal_depth = 0.75
-
-[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_ndggs"]
-name = "Grass001_4K-PNG_Color"
-id = 1
-albedo_texture = ExtResource("7_jseuq")
-normal_texture = ExtResource("8_ihxu1")
+uv_scale = 0.25
 
 [sub_resource type="Terrain3DAssets" id="Terrain3DAssets_5tu61"]
 mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_8q3s2")])
-texture_list = Array[Terrain3DTextureAsset]([SubResource("Terrain3DTextureAsset_cj628"), SubResource("Terrain3DTextureAsset_ndggs")])
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_jx7a4"]
-size = Vector3(3, 1, 5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_wt035"]
-size = Vector3(3, 1, 5)
+texture_list = Array[Terrain3DTextureAsset]([SubResource("Terrain3DTextureAsset_cj628")])
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cj628"]
 
@@ -169,14 +142,13 @@ material = SubResource("StandardMaterial3D_ihxu1")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=78625833]
 environment = SubResource("Environment_ffv3l")
-compositor = SubResource("Compositor_5tu61")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1199532417]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 shadow_enabled = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=521056906]
-transform = Transform3D(3.9246202, 0, 0, 0, 1, 0, 0, 0, 3.9246202, -3.6661868, -3.2049365, 36.64286)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6661868, -3.2049365, 36.64286)
 material_override = ExtResource("2_arbid")
 mesh = SubResource("PlaneMesh_1s5vw")
 script = ExtResource("1_60fgb")
@@ -185,8 +157,7 @@ script = ExtResource("1_60fgb")
 replication_config = SubResource("SceneReplicationConfig_ygn0o")
 
 [node name="FogVolume" type="FogVolume" parent="MeshInstance3D" unique_id=811447449]
-transform = Transform3D(0.9999984, 0, 0, 0, 1, 0, 0, 0, 0.9999984, -0.42719245, -33.843624, -1.170639)
-size = Vector3(52.200516, 69.687256, 71.39932)
+shape = 4
 material = SubResource("FogMaterial_t72cs")
 
 [node name="Spawners" type="Node3D" parent="." unique_id=900345733]
@@ -232,45 +203,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.478939, 1.0903444, -28.9102
 [node name="Props" type="Node" parent="." unique_id=1444304400]
 
 [node name="Clam" parent="Props" unique_id=868280557 instance=ExtResource("6_6w2um")]
-transform = Transform3D(0.25881907, 0, -0.9659258, 0, 1, 0, 0.9659258, 0, 0.25881907, 19.710669, -59.160526, 44.496544)
+transform = Transform3D(0.25881907, 0, -0.9659258, 0, 1, 0, 0.9659258, 0, 0.25881907, 16.554243, -58.893887, 44.496544)
 
 [node name="Clam2" parent="Props" unique_id=114596885 instance=ExtResource("6_6w2um")]
-transform = Transform3D(0.9659258, 0, 0.25881907, 0, 1, 0, -0.25881907, 0, 0.9659258, -10.02309, -59.415188, 41.42396)
+transform = Transform3D(0.9659258, 0, 0.25881907, 0, 1, 0, -0.25881907, 0, 0.9659258, -10.02309, -58.902557, 41.42396)
 
 [node name="Clam3" parent="Props" unique_id=51543013 instance=ExtResource("6_6w2um")]
 transform = Transform3D(0.84510326, 0, 0.5346031, 0, 1, 0, -0.5346031, 0, 0.84510326, -13.358941, 0.98107266, -23.203278)
 
-[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=1073481347]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.708191, 7.2118993)
-mass = 30.0
+[node name="Raft" parent="." unique_id=555745467 instance=ExtResource("10_cj628")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.265932, 1.4254265, 7.2118993)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=272943150]
-shape = SubResource("BoxShape3D_jx7a4")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D" unique_id=1303931389]
-mesh = SubResource("BoxMesh_wt035")
-
-[node name="Buoyancy" type="Node3D" parent="RigidBody3D" unique_id=1817207288 node_paths=PackedStringArray("points")]
-script = ExtResource("11_rg4u2")
-points = [NodePath("Pontoon"), NodePath("Pontoon2"), NodePath("Pontoon3"), NodePath("Pontoon4"), NodePath("Pontoon5")]
-bounciness = 30.0
-buo_damping = 0.15
-debug = true
-metadata/_custom_type_script = "uid://bbfcrnb4wwgl2"
-
-[node name="Pontoon" type="Marker3D" parent="RigidBody3D/Buoyancy" unique_id=458994416]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -3)
-
-[node name="Pontoon2" type="Marker3D" parent="RigidBody3D/Buoyancy" unique_id=1310413834]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3)
-
-[node name="Pontoon3" type="Marker3D" parent="RigidBody3D/Buoyancy" unique_id=2071970920]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -3)
-
-[node name="Pontoon4" type="Marker3D" parent="RigidBody3D/Buoyancy" unique_id=689263708]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 3)
-
-[node name="Pontoon5" type="Marker3D" parent="RigidBody3D/Buoyancy" unique_id=838499739]
+[node name="Raft2" parent="." unique_id=569801516 instance=ExtResource("10_cj628")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 1.4613066, 1.7529001, 7.2118993)
 
 [node name="Kelp" parent="." unique_id=1475737754 instance=ExtResource("14_h7jkl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.61925, -19.998905, 17.383507)
@@ -299,7 +244,6 @@ volume = NodePath("Volume")
 terrain = NodePath("../Terrain3D")
 grid_step = 4.0
 save_path = "res://data/volumetric_points/zoo"
-debug = true
 data = ExtResource("20_2ybnr")
 metadata/_custom_type_script = "uid://yk07u3qi60wx"
 

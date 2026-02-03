@@ -38,5 +38,7 @@ void main() {
 	vec4 color = imageLoad(color_image, uv);
 	float depth = texture(depth_texture, uv_norm).r;
 
+	// COMPUTE_CODE
+
 	imageStore(color_image, uv, color);
 }

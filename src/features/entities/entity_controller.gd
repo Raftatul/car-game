@@ -53,6 +53,8 @@ func _on_timer_attack_timeout() -> void:
 
 func _on_ai_movement_target_reached() -> void:
 	if target and !attacking:
+		if target.global_position.distance_to(global_position) > attack_range:
+			return
 		attacking = true
 		target.death.connect(_on_target_death)
 		remote_transform.remote_path = target.get_path()
