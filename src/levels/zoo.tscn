@@ -246,7 +246,6 @@ use_collision = true
 size = Vector3(26.326172, 27.498047, 27.353577)
 
 [node name="Fish" parent="VolumetricRegion" unique_id=1622872921 instance=ExtResource("13_ndggs")]
-process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -19.539486, 38.127575)
 
 [node name="Jetpack" parent="." unique_id=1407846572 instance=ExtResource("14_jseuq")]

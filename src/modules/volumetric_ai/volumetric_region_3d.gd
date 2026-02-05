@@ -4,6 +4,8 @@ extends Node3D
 
 #region Navigation
 
+const SHORTCUT_SUBSTEP: int = 2
+
 var points = {}
 
 @onready var nav: AStar3D = AStar3D.new()
@@ -113,7 +115,7 @@ func get_shortest_path(from: Vector3, to: Vector3) -> PackedVector3Array:
 
 func _is_shortcut_valid(p1: Vector3, p2: Vector3) -> bool:
 	var distance: float = p1.distance_to(p2)
-	var loop_count: int = floor(distance / 2.0)
+	var loop_count: int = floor(distance / grid_step) * SHORTCUT_SUBSTEP
 	for i in range(loop_count):
 		var p_lerp: Vector3 = lerp(p1, p2, i / float(loop_count))
 		if !has_point(p_lerp):
