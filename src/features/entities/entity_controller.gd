@@ -16,7 +16,7 @@ var attacking: bool = false
 
 func _ready() -> void:
 	start_pos = global_position
-	ai_movement.target_pos = start_pos + Vector3(randf_range(-wandering_range, wandering_range), randf_range(-wandering_range, wandering_range), randf_range(-wandering_range, wandering_range))
+	_set_random_wandering_target()
 
 
 func _physics_process(delta: float) -> void:
@@ -29,6 +29,11 @@ func _physics_process(delta: float) -> void:
 	ai_movement.tick(delta)
 	
 	move_and_slide()
+
+
+func _set_random_wandering_target() -> void:
+	var random_offset: Vector3 = Vector3(randf_range(-wandering_range, wandering_range), randf_range(-wandering_range, wandering_range), randf_range(-wandering_range, wandering_range))
+	ai_movement.target_pos = start_pos + random_offset
 
 
 func _on_ai_sensor_target_in_range(_target: Node3D) -> void:
@@ -60,4 +65,4 @@ func _on_ai_movement_target_reached() -> void:
 		remote_transform.remote_path = target.get_path()
 		timer_attack.start()
 	else:
-		ai_movement.target_pos = start_pos + Vector3(randf_range(-wandering_range, wandering_range), randf_range(-wandering_range, wandering_range), randf_range(-wandering_range, wandering_range))
+		_set_random_wandering_target()

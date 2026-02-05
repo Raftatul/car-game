@@ -6,6 +6,12 @@ extends Node3D
 
 const SHORTCUT_SUBSTEP: int = 2
 
+@export_group("Debug")
+@export var debug_paths: bool = false
+@export var debug_region: bool = false
+
+@export_group("")
+
 var points = {}
 
 @onready var nav: AStar3D = AStar3D.new()
@@ -18,6 +24,13 @@ func _ready() -> void:
 		volume.visible = false
 	
 	add_points()
+
+
+func _process(_delta: float) -> void:
+	if debug_region:
+		for i in nav.get_point_count():
+			var p: Vector3 = nav.get_point_position(i) - Vector3.ONE * (grid_step / 2.0)
+			DebugDraw3D.draw_aabb(AABB(p, Vector3.ONE * grid_step), Color.SEA_GREEN)
 
 
 func add_points() -> void:
@@ -83,9 +96,11 @@ func find_path(from: Vector3, to: Vector3) -> PackedVector3Array:
 func get_shortest_path(from: Vector3, to: Vector3) -> PackedVector3Array:
 	var path: PackedVector3Array = find_path(from, to)
 	
-	if debug: DebugDraw3D.draw_arrow_path(path, Color.WHITE)
+	if debug_paths: DebugDraw3D.draw_arrow_path(path, Color.WHITE)
 	
 	if path.is_empty() || path.size() < 3:
+		if has_point(to):
+			path[-1] = to
 		return path
 	
 	var idx: int = 0
@@ -148,9 +163,6 @@ const OFFSETS: PackedVector3Array = [
 	set(v):
 		save_path = v
 		update_configuration_warnings()
-
-@export_group("Debug")
-@export var debug: bool = false
 
 @export_storage var data: VolumetricPoints
 

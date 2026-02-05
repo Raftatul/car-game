@@ -29,7 +29,6 @@ model = NodePath("..")
 acceleration = 2.0
 move_speed = 3.0
 model_rotation_speed = 1.5
-debug = true
 
 [node name="AISensor" type="Area3D" parent="." unique_id=1769036220]
 collision_layer = 0
