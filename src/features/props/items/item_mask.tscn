@@ -22,6 +22,7 @@ size = Vector3(1, 1, 0.2)
 [node name="ItemMask" unique_id=1407846572 instance=ExtResource("1_05xfk")]
 script = ExtResource("2_rjyx3")
 attach_point = 2
+is_two_handed = true
 
 [node name="CollisionShape3D" parent="Interactable" parent_id_path=PackedInt32Array(672757197) index="0" unique_id=717160102]
 shape = SubResource("SphereShape3D_1rojh")

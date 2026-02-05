@@ -12,6 +12,7 @@ radius = 2.0
 collision_layer = 2
 mass = 100.0
 script = ExtResource("2_m5cl1")
+is_two_handed = false
 
 [node name="Interactable" type="Area3D" parent="." index="1" unique_id=672757197]
 script = ExtResource("2_72lmu")

@@ -9,6 +9,8 @@ signal lifetime_changed(percent: float)
 @export var texture: Texture2D
 @export var attach_point: ATTACH_POINTS = ATTACH_POINTS.HAND
 
+@export var is_two_handed: bool = false
+
 @export var lifetime: float = 0.0
 
 var actor: Node

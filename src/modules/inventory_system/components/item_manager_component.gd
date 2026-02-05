@@ -32,7 +32,9 @@ func _ready() -> void:
 func tick(delta: float) -> void:
 	if !is_instance_valid(inventory_component): return
 	
-	if Time.get_ticks_msec() - last_scroll_time > scroll_delay:
+	var selected_item: Item = inventory_component.get_selected_item()
+	
+	if _can_switch_item(selected_item):
 		if wants_scroll_up:
 			last_scroll_time = Time.get_ticks_msec()
 			inventory_component.select_next_slot()
@@ -40,7 +42,6 @@ func tick(delta: float) -> void:
 			last_scroll_time = Time.get_ticks_msec()
 			inventory_component.select_previous_slot()
 	
-	var selected_item: Item = inventory_component.get_selected_item()
 	if selected_item:
 		if wants_item_use:
 			_handle_item_use(delta, selected_item)
@@ -60,6 +61,14 @@ func drop_item(item: Item) -> void:
 	inventory_component.remove_item_via_index(inventory_component.active_slot)
 	_rpc_drop_item.rpc(item.get_path(), drop_pos)
 	item.dropped()
+
+
+func _can_switch_item(selected_item: Item) -> bool:
+	var can_switch: bool = (
+		Time.get_ticks_msec() - last_scroll_time > scroll_delay
+		and (!is_instance_valid(selected_item) or !selected_item.is_two_handed)
+	)
+	return can_switch
 
 
 func _handle_item_use(delta: float, item: Item) -> void:
