@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dqjwyswiidmrv"]
+[gd_scene format=3 uid="uid://dqjwyswiidmrv"]
 
 [ext_resource type="PackedScene" uid="uid://h8ktknpf0t7p" path="res://src/modules/multiplayer/spawn_point.tscn" id="1_gv33s"]
 
@@ -19,34 +19,28 @@ glow_enabled = true
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_yqmen"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_p1npw"]
-size = Vector2(25, 25)
+[node name="Level01" type="Node3D" unique_id=1595441753]
 
-[node name="Level01" type="Node3D"]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2034099119]
 environment = SubResource("Environment_07edn")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1936144106]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 shadow_enabled = true
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1533655473]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=806177305]
 shape = SubResource("WorldBoundaryShape3D_yqmen")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-mesh = SubResource("PlaneMesh_p1npw")
-
-[node name="SpawnPoint" parent="." instance=ExtResource("1_gv33s")]
+[node name="SpawnPoint" parent="." unique_id=99117370 instance=ExtResource("1_gv33s")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4)
 
-[node name="SpawnPoint2" parent="." instance=ExtResource("1_gv33s")]
+[node name="SpawnPoint2" parent="." unique_id=1518061150 instance=ExtResource("1_gv33s")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -4)
 
-[node name="SpawnPoint3" parent="." instance=ExtResource("1_gv33s")]
+[node name="SpawnPoint3" parent="." unique_id=1879453830 instance=ExtResource("1_gv33s")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 4)
 
-[node name="SpawnPoint4" parent="." instance=ExtResource("1_gv33s")]
+[node name="SpawnPoint4" parent="." unique_id=418805894 instance=ExtResource("1_gv33s")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)

@@ -13,6 +13,9 @@ radius = 2.0
 size = Vector3(0.618, 0.739, 0.618)
 
 [node name="Jetpack" unique_id=1407846572 node_paths=PackedStringArray("anim_player") instance=ExtResource("1_5hxq2")]
+center_of_mass_mode = 1
+center_of_mass = Vector3(0.00019473312, -2.4975016e-05, 0.00019473406)
+inertia = Vector3(10.6896925, 8.827872, 10.6896925)
 script = ExtResource("2_y11rr")
 force = 20.0
 acceleration = 20.0
@@ -24,7 +27,7 @@ lifetime = 20.0
 [node name="CollisionShape3D" parent="Interactable" parent_id_path=PackedInt32Array(672757197) index="0" unique_id=717160102]
 shape = SubResource("SphereShape3D_yg212")
 
-[node name="Offset" parent="." index="3" unique_id=2041991875]
+[node name="Offset" parent="." index="2" unique_id=2041991875]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="4" unique_id=1446513883]

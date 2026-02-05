@@ -7,8 +7,8 @@ extends RigidBody3D
 
 func _physics_process(delta: float) -> void:
 	var bodies: Array[Node3D] = area.get_overlapping_bodies().filter(_filter_players)
-	var avr_pos: Vector3 = _get_average_pos(bodies)
-	apply_central_force(avr_pos * move_force)
+	var direction: Vector3 = _get_average_pos(bodies).normalized()
+	apply_central_force(direction * move_force * mass)
 
 
 func _get_average_pos(bodies: Array[Node3D]) -> Vector3:
@@ -17,7 +17,7 @@ func _get_average_pos(bodies: Array[Node3D]) -> Vector3:
 		return average_pos
 	
 	for body in bodies:
-		average_pos += to_local(body.global_position)
+		average_pos += global_basis * to_local(body.global_position)
 	return average_pos / bodies.size()
 
 

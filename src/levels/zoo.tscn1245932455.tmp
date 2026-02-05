@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://5mpygrtqvfxe"]
+
+[ext_resource type="PackedScene" uid="uid://h8ktknpf0t7p" path="res://src/modules/multiplayer/spawn_point.tscn" id="1_n2inr"]
+[ext_resource type="Script" uid="uid://c2mwuvlffjxot" path="res://src/features/water/custom_liquid_area.gd" id="1_wt035"]
+[ext_resource type="Material" uid="uid://pbw4j4s2e6cy" path="res://assets/shaders/water/water_shader_material.tres" id="2_arbid"]
+[ext_resource type="Texture2D" uid="uid://8yt7p4okxtp5" path="res://assets/terrains/sand/sand_color.png" id="4_rep4f"]
+[ext_resource type="Texture2D" uid="uid://cfupmk6hv8em6" path="res://assets/terrains/sand/sand_normal.png" id="5_2ybnr"]
+[ext_resource type="PackedScene" uid="uid://6442jxq5hu73" path="res://src/features/props/shop/shop.tscn" id="5_l54tx"]
+[ext_resource type="PackedScene" uid="uid://4boofnvrgpae" path="res://src/features/props/raft/raft.tscn" id="10_cj628"]
+[ext_resource type="PackedScene" uid="uid://b1n45j8c8vn4u" path="res://src/features/entities/fish.tscn" id="13_ndggs"]
+[ext_resource type="PackedScene" uid="uid://bj87j7b2cfw0b" path="res://assets/scenes/kelp/kelp.tscn" id="14_h7jkl"]
+[ext_resource type="PackedScene" uid="uid://bgoiai11g65yt" path="res://src/features/props/respawner/respawner.tscn" id="15_jseuq"]
+[ext_resource type="Script" uid="uid://decph3w7n7q4s" path="res://src/modules/basic_attributes/components/health/hit_box.gd" id="16_ihxu1"]
+[ext_resource type="Script" uid="uid://yk07u3qi60wx" path="res://src/modules/volumetric_ai/volumetric_region_3d.gd" id="19_rep4f"]
+[ext_resource type="Resource" uid="uid://dv5edm3o01jiv" path="res://data/volumetric_points/zoo/zoo_volumetric_region.tres" id="20_2ybnr"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2inr"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_cn1qa"]
+sky_material = SubResource("ProceduralSkyMaterial_n2inr")
+
+[sub_resource type="Environment" id="Environment_ffv3l"]
+background_mode = 2
+sky = SubResource("Sky_cn1qa")
+tonemap_mode = 2
+ssr_enabled = true
+glow_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ygn0o"]
+properties/0/path = NodePath(".:time")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[sub_resource type="FogMaterial" id="FogMaterial_t72cs"]
+density = 0.2
+albedo = Color(1.4439225e-06, 0.6007146, 0.74289006, 1)
+height_falloff = 10.0
+edge_fade = 0.0517
+
+[sub_resource type="Gradient" id="Gradient_ygn0o"]
+offsets = PackedFloat32Array(0.2, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_t72cs"]
+noise_type = 2
+frequency = 0.03
+cellular_jitter = 3.0
+cellular_return_type = 0
+domain_warp_enabled = true
+domain_warp_type = 1
+domain_warp_amplitude = 50.0
+domain_warp_fractal_type = 2
+domain_warp_fractal_lacunarity = 1.5
+domain_warp_fractal_gain = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_l54tx"]
+noise = SubResource("FastNoiseLite_t72cs")
+color_ramp = SubResource("Gradient_ygn0o")
+seamless = true
+
+[sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_6w2um"]
+_shader_parameters = {
+&"bias_distance": 512.0,
+&"blend_sharpness": 0.5,
+&"depth_blur": 0.0,
+&"enable_macro_variation": true,
+&"enable_projection": true,
+&"flat_terrain_normals": false,
+&"macro_variation1": Color(1, 1, 1, 1),
+&"macro_variation2": Color(1, 1, 1, 1),
+&"macro_variation_slope": 0.333,
+&"mipmap_bias": 1.0,
+&"noise1_angle": 0.0,
+&"noise1_offset": Vector2(0.5, 0.5),
+&"noise1_scale": 0.04,
+&"noise2_scale": 0.076,
+&"noise_texture": SubResource("NoiseTexture2D_l54tx"),
+&"projection_threshold": 0.8,
+&"world_noise_fragment_normals": false,
+&"world_noise_height": 64.0,
+&"world_noise_lod_distance": 7500.0,
+&"world_noise_max_octaves": 4,
+&"world_noise_min_octaves": 2,
+&"world_noise_offset": Vector3(0, 0, 0),
+&"world_noise_region_blend": 0.33,
+&"world_noise_scale": 5.0
+}
+world_background = 2
+
+[sub_resource type="StandardMaterial3D" id="

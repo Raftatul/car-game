@@ -54,7 +54,6 @@ var diving_right_axis: Vector3 = Vector3.ZERO
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
 
 @onready var pause_menu: Control = %PauseMenu
-@onready var buoyancy: Buoyancy = $Buoyancy
 @onready var label_3d: Label3D = $Label3D
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
 
@@ -66,6 +65,7 @@ var diving_right_axis: Vector3 = Vector3.ZERO
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var stamina_component: StaminaComponent = $StaminaComponent
 @onready var oxygen_component: OxygenComponent = $OxygenComponent
+@onready var character_buoyancy: CharacterBuoyancy = $CharacterBuoyancy
 
 
 func _enter_tree() -> void:
@@ -203,8 +203,8 @@ func _process_swimming_state(delta: float) -> void:
 	else:
 		speed = swimming_speed
 	
-	if inputs_component.dive_pressed or buoyancy.get_depth() > 3.5:
-		buoyancy.active = false
+	if inputs_component.dive_pressed or character_buoyancy.get_average_depth() < -3.5:
+		character_buoyancy.apply_forces = false
 		if abs(velocity.y) < 3.0:
 			velocity.y += -3.0
 		gravity_scale = 0.0
@@ -240,10 +240,10 @@ func _process_diving_state(delta: float) -> void:
 	else:
 		speed = swimming_speed
 	
-	if !inputs_component.dive_pressed and buoyancy.get_depth() < 2.0:
-		movement_state = MOVEMENT_STATE.SWIMMING
+	if !inputs_component.dive_pressed and character_buoyancy.get_average_depth() > -2.0:
+		character_buoyancy.apply_forces = true
 		gravity_scale = 1.0
-		buoyancy.active = true
+		movement_state = MOVEMENT_STATE.SWIMMING
 	
 	if input or up_input:
 		var vel_dir: Vector3 = (camera.global_basis * Vector3(input.x, 0.0, input.y) + Vector3.UP * up_input).normalized()
@@ -280,14 +280,18 @@ func _process_movement(delta: float, max_speed: float, acceleration: float) -> v
 	model.rotation.z = lerp_angle(model.rotation.z, 0.0, delta * rotation_speed)
 
 
-func _on_buoyancy_water_entered() -> void:
-	movement_state = MOVEMENT_STATE.SWIMMING
+func is_in_water() -> bool:
+	return character_buoyancy.get_submerged_ratio() == 1.0
 
 
-func _on_buoyancy_water_exited() -> void:
-	movement_state = MOVEMENT_STATE.FALLING
-	gravity_scale = 1.0
-	buoyancy.active = true
+func _on_character_buoyancy_submerged_changed() -> void:
+	var is_submerged: bool = character_buoyancy.get_submerged_ratio() > 0.0 and character_buoyancy.get_submerged_ratio() < 1.0
+	if is_submerged and movement_state != MOVEMENT_STATE.SWIMMING:
+		movement_state = MOVEMENT_STATE.SWIMMING
+	if !is_submerged and movement_state == MOVEMENT_STATE.SWIMMING:
+		movement_state = MOVEMENT_STATE.FALLING
+		gravity_scale = 1.0
+		character_buoyancy.apply_forces = true
 
 
 func _on_health_component_health_changed(percent: float) -> void:

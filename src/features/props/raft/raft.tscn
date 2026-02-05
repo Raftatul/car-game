@@ -1,21 +1,23 @@
 [gd_scene format=3 uid="uid://4boofnvrgpae"]
 
-[ext_resource type="Script" uid="uid://bbfcrnb4wwgl2" path="res://src/modules/water_system/buoyancy.gd" id="1_7l1dg"]
 [ext_resource type="Script" uid="uid://bs1tn430dtnth" path="res://src/features/props/raft/raft.gd" id="1_flr3t"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jx7a4"]
-size = Vector3(3, 1, 5)
+size = Vector3(5, 1, 5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_wt035"]
-size = Vector3(3, 1, 5)
+size = Vector3(5, 1, 5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7l1dg"]
-size = Vector3(2.7, 1.3, 4.7)
+size = Vector3(4.8, 1.3, 4.8)
 
 [node name="Raft" type="RigidBody3D" unique_id=555745467]
-mass = 30.0
+mass = 7832.5977
+center_of_mass_mode = 1
+center_of_mass = Vector3(0.005907642, 0.0366811, -9.14548e-05)
+inertia = Vector3(17576.164, 23080.223, 7002.6416)
 script = ExtResource("1_flr3t")
-move_force = 75.0
+move_force = 5.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=193671600]
 shape = SubResource("BoxShape3D_jx7a4")
@@ -23,31 +25,14 @@ shape = SubResource("BoxShape3D_jx7a4")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1413846673]
 mesh = SubResource("BoxMesh_wt035")
 
-[node name="Buoyancy" type="Node3D" parent="." unique_id=2107964279 node_paths=PackedStringArray("points")]
-script = ExtResource("1_7l1dg")
-points = [NodePath("Pontoon"), NodePath("Pontoon2"), NodePath("Pontoon3"), NodePath("Pontoon4"), NodePath("Pontoon5")]
-bounciness = 30.0
-buo_damping = 0.15
-debug = true
-metadata/_custom_type_script = "uid://bbfcrnb4wwgl2"
-
-[node name="Pontoon" type="Marker3D" parent="Buoyancy" unique_id=530288777]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -3)
-
-[node name="Pontoon2" type="Marker3D" parent="Buoyancy" unique_id=165598237]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3)
-
-[node name="Pontoon3" type="Marker3D" parent="Buoyancy" unique_id=536079634]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -3)
-
-[node name="Pontoon4" type="Marker3D" parent="Buoyancy" unique_id=11997289]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 3)
-
-[node name="Pontoon5" type="Marker3D" parent="Buoyancy" unique_id=618927088]
-
 [node name="Area3D" type="Area3D" parent="." unique_id=1009089086]
 collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=2144063653]
 shape = SubResource("BoxShape3D_7l1dg")
+
+[node name="Buoyancy" type="Buoyancy" parent="." unique_id=1197961295 node_paths=PackedStringArray("collider")]
+collider = NodePath("../CollisionShape3D")
+calculate_mass_properties = true
+show_debug = true
