@@ -35,8 +35,8 @@ volumetric_fog_density = 0.0
 [sub_resource type="PlaneMesh" id="PlaneMesh_1s5vw"]
 lightmap_size_hint = Vector2i(127, 127)
 size = Vector2(300, 300)
-subdivide_width = 600
-subdivide_depth = 600
+subdivide_width = 1200
+subdivide_depth = 1200
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ygn0o"]
 properties/0/path = NodePath(".:time")
@@ -197,15 +197,9 @@ spawn_path = NodePath("../Props")
 
 [node name="Raft" parent="." unique_id=555745467 instance=ExtResource("10_cj628")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.265932, 1.4254265, 7.2118993)
-mass = 12850.037
-center_of_mass = Vector3(-0.00018750709, 0.036675557, -9.1407055e-05)
-inertia = Vector3(28835.178, 55217.21, 28840.584)
 
 [node name="Raft2" parent="." unique_id=569801516 instance=ExtResource("10_cj628")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 1.4613066, -55.03455, 46.851097)
-mass = 12850.037
-center_of_mass = Vector3(-0.00018750709, 0.036675557, -9.1407055e-05)
-inertia = Vector3(28835.178, 55217.21, 28840.584)
 
 [node name="Kelp" parent="." unique_id=1475737754 instance=ExtResource("14_h7jkl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.61925, -19.998905, 17.383507)
@@ -253,5 +247,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5270677, 0.3566655, -21.079
 
 [node name="ItemMask" parent="." unique_id=1145077405 instance=ExtResource("15_ihxu1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.666975, 1.019382, -21.314684)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=43948912]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.750605, -0.4985144, -20.20868)
+transparency = 0.5
+use_collision = true
+size = Vector3(6.6674805, 1, 6.827881)
 
 [editable path="VolumetricRegion/Fish"]

@@ -9,14 +9,21 @@ var target: PlayerCharacter
 var start_pos: Vector3
 var attacking: bool = false
 
+@onready var ai_sensor: AISensor = $AISensor
 @onready var ai_movement: AIMovement = $AIMovement
 @onready var remote_transform: RemoteTransform3D = $RemoteTransform3D
 @onready var timer_attack: Timer = $TimerAttack
 
 
 func _ready() -> void:
-	start_pos = global_position
-	_set_random_wandering_target()
+	if !is_multiplayer_authority():
+		set_process(false)
+		set_physics_process(false)
+		
+		ai_sensor.process_mode = Node.PROCESS_MODE_DISABLED
+	else:
+		start_pos = global_position
+		_set_random_wandering_target()
 
 
 func _physics_process(delta: float) -> void:
@@ -36,6 +43,23 @@ func _set_random_wandering_target() -> void:
 	ai_movement.target_pos = start_pos + random_offset
 
 
+func _grab_player() -> void:
+	attacking = true
+	target.death.connect(_on_target_death)
+	timer_attack.start()
+	_rpc_grab_player.rpc(target.get_path())
+
+
+@rpc("authority", "call_local", "reliable")
+func _rpc_grab_player(path: NodePath) -> void:
+	remote_transform.remote_path = path
+
+
+@rpc("authority", "call_local", "reliable")
+func _rpc_release_player() -> void:
+	remote_transform.remote_path = ""
+
+
 func _on_ai_sensor_target_in_range(_target: Node3D) -> void:
 	if _target is PlayerCharacter:
 		target = _target
@@ -47,8 +71,9 @@ func _on_ai_sensor_target_out_of_range() -> void:
 
 func _on_target_death() -> void:
 	target.death.disconnect(_on_target_death)
-	remote_transform.remote_path = ""
 	timer_attack.stop()
+	attacking = false
+	_rpc_release_player.rpc()
 
 
 func _on_timer_attack_timeout() -> void:
@@ -60,9 +85,6 @@ func _on_ai_movement_target_reached() -> void:
 	if target and !attacking:
 		if target.global_position.distance_to(global_position) > attack_range:
 			return
-		attacking = true
-		target.death.connect(_on_target_death)
-		remote_transform.remote_path = target.get_path()
-		timer_attack.start()
+		_grab_player()
 	else:
 		_set_random_wandering_target()

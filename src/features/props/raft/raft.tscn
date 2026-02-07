@@ -11,11 +11,13 @@ size = Vector3(5, 1, 5)
 [sub_resource type="BoxShape3D" id="BoxShape3D_7l1dg"]
 size = Vector3(4.8, 1.3, 4.8)
 
+[sub_resource type="BuoyancyMaterial" id="BuoyancyMaterial_7l1dg"]
+
 [node name="Raft" type="RigidBody3D" unique_id=555745467]
-mass = 7832.5977
+mass = 12850.037
 center_of_mass_mode = 1
-center_of_mass = Vector3(0.005907642, 0.0366811, -9.14548e-05)
-inertia = Vector3(17576.164, 23080.223, 7002.6416)
+center_of_mass = Vector3(-0.00018750709, 0.036675557, -9.1407055e-05)
+inertia = Vector3(28835.178, 55217.21, 28840.584)
 script = ExtResource("1_flr3t")
 move_force = 5.0
 
@@ -32,7 +34,7 @@ collision_mask = 2
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=2144063653]
 shape = SubResource("BoxShape3D_7l1dg")
 
-[node name="Buoyancy" type="Buoyancy" parent="." unique_id=1197961295 node_paths=PackedStringArray("collider")]
+[node name="RigidBuoyancy" type="RigidBuoyancy" parent="." unique_id=1244554776 node_paths=PackedStringArray("collider")]
 collider = NodePath("../CollisionShape3D")
+buoyancy_material = SubResource("BuoyancyMaterial_7l1dg")
 calculate_mass_properties = true
-show_debug = true

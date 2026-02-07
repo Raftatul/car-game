@@ -54,7 +54,6 @@ var diving_right_axis: Vector3 = Vector3.ZERO
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
 
 @onready var pause_menu: Control = %PauseMenu
-@onready var label_3d: Label3D = $Label3D
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
 
 ##Components
@@ -65,7 +64,7 @@ var diving_right_axis: Vector3 = Vector3.ZERO
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var stamina_component: StaminaComponent = $StaminaComponent
 @onready var oxygen_component: OxygenComponent = $OxygenComponent
-@onready var character_buoyancy: CharacterBuoyancy = $CharacterBuoyancy
+@onready var buoyancy: CharacterBuoyancy = $CharacterBuoyancy
 
 
 func _enter_tree() -> void:
@@ -80,8 +79,12 @@ func _ready() -> void:
 		set_process_unhandled_input(false)
 		camera.current = false
 		canvas_layer.visible = false
+		
+		buoyancy.process_mode = Node.PROCESS_MODE_DISABLED
 	else:
 		camera.current = true
+		buoyancy.submerged_changed.connect(_on_buoyancy_submerged_changed)
+		health_component.health_changed.connect(_on_health_component_health_changed)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -123,6 +126,9 @@ func _physics_process(delta: float) -> void:
 		MOVEMENT_STATE.DIVING:
 			_process_diving_state(delta)
 	
+	DebugDraw3D.draw_text(global_position + Vector3.UP, str(buoyancy.get_submerged_ratio()))
+	DebugDraw3D.draw_text(global_position + Vector3.UP * 1.25, str(MOVEMENT_STATE.find_key(movement_state)))
+	
 	item_manager_component.wants_scroll_up = inputs_component.scroll_up_pressed
 	item_manager_component.wants_scroll_down = inputs_component.scroll_down_pressed
 	
@@ -134,7 +140,6 @@ func _physics_process(delta: float) -> void:
 		stamina_component.tick(delta)
 	
 	move_and_slide()
-	label_3d.text = str(MOVEMENT_STATE.find_key(movement_state))
 
 
 func jump(force: float) -> void:
@@ -197,14 +202,16 @@ func _process_swimming_state(delta: float) -> void:
 	
 	oxygen_component.tick(delta)
 	
+	velocity += get_gravity() * delta * gravity_scale
+	
 	if inputs_component.run_pressed and stamina_component.has_amount(delta * stamina_consume_rate):
 		stamina_component.modify(delta * stamina_consume_rate)
 		speed = swimming_fast_speed
 	else:
 		speed = swimming_speed
 	
-	if inputs_component.dive_pressed or character_buoyancy.get_average_depth() < -3.5:
-		character_buoyancy.apply_forces = false
+	if inputs_component.dive_pressed or buoyancy.get_average_depth() < -3.5:
+		buoyancy.apply_forces = false
 		if abs(velocity.y) < 3.0:
 			velocity.y += -3.0
 		gravity_scale = 0.0
@@ -240,8 +247,8 @@ func _process_diving_state(delta: float) -> void:
 	else:
 		speed = swimming_speed
 	
-	if !inputs_component.dive_pressed and character_buoyancy.get_average_depth() > -2.0:
-		character_buoyancy.apply_forces = true
+	if !inputs_component.dive_pressed and buoyancy.get_average_depth() > -2.0:
+		buoyancy.apply_forces = true
 		gravity_scale = 1.0
 		movement_state = MOVEMENT_STATE.SWIMMING
 	
@@ -281,17 +288,17 @@ func _process_movement(delta: float, max_speed: float, acceleration: float) -> v
 
 
 func is_in_water() -> bool:
-	return character_buoyancy.get_submerged_ratio() == 1.0
+	return buoyancy.get_submerged_ratio() == 1.0
 
 
-func _on_character_buoyancy_submerged_changed() -> void:
-	var is_submerged: bool = character_buoyancy.get_submerged_ratio() > 0.0 and character_buoyancy.get_submerged_ratio() < 1.0
+func _on_buoyancy_submerged_changed() -> void:
+	var is_submerged: bool = buoyancy.get_submerged_ratio() > 0.0
 	if is_submerged and movement_state != MOVEMENT_STATE.SWIMMING:
 		movement_state = MOVEMENT_STATE.SWIMMING
 	if !is_submerged and movement_state == MOVEMENT_STATE.SWIMMING:
 		movement_state = MOVEMENT_STATE.FALLING
 		gravity_scale = 1.0
-		character_buoyancy.apply_forces = true
+		buoyancy.apply_forces = true
 
 
 func _on_health_component_health_changed(percent: float) -> void:

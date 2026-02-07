@@ -8,11 +8,13 @@
 resource_local_to_scene = true
 radius = 2.0
 
-[node name="Item" unique_id=1407846572 instance=ExtResource("1_k5n3e")]
+[sub_resource type="BuoyancyMaterial" id="BuoyancyMaterial_nnl8x"]
+
+[node name="Item" unique_id=1407846572 node_paths=PackedStringArray("buoyancy") instance=ExtResource("1_k5n3e")]
 collision_layer = 2
 mass = 100.0
 script = ExtResource("2_m5cl1")
-is_two_handed = false
+buoyancy = NodePath("RigidBuoyancy")
 
 [node name="Interactable" type="Area3D" parent="." index="1" unique_id=672757197]
 script = ExtResource("2_72lmu")
@@ -22,6 +24,7 @@ metadata/_custom_type_script = "uid://bdjscuxss8e37"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable" index="0" unique_id=717160102]
 shape = SubResource("SphereShape3D_nnl8x")
 
-[node name="Buoyancy" type="Buoyancy" parent="." index="4" unique_id=939775643]
+[node name="RigidBuoyancy" type="RigidBuoyancy" parent="." index="4" unique_id=645523971]
 buoyancy_mode = 1
-buoyancy_probes = PackedVector3Array(0, 0, 0)
+buoyancy_material = SubResource("BuoyancyMaterial_nnl8x")
+probes = PackedVector3Array(0, 0, 0)

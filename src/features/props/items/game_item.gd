@@ -2,7 +2,7 @@ class_name GameItem
 extends Item
 
 @export var anim_player: AnimationPlayer
-@export var buoyancy: Buoyancy
+@export var buoyancy: RigidBuoyancy
 
 @onready var interactable: Interactable = $Interactable
 
