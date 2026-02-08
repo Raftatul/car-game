@@ -266,26 +266,26 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, -
 script = ExtResource("3_ti7vc")
 
 [node name="Skeleton3D" parent="Visual/godot_plush_model/Rig" parent_id_path=PackedInt32Array(1080972857, 1940519781) index="0" unique_id=1131176568]
-bones/0/position = Vector3(-2.879261e-22, 0.7815366, -4.952717e-10)
-bones/0/rotation = Quaternion(0.9999662, -0.0078845965, 0.0023664825, -2.1889036e-05)
+bones/0/position = Vector3(-2.8604033e-22, 0.78403485, -4.0975973e-10)
+bones/0/rotation = Quaternion(0.999869, -0.008847106, 0.013556552, -0.00012607673)
 bones/1/position = Vector3(-2.3597598e-17, 0, -6.18693e-17)
 bones/1/rotation = Quaternion(1, -2.2923515e-15, -3.4519715e-08, -5.960464e-08)
-bones/2/rotation = Quaternion(0.09281601, -0.16296527, 0.9240642, -0.33306587)
-bones/3/rotation = Quaternion(0.092481226, 0.019161193, -0.0017780131, 0.99552846)
-bones/5/rotation = Quaternion(0.040526226, 0.096189015, 0.9348133, 0.3394544)
-bones/6/rotation = Quaternion(0.3050082, 0.018325109, -0.005872276, 0.95215535)
-bones/8/rotation = Quaternion(-0.060739376, -0.005282291, -0.07675987, 0.9951838)
-bones/9/position = Vector3(-8.4026155e-09, 0.15232363, 7.2562156e-10)
-bones/9/rotation = Quaternion(0.2590552, -0.19538803, 0.053573437, 0.94437486)
-bones/10/position = Vector3(7.349775e-09, 0.20615166, -7.8163165e-09)
-bones/10/rotation = Quaternion(-0.5638994, -0.016211152, 0.035840534, 0.8249062)
+bones/2/rotation = Quaternion(0.08240801, -0.14260851, 0.92811435, -0.3338795)
+bones/3/rotation = Quaternion(0.09446272, 0.016089082, -0.0015210458, 0.99539727)
+bones/5/rotation = Quaternion(0.029899392, 0.075663984, 0.93716794, 0.33926004)
+bones/6/rotation = Quaternion(0.30313367, 0.015398043, -0.0049048783, 0.952811)
+bones/8/rotation = Quaternion(-0.041071188, -0.004837044, -0.07011347, 0.99668145)
+bones/9/position = Vector3(-6.687496e-09, 0.15247385, 1.1918371e-09)
+bones/9/rotation = Quaternion(0.23350266, -0.19753923, 0.048477836, 0.95084417)
+bones/10/position = Vector3(6.5640857e-09, 0.20630856, -9.967833e-09)
+bones/10/rotation = Quaternion(-0.55849105, -0.027841283, 0.033717263, 0.8283572)
 bones/11/position = Vector3(-1.9200796e-08, 0.2512119, -4.9427776e-08)
 bones/11/rotation = Quaternion(-0.000102671445, 0.9324488, -0.36130223, 4.626674e-05)
-bones/12/rotation = Quaternion(-0.035110906, 0.0023985752, 0.0378926, 0.998662)
-bones/13/position = Vector3(6.9790786e-09, 0.15283312, -1.0337503e-08)
-bones/13/rotation = Quaternion(0.20696037, 0.20501469, -0.04441219, 0.95559615)
-bones/14/position = Vector3(-1.8068603e-08, 0.20655984, -1.0068248e-09)
-bones/14/rotation = Quaternion(-0.5462299, 0.007830071, -0.026196249, 0.837189)
+bones/12/rotation = Quaternion(-0.028534299, 0.0020149185, 0.03216579, 0.9990732)
+bones/13/position = Vector3(1.2302728e-09, 0.15299535, -8.2927425e-09)
+bones/13/rotation = Quaternion(0.18322536, 0.20686612, -0.039476726, 0.9602481)
+bones/14/position = Vector3(-2.0357609e-08, 0.20669559, 7.483548e-09)
+bones/14/rotation = Quaternion(-0.5323255, -0.0031487825, -0.027547777, 0.8460856)
 bones/15/position = Vector3(-4.8419313e-10, 0.25120693, -5.0023658e-08)
 bones/15/rotation = Quaternion(-2.7789587e-05, 0.9324604, -0.36127216, 0.0002779076)
 
@@ -293,7 +293,7 @@ bones/15/rotation = Quaternion(-2.7789587e-05, 0.9324604, -0.36127216, 0.0002779
 material_override = SubResource("ShaderMaterial_ug4fj")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="1" unique_id=1198560524]
-transform = Transform3D(-0.7608533, -0.50013214, 0.41348556, 0.6481935, -0.555509, 0.5208217, -0.030784681, 0.66428745, 0.7468429, -0.6838168, 0.6260313, 0.13091278)
+transform = Transform3D(-0.75868696, -0.5352202, 0.37139386, 0.6497013, -0.57983315, 0.49161124, -0.047773786, 0.61427426, 0.78764504, -0.69040644, 0.6248556, 0.10352393)
 bone_name = "DEF-hand.R"
 bone_idx = 7
 
@@ -302,7 +302,7 @@ unique_name_in_owner = true
 transform = Transform3D(1, 5.6311364e-09, 4.656613e-10, 5.6477347e-09, 1, -6.184564e-11, 0, 6.548362e-11, 1, 0.010235667, 0.14705995, 6.040046e-05)
 
 [node name="BoneAttachment3D2" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="2" unique_id=1331867321]
-transform = Transform3D(0.99986446, -0.015768552, 0.0047331494, -0.015768763, -0.9998757, 6.459071e-06, 0.00473246, -8.10941e-05, -0.99998885, -2.879261e-22, 0.7815366, -4.952717e-10)
+transform = Transform3D(0.9994759, -0.017688474, 0.027111782, -0.017695311, -0.9998434, 1.224791e-05, 0.02710732, -0.00049199286, -0.9996324, -2.8604033e-22, 0.78403485, -4.0975973e-10)
 bone_name = "DEF-hips"
 bone_idx = 0
 
@@ -310,7 +310,7 @@ bone_idx = 0
 transform = Transform3D(-1, 8.742277e-08, 0, -8.742278e-08, -0.99999994, 0, 0, 0, 1.0000001, 0.06046414, -0.1489309, 0.51552385)
 
 [node name="BoneAttachment3D3" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="3" unique_id=216061842]
-transform = Transform3D(0.99986446, 0.015768552, -0.00473322, -0.015768763, 0.9998757, -6.5771765e-06, 0.0047325287, 8.121331e-05, 0.99998885, -2.3887525e-17, 0.7815366, -4.9527166e-10)
+transform = Transform3D(0.9994759, 0.01768847, -0.027111853, -0.017695311, 0.9998434, -1.2365878e-05, 0.02710739, 0.000492112, 0.9996324, -2.5262903e-17, 0.78403485, -4.0975967e-10)
 bone_name = "DEF-head"
 bone_idx = 1
 

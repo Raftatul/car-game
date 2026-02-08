@@ -12,6 +12,7 @@ size = Vector3(5, 1, 5)
 size = Vector3(4.8, 1.3, 4.8)
 
 [sub_resource type="BuoyancyMaterial" id="BuoyancyMaterial_7l1dg"]
+angular_drag = 10.0
 
 [node name="Raft" type="RigidBody3D" unique_id=555745467]
 mass = 12850.037

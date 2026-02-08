@@ -1,24 +1,24 @@
 extends LiquidArea
 
 @export var target_mesh: MeshInstance3D
+@export var waves_data: PackedVector4Array
+@export var gravity: float = 9.8
+@export var wave_speed: float = 1.0
 
-var noise: Image
-var wave_speed: float
-var noise_scale: float
-var height_scale: float
-
+var offset: Vector3 = Vector3.ZERO
 var time: float = 0.0
 
 
 func _ready() -> void:
-	noise = target_mesh.material_override.get("shader_parameter/wave").noise.get_seamless_image(512, 512)
-	wave_speed = target_mesh.material_override.get("shader_parameter/wave_speed")
-	noise_scale = target_mesh.material_override.get("shader_parameter/noise_scale")
-	height_scale = target_mesh.material_override.get("shader_parameter/height_scale")
+	if target_mesh:
+		offset = target_mesh.global_position
+		offset.y = 0.0
+		target_mesh.material_override.set("shader_parameter/waves", waves_data)
+		target_mesh.material_override.set("shader_parameter/gravity", gravity)
 
 
 func _process(delta: float) -> void:
-	time += delta
+	time += delta * wave_speed
 	target_mesh.material_override.set("shader_parameter/wave_time", time)
 
 
@@ -29,9 +29,47 @@ func update_transforms_for_points(global_points: PackedVector3Array, transforms:
 
 
 func compute_wave_height(point_pos: Vector3) -> Transform3D:
-	var uv_x: float = wrapf(point_pos.x / noise_scale + time * wave_speed, 0.0, 1.0)
-	var uv_y: float = wrapf(point_pos.z / noise_scale + time * wave_speed, 0.0, 1.0)
-	
-	var pixel_pos: Vector2 = Vector2(uv_x * noise.get_width(), uv_y * noise.get_height())
-	var height: float = target_mesh.global_position.y + noise.get_pixelv(pixel_pos).r * height_scale
-	return Transform3D(Basis.IDENTITY, Vector3(point_pos.x, height, point_pos.z)) 
+	return Transform3D(Basis.IDENTITY, sample_gerstner_surface(point_pos)) 
+
+
+func sample_gerstner_surface(world_pos: Vector3, iterations := 4) -> Vector3:
+	var p := world_pos + offset
+
+	for i in iterations:
+		var disp := Vector3.ZERO
+
+		for wave in waves_data:
+			if wave == Vector4.ZERO: continue
+			
+			var steep := wave.z
+			var length := wave.w
+			var k := TAU / length
+			var c := sqrt(gravity / k)
+			var d := Vector2(wave.x, wave.y).normalized()
+			var f := k * (d.dot(Vector2(p.x, p.z)) - c * time)
+			var a := steep / k
+
+			disp.x += d.x * a * cos(f)
+			disp.y += a * sin(f)
+			disp.z += d.y * a * cos(f)
+
+		# Remove horizontal displacement only
+		p.x = world_pos.x - disp.x
+		p.z = world_pos.z - disp.z
+
+	# Final evaluation for Y
+	var final_disp := Vector3.ZERO
+	for wave in waves_data:
+		if wave == Vector4.ZERO: continue
+		
+		var steep := wave.z
+		var length := wave.w
+		var k := TAU / length
+		var c := sqrt(gravity / k)
+		var d := Vector2(wave.x, wave.y).normalized()
+		var f := k * (d.dot(Vector2(p.x, p.z)) - c * time)
+		var a := steep / k
+
+		final_disp.y += a * sin(f)
+
+	return Vector3(world_pos.x, final_disp.y + target_mesh.global_position.y, world_pos.z)

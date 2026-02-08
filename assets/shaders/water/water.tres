@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://hrnty5iva25s"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_dkr5v"]
+noise_type = 3
+frequency = 0.0426
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ph54m"]
+noise = SubResource("FastNoiseLite_dkr5v")
+seamless = true
+as_normal_map = true
+
+[resource]
+albedo_color = Color(0, 0, 1, 0.39607844)
+metallic = 0.5
+metallic_specular = 1.0
+roughness = 0.4
+refraction_texture = SubResource("NoiseTexture2D_ph54m")
