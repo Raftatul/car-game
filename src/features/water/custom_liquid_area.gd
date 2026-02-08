@@ -13,8 +13,8 @@ func _ready() -> void:
 	if target_mesh:
 		offset = target_mesh.global_position
 		offset.y = 0.0
-		target_mesh.material_override.set("shader_parameter/waves", waves_data)
-		target_mesh.material_override.set("shader_parameter/gravity", gravity)
+		waves_data = target_mesh.material_override.get("shader_parameter/waves")
+		gravity = target_mesh.material_override.get("shader_parameter/gravity")
 
 
 func _process(delta: float) -> void:

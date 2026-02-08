@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode blend_mix, depth_draw_always, cull_back, diffuse_burley, specular_schlick_ggx, world_vertex_coords;
+render_mode blend_mix, depth_draw_always, cull_back, diffuse_burley, specular_schlick_ggx;
 
 uniform float roughness : hint_range(0.0, 1.0);
 uniform sampler2D texture_metallic : hint_default_white, filter_linear_mipmap, repeat_enable;
@@ -19,12 +19,13 @@ uniform float water_smooth: hint_range(0.0, 1.0, 0.01) = 0.1;
 uniform float fresnel_force: hint_range(0.0, 1.0, 0.1) = 0.5;
 uniform float water_color_ratio: hint_range(0.0, 1.0, 0.1) = 0.5;
 uniform float depth_distance: hint_range(0.0, 50.0, 0.1) = 0.5;
-uniform float beers_law: hint_range(0.0, 50.0, 0.1) = 3.0;
+uniform float refraction_strength: hint_range(0.0, 1.0, 0.001) = 0.1;
 
+uniform float wave_speed = 1.0;
 uniform sampler2D water_noise_1;
 uniform sampler2D water_noise_2;
 
-uniform float normal_scale: hint_range(0.0, 1.0, 0.1) = 0.5;
+uniform float normal_scale: hint_range(0.01, 1.0, 0.01) = 0.5;
 
 uniform float uv_scale = 1.0;
 
@@ -97,17 +98,25 @@ void fragment() {
 	float metallic_tex = dot(texture(texture_metallic, base_uv), metallic_texture_channel);
 	METALLIC = metallic_tex * metallic;
 	SPECULAR = specular;
-
+	
 	vec4 roughness_texture_channel = vec4(1.0, 0.0, 0.0, 0.0);
 	float roughness_tex = dot(texture(texture_roughness, base_uv), roughness_texture_channel);
 	ROUGHNESS = roughness_tex * roughness;
 	
+	// Normal map
+	float normal_map_strength = (sin(wave_time * wave_speed) + 1.0) / 2.0;
+	vec3 normal_map = mix(texture(water_noise_1, base_uv).rgb, texture(water_noise_2, base_uv).rgb, normal_map_strength);
+	
+	// Refraction
+	//vec3 ref_normal_map = normal_map + vec3(-0.5, 0.0, 0.0);
+	//vec3 ref_normal = mix(NORMAL, TANGENT * ref_normal_map + BINORMAL * ref_normal_map + NORMAL * ref_normal_map, 1.0);
+	//vec2 ref_ofs = SCREEN_UV - ref_normal.xy * refraction_strength;
+	
+	float depth_clean = texture(depth_texture, SCREEN_UV).r;
 	float depth = texture(depth_texture, SCREEN_UV).r;
 	vec4 world = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, depth, 1.0);
 	world.xyz /= world.w;
 	float depth_blend = smoothstep(world.z + depth_distance, world.z, VERTEX.z);
-	//depth_blend = exp(depth_blend * -beers_law);
-	//depth_blend = clamp(pow(depth_blend, 3.0), 0.0, 1.0);
 	
 	vec3 screen = texture(screen_texture, SCREEN_UV).rgb;
 	float fresnel_val = fresnel(fresnel_force, NORMAL, VIEW);
@@ -116,7 +125,7 @@ void fragment() {
 	vec3 water_col = mix(deep_water_color, water_color, height);
 	
 	ALBEDO = mix(screen * depth_blend, water_col, water_color_ratio);
-	NORMAL_MAP = mix(texture(water_noise_1, base_uv).rgb, texture(water_noise_2, base_uv).rgb, (sin(wave_time) + 1.0) / 2.0);
+	NORMAL_MAP = normal_map;
 	NORMAL *= normal_scale;
 	SPECULAR *= fresnel_val;
 }

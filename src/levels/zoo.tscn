@@ -28,6 +28,7 @@ background_mode = 2
 sky = SubResource("Sky_cn1qa")
 tonemap_mode = 2
 tonemap_agx_white = 17.6
+ssr_enabled = true
 glow_enabled = true
 glow_normalized = true
 glow_strength = 1.25
@@ -37,8 +38,8 @@ volumetric_fog_density = 0.0
 [sub_resource type="PlaneMesh" id="PlaneMesh_1s5vw"]
 lightmap_size_hint = Vector2i(127, 127)
 size = Vector2(250, 250)
-subdivide_width = 500
-subdivide_depth = 500
+subdivide_width = 1000
+subdivide_depth = 1000
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ygn0o"]
 properties/0/path = NodePath(".:time")
@@ -52,6 +53,7 @@ height_falloff = 10.0
 edge_fade = 0.0517
 
 [sub_resource type="BoxMesh" id="BoxMesh_jseuq"]
+size = Vector3(5, 5, 5)
 
 [sub_resource type="Gradient" id="Gradient_ygn0o"]
 offsets = PackedFloat32Array(0.2, 1)
@@ -153,7 +155,7 @@ shadow_enabled = true
 show_debug = true
 script = ExtResource("1_wt035")
 target_mesh = NodePath("../WaterMesh")
-waves_data = PackedVector4Array(0.5, 0.5, 0.05, 32, -0.5, 1, 0.15, 8, 0.5, 1, 0.15, 4, -1, 1.3, 0.15, 2, 0, 0, 0, 0)
+waves_data = PackedVector4Array(1, 1, 0.25, 60, 1, 0.6, 0.15, 31, 1, 1.3, 0.05, 18, 0, 0, 0, 0, 0, 0, 0, 0)
 
 [node name="WaterMesh" type="MeshInstance3D" parent="." unique_id=521056906]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.381, -3.52, 39.488)
@@ -168,8 +170,8 @@ replication_config = SubResource("SceneReplicationConfig_ygn0o")
 shape = 4
 material = SubResource("FogMaterial_t72cs")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="WaterMesh" unique_id=718630855]
-transform = Transform3D(1, 0, 0, 0, 3.9135451, 0, 0, 0, 1, 2.3919027, -0.27711582, 3.5441866)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WaterMesh" unique_id=2075275635]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.159877, -25.8991)
 mesh = SubResource("BoxMesh_jseuq")
 
 [node name="Spawners" type="Node3D" parent="." unique_id=900345733]
