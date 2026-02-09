@@ -18,5 +18,5 @@ func _post_use() -> void:
 	_rpc_stop_animation.rpc()
 
 
-func _lifetime_drained() -> void:
+func _energy_drained() -> void:
 	_rpc_stop_animation.rpc()

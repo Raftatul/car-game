@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://dkesrb6mdy2np"]
+
+[ext_resource type="PackedScene" uid="uid://sqqy6h3uyogf" path="res://src/features/props/items/game_item.tscn" id="1_sx8s2"]
+[ext_resource type="Script" uid="uid://dwxxpkgbmlmpb" path="res://src/features/props/items/harpoon/harpoon.gd" id="2_31oms"]
+[ext_resource type="PackedScene" uid="uid://8r23wy3n04eu" path="res://addons/halyard/tests/pull_test.tscn" id="3_jae3r"]
+[ext_resource type="Script" uid="uid://dl6y1t3o1yx0o" path="res://addons/halyard/scripts/pull_rope.gd" id="4_hu4jj"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_bts33"]
+resource_local_to_scene = true
+radius = 2.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_31oms"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_7n7ic"]
+
+[node name="Harpoon" unique_id=1407846572 node_paths=PackedStringArray("pull_rope") instance=ExtResource("1_sx8s2")]
+script = ExtResource("2_31oms")
+pull_rope = NodePath("PullRope")
+shoot_distance = 25.0
+use_mode = 1
+use_count = 5
+
+[node name="CollisionShape3D" parent="Interactable" parent_id_path=PackedInt32Array(672757197) index="0" unique_id=717160102]
+shape = SubResource("SphereShape3D_bts33")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="5" unique_id=1957361685]
+shape = SubResource("BoxShape3D_31oms")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="6" unique_id=1319165346]
+mesh = SubResource("BoxMesh_7n7ic")
+
+[node name="Node3D" parent="." index="7" unique_id=156058880 instance=ExtResource("3_jae3r")]
+
+[node name="PullRope" type="Rope" parent="." index="8" unique_id=579762542]
+custom_aabb = AABB(-0.0625, -4.109609, -0.0625, 0.12507547, 4.172109, 0.12534219)
+script = ExtResource("4_hu4jj")
+metadata/_custom_type_script = "uid://dl6y1t3o1yx0o"

@@ -18,15 +18,15 @@ func set_active(active: bool) -> void:
 
 
 func set_item(item: Item) -> void:
-	if _item and _item.lifetime_changed.is_connected(_on_lifetime_changed):
-		_item.lifetime_changed.disconnect(_on_lifetime_changed)
+	if _item and _item.energy_changed.is_connected(_on_energy_changed):
+		_item.energy_changed.disconnect(_on_energy_changed)
 	
 	_item = item
 	if _item:
-		if _item.lifetime > 0.0:
-			progress_bar.value = _item.get_lifetime_percent()
+		if _item.energy > 0.0:
+			progress_bar.value = _item.get_energy_percent()
 			progress_bar.visibility_layer = 1
-			_item.lifetime_changed.connect(_on_lifetime_changed)
+			_item.energy_changed.connect(_on_energy_changed)
 		else:
 			progress_bar.visibility_layer = 0
 		
@@ -39,5 +39,5 @@ func set_item(item: Item) -> void:
 		slot_icon.texture = default_icon
 
 
-func _on_lifetime_changed(percent: float) -> void:
+func _on_energy_changed(percent: float) -> void:
 	progress_bar.value = percent

@@ -6,10 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://8yt7p4okxtp5" path="res://assets/terrains/sand/sand_color.png" id="4_rep4f"]
 [ext_resource type="Texture2D" uid="uid://cfupmk6hv8em6" path="res://assets/terrains/sand/sand_normal.png" id="5_2ybnr"]
 [ext_resource type="PackedScene" uid="uid://6442jxq5hu73" path="res://src/features/props/shop/shop.tscn" id="5_l54tx"]
-[ext_resource type="PackedScene" uid="uid://4boofnvrgpae" path="res://src/features/props/raft/raft.tscn" id="10_cj628"]
 [ext_resource type="PackedScene" uid="uid://b1n45j8c8vn4u" path="res://src/features/entities/fish.tscn" id="13_ndggs"]
 [ext_resource type="PackedScene" uid="uid://bj87j7b2cfw0b" path="res://assets/scenes/kelp/kelp.tscn" id="14_h7jkl"]
 [ext_resource type="PackedScene" uid="uid://damvtojfd3dv6" path="res://src/features/props/items/item_jetpack.tscn" id="14_jseuq"]
+[ext_resource type="PackedScene" uid="uid://dkesrb6mdy2np" path="res://src/features/props/items/harpoon/harpoon.tscn" id="15_cj628"]
 [ext_resource type="PackedScene" uid="uid://cyxx4ngsn7fe3" path="res://src/features/props/items/item_mask.tscn" id="15_ihxu1"]
 [ext_resource type="PackedScene" uid="uid://bgoiai11g65yt" path="res://src/features/props/respawner/respawner.tscn" id="15_jseuq"]
 [ext_resource type="Script" uid="uid://decph3w7n7q4s" path="res://src/modules/basic_attributes/components/health/hit_box.gd" id="16_ihxu1"]
@@ -51,9 +51,6 @@ density = 0.2
 albedo = Color(1.4439225e-06, 0.6007146, 0.74289006, 1)
 height_falloff = 10.0
 edge_fade = 0.0517
-
-[sub_resource type="BoxMesh" id="BoxMesh_jseuq"]
-size = Vector3(5, 5, 5)
 
 [sub_resource type="Gradient" id="Gradient_ygn0o"]
 offsets = PackedFloat32Array(0.2, 1)
@@ -170,10 +167,6 @@ replication_config = SubResource("SceneReplicationConfig_ygn0o")
 shape = 4
 material = SubResource("FogMaterial_t72cs")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="WaterMesh" unique_id=2075275635]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.159877, -25.8991)
-mesh = SubResource("BoxMesh_jseuq")
-
 [node name="Spawners" type="Node3D" parent="." unique_id=900345733]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.166407, 1.8177831, -21.862795)
 
@@ -205,12 +198,6 @@ _spawnable_scenes = PackedStringArray("uid://cyxx4ngsn7fe3", "uid://h8skvj2d6nk6
 spawn_path = NodePath("../Props")
 
 [node name="Props" type="Node" parent="." unique_id=1444304400]
-
-[node name="Raft" parent="." unique_id=555745467 instance=ExtResource("10_cj628")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.265932, 1.4254265, 7.2118993)
-
-[node name="Raft2" parent="." unique_id=569801516 instance=ExtResource("10_cj628")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 1.4613066, -55.03455, 46.851097)
 
 [node name="Kelp" parent="." unique_id=1475737754 instance=ExtResource("14_h7jkl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.61925, -19.998905, 17.383507)
@@ -258,10 +245,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5270677, 0.3566655, -21.079
 [node name="ItemMask" parent="." unique_id=1145077405 instance=ExtResource("15_ihxu1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.666975, 1.019382, -21.314684)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=43948912]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.750605, -0.4985144, -20.20868)
-transparency = 0.5
-use_collision = true
-size = Vector3(6.6674805, 1, 6.827881)
+[node name="Harpoon" parent="." unique_id=790591340 instance=ExtResource("15_cj628")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.017966, 1.3104982, -14.208664)
 
 [editable path="VolumetricRegion/Fish"]

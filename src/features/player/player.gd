@@ -32,6 +32,10 @@ enum MOVEMENT_STATE {WALKING, SWIMMING, FALLING, DIVING}
 @export var oxygen_consume_rate: float = -10.0
 @export var no_oxy_health_consume_rate: float = -10.0
 
+@export_group("Camera")
+@export var alive_arm_length: float = 1.0
+@export var dead_arm_length: float = 1.0
+
 @export_group("Nodes")
 @export var model: Node3D
 
@@ -99,7 +103,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		pause_menu.visible = true
 	elif event is InputEventMouseMotion:
 		var motion: Vector2 = -event.relative * sensitivity
-		camera_pivot.rotate_y(deg_to_rad(motion.x))
+		rotate_y(deg_to_rad(motion.x))
 		spring_arm.rotate_x(deg_to_rad(motion.y))
 		spring_arm.rotation_degrees.x = clamp(spring_arm.rotation_degrees.x, -70.0, 70.0)
 
@@ -156,6 +160,7 @@ func revive() -> void:
 	dead_mesh.visible = false
 	dead_focus = null
 	spring_arm.collision_mask = 1
+	spring_arm.spring_length = alive_arm_length
 
 
 @rpc("any_peer", "call_local", "reliable")
@@ -164,9 +169,9 @@ func kill() -> void:
 	death.emit()
 	collision_shape.set_deferred("disabled", true)
 	godot_plush_model.visible = false
-	model.global_rotation = Vector3.ZERO
 	dead_mesh.visible = true
 	spring_arm.collision_mask = 0
+	spring_arm.spring_length = dead_arm_length
 	
 	var other_players: Array = get_tree().get_nodes_in_group("players").filter(func(a): return a != self)
 	if other_players.is_empty():
@@ -257,20 +262,6 @@ func _process_diving_state(delta: float) -> void:
 		var target_vel: Vector3 = vel_dir * speed
 		
 		velocity = velocity.move_toward(target_vel, swimming_acceleration)
-		
-		var right_vec: Vector3 = Vector3.UP.cross(vel_dir).normalized()
-		if vel_dir.abs() == Vector3.UP:
-			if diving_right_axis == Vector3.ZERO:
-				diving_right_axis = -model.global_basis.x
-			right_vec = diving_right_axis
-		else:
-			diving_right_axis = Vector3.ZERO
-		
-		var forward_vec: Vector3 = vel_dir.normalized().cross(right_vec).normalized()
-		var target_basis: Basis = Basis(-right_vec, vel_dir.normalized(), forward_vec).orthonormalized()
-		
-		var quat_target: Quaternion = target_basis.get_rotation_quaternion()
-		model.quaternion = model.quaternion.slerp(quat_target, delta * swimming_rotation_speed)
 	else:
 		velocity = velocity.move_toward(Vector3(0.0, 0.0, 0.0), swimming_acceleration / 2.0)
 
@@ -279,12 +270,8 @@ func _process_movement(delta: float, max_speed: float, acceleration: float) -> v
 	if inputs_component.move_dir:
 		var target_vel: Vector3 = camera_pivot.global_basis * inputs_component.move_dir * max_speed
 		velocity = velocity.move_toward(Vector3(target_vel.x, velocity.y, target_vel.z), acceleration)
-		model.rotation.y = lerp_angle(model.rotation.y, atan2(-target_vel.x, -target_vel.z), delta * rotation_speed)
 	else:
 		velocity = velocity.move_toward(Vector3(0.0, velocity.y, 0.0), acceleration)
-	
-	model.rotation.x = lerp_angle(model.rotation.x, 0.0, delta * rotation_speed)
-	model.rotation.z = lerp_angle(model.rotation.z, 0.0, delta * rotation_speed)
 
 
 func is_in_water() -> bool:
@@ -295,7 +282,7 @@ func _on_buoyancy_submerged_changed() -> void:
 	var is_submerged: bool = buoyancy.get_submerged_ratio() > 0.0
 	if is_submerged and movement_state != MOVEMENT_STATE.SWIMMING:
 		movement_state = MOVEMENT_STATE.SWIMMING
-	if !is_submerged and movement_state == MOVEMENT_STATE.SWIMMING:
+	if !is_submerged and movement_state != MOVEMENT_STATE.FALLING:
 		movement_state = MOVEMENT_STATE.FALLING
 		gravity_scale = 1.0
 		buoyancy.apply_forces = true

@@ -4,6 +4,10 @@ extends Item
 @export var anim_player: AnimationPlayer
 @export var buoyancy: RigidBuoyancy
 
+var player: PlayerCharacter :
+	get():
+		return actor
+
 @onready var interactable: Interactable = $Interactable
 
 

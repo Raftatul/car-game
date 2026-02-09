@@ -1,29 +1,32 @@
 class_name Item
 extends Node3D
 
+enum USE_MODES {DURATION, CHARGES}
 enum ATTACH_POINTS {HAND, BACK, HEAD}
 
 signal picked_up
-signal lifetime_changed(percent: float)
+signal energy_changed(percent: float)
 
 @export var texture: Texture2D
 @export var attach_point: ATTACH_POINTS = ATTACH_POINTS.HAND
 
 @export var is_two_handed: bool = false
 
-@export var lifetime: float = 0.0
+@export var use_mode: USE_MODES = USE_MODES.DURATION
+@export var energy: float = 1.0
+@export var use_count: int = 1
 
 var actor: Node
 
 var pre_visible: bool = true
 
-@onready var current_lifetime: float = lifetime :
+@onready var current_energy: float = energy :
 	set(v):
-		if v != current_lifetime:
-			current_lifetime = clamp(v, 0.0, lifetime)
-			if current_lifetime == 0.0:
-				_lifetime_drained()
-			lifetime_changed.emit(get_lifetime_percent())
+		if v != current_energy:
+			current_energy = clamp(v, 0.0, energy)
+			if current_energy == 0.0:
+				_energy_drained()
+			energy_changed.emit(get_energy_percent())
 
 @onready var offset: Marker3D = $Offset
 @onready var remote_transform: ItemTrans = $RemoteTransform3D
@@ -44,10 +47,8 @@ func pre_use() -> void:
 
 
 func use(delta: float) -> void:
-	if _can_consume_lifetime():
-		_rpc_drain_lifetime.rpc(delta)
-		if can_be_used():
-			_use(delta)
+	if can_be_used():
+		_use(delta)
 
 
 func post_use() -> void:
@@ -63,19 +64,22 @@ func unselected() -> void: pass
 
 func sold() -> void: pass
 
-
 func can_be_used() -> bool:
-	return get_lifetime_percent() > 0.0
+	return get_energy_percent() > 0.0
 
 
-func get_lifetime_percent() -> float:
-	return current_lifetime / lifetime
+func get_energy_percent() -> float:
+	return current_energy / energy
+
+
+func consume_energy(delta: float) -> void:
+	_rpc_modify_energy.rpc(-delta)
 
 ## Rpc
 
 @rpc("any_peer", "call_local", "reliable")
-func _rpc_drain_lifetime(delta: float) -> void:
-	current_lifetime -= delta
+func _rpc_modify_energy(delta: float) -> void:
+	current_energy += delta
 
 ## Virtuals
 
@@ -85,9 +89,9 @@ func _use(_delta: float) -> void: pass
 
 func _post_use() -> void: pass
 
-func _lifetime_drained() -> void: pass
+func _energy_drained() -> void: pass
 
-func _can_consume_lifetime() -> bool: return true
+func _can_consume_energy() -> bool: return true
 
 
 ## On signals

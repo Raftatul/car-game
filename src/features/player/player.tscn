@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://dss72a2cjr3u8" path="res://src/modules/interaction_system/interactor.gd" id="8_njwrn"]
 [ext_resource type="Script" uid="uid://clyypf1rhthc" path="res://src/features/components/inputs_component.gd" id="9_502ij"]
 [ext_resource type="PackedScene" uid="uid://ddvlyoxxht3y4" path="res://src/modules/basic_attributes/ui/oxygen_bar.tscn" id="9_ug4fj"]
+[ext_resource type="Texture2D" uid="uid://c7abq0ivc2au2" path="res://assets/icons/Circle.png" id="10_58hqn"]
 [ext_resource type="Script" uid="uid://c5b6w7fffwk2o" path="res://src/modules/inventory_system/components/inventory_component.gd" id="10_si01v"]
 [ext_resource type="Script" uid="uid://dhioq5g0akhqd" path="res://src/modules/inventory_system/components/item_manager_component.gd" id="12_ri5lk"]
 [ext_resource type="Script" uid="uid://c5ns01lryx7k3" path="res://src/modules/basic_attributes/components/health/health_component.gd" id="15_2m83w"]
@@ -60,7 +61,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ug4fj"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_58hqn"]
 resource_local_to_scene = true
 render_priority = 0
 shader = SubResource("Shader_dqvdr")
@@ -252,6 +253,8 @@ swimming_acceleration = 0.1
 swimming_rotation_speed = 5.0
 stamina_consume_rate = -30.0
 oxygen_consume_rate = -1.0
+alive_arm_length = 0.0
+dead_arm_length = 6.0
 model = NodePath(".")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=711554080]
@@ -266,34 +269,34 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, -
 script = ExtResource("3_ti7vc")
 
 [node name="Skeleton3D" parent="Visual/godot_plush_model/Rig" parent_id_path=PackedInt32Array(1080972857, 1940519781) index="0" unique_id=1131176568]
-bones/0/position = Vector3(-2.8604033e-22, 0.78403485, -4.0975973e-10)
-bones/0/rotation = Quaternion(0.999869, -0.008847106, 0.013556552, -0.00012607673)
+bones/0/position = Vector3(-2.7630968e-22, 0.7843382, -3.9937595e-10)
+bones/0/rotation = Quaternion(0.9963561, 0.008924085, -0.084819615, -0.00075806334)
 bones/1/position = Vector3(-2.3597598e-17, 0, -6.18693e-17)
 bones/1/rotation = Quaternion(1, -2.2923515e-15, -3.4519715e-08, -5.960464e-08)
-bones/2/rotation = Quaternion(0.08240801, -0.14260851, 0.92811435, -0.3338795)
-bones/3/rotation = Quaternion(0.09446272, 0.016089082, -0.0015210458, 0.99539727)
-bones/5/rotation = Quaternion(0.029899392, 0.075663984, 0.93716794, 0.33926004)
-bones/6/rotation = Quaternion(0.30313367, 0.015398043, -0.0049048783, 0.952811)
-bones/8/rotation = Quaternion(-0.041071188, -0.004837044, -0.07011347, 0.99668145)
-bones/9/position = Vector3(-6.687496e-09, 0.15247385, 1.1918371e-09)
-bones/9/rotation = Quaternion(0.23350266, -0.19753923, 0.048477836, 0.95084417)
-bones/10/position = Vector3(6.5640857e-09, 0.20630856, -9.967833e-09)
-bones/10/rotation = Quaternion(-0.55849105, -0.027841283, 0.033717263, 0.8283572)
+bones/2/rotation = Quaternion(0.08090085, -0.1396635, 0.9286503, -0.3340027)
+bones/3/rotation = Quaternion(0.21829855, 0.015346558, -0.003398587, 0.97575545)
+bones/5/rotation = Quaternion(0.028364424, 0.07269637, 0.9374585, 0.3392376)
+bones/6/rotation = Quaternion(0.1815044, 0.015450571, -0.0028867323, 0.9832645)
+bones/8/rotation = Quaternion(-0.081081845, -0.0032692645, -0.04670872, 0.9956071)
+bones/9/position = Vector3(-5.8759195e-08, 0.1525789, -4.7596345e-09)
+bones/9/rotation = Quaternion(0.2086067, -0.20547353, 0.04484198, 0.95511943)
+bones/10/position = Vector3(-1.1796612e-08, 0.20641547, 3.1541703e-08)
+bones/10/rotation = Quaternion(-0.50816643, 0.07405497, 0.040575176, 0.85710937)
 bones/11/position = Vector3(-1.9200796e-08, 0.2512119, -4.9427776e-08)
 bones/11/rotation = Quaternion(-0.000102671445, 0.9324488, -0.36130223, 4.626674e-05)
-bones/12/rotation = Quaternion(-0.028534299, 0.0020149185, 0.03216579, 0.9990732)
-bones/13/position = Vector3(1.2302728e-09, 0.15299535, -8.2927425e-09)
-bones/13/rotation = Quaternion(0.18322536, 0.20686612, -0.039476726, 0.9602481)
-bones/14/position = Vector3(-2.0357609e-08, 0.20669559, 7.483548e-09)
-bones/14/rotation = Quaternion(-0.5323255, -0.0031487825, -0.027547777, 0.8460856)
+bones/12/rotation = Quaternion(0.026459282, 0.002571081, 0.0404593, 0.9988275)
+bones/13/position = Vector3(1.1507899e-08, 0.15261176, 1.5439809e-09)
+bones/13/rotation = Quaternion(0.1761215, 0.20358162, -0.037265815, 0.9623654)
+bones/14/position = Vector3(-7.096963e-10, 0.20623866, -1.3681717e-08)
+bones/14/rotation = Quaternion(-0.56566805, 0.09819716, -0.018229276, 0.81856257)
 bones/15/position = Vector3(-4.8419313e-10, 0.25120693, -5.0023658e-08)
 bones/15/rotation = Quaternion(-2.7789587e-05, 0.9324604, -0.36127216, 0.0002779076)
 
 [node name="GodotPlushMesh" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="0" unique_id=1009443981]
-material_override = SubResource("ShaderMaterial_ug4fj")
+material_override = SubResource("ShaderMaterial_58hqn")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="1" unique_id=1198560524]
-transform = Transform3D(-0.75868696, -0.5352202, 0.37139386, 0.6497013, -0.57983315, 0.49161124, -0.047773786, 0.61427426, 0.78764504, -0.69040644, 0.6248556, 0.10352393)
+transform = Transform3D(-0.7756415, -0.49898693, 0.38651317, 0.62230825, -0.7068627, 0.3362701, 0.10541734, 0.5013554, 0.85879534, -0.6683203, 0.5834528, 0.20905235)
 bone_name = "DEF-hand.R"
 bone_idx = 7
 
@@ -302,7 +305,7 @@ unique_name_in_owner = true
 transform = Transform3D(1, 5.6311364e-09, 4.656613e-10, 5.6477347e-09, 1, -6.184564e-11, 0, 6.548362e-11, 1, 0.010235667, 0.14705995, 6.040046e-05)
 
 [node name="BoneAttachment3D2" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="2" unique_id=1331867321]
-transform = Transform3D(0.9994759, -0.017688474, 0.027111782, -0.017695311, -0.9998434, 1.224791e-05, 0.02710732, -0.00049199286, -0.9996324, -2.8604033e-22, 0.78403485, -4.0975973e-10)
+transform = Transform3D(0.985452, 0.017654533, -0.16903459, 0.017911728, -0.9998395, -3.2727837e-06, -0.16900754, -0.0030244763, -0.98561007, -2.7630968e-22, 0.7843382, -3.9937595e-10)
 bone_name = "DEF-hips"
 bone_idx = 0
 
@@ -310,7 +313,7 @@ bone_idx = 0
 transform = Transform3D(-1, 8.742277e-08, 0, -8.742278e-08, -0.99999994, 0, 0, 0, 1.0000001, 0.06046414, -0.1489309, 0.51552385)
 
 [node name="BoneAttachment3D3" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="3" unique_id=216061842]
-transform = Transform3D(0.9994759, 0.01768847, -0.027111853, -0.017695311, 0.9998434, -1.2365878e-05, 0.02710739, 0.000492112, 0.9996324, -2.5262903e-17, 0.78403485, -4.0975967e-10)
+transform = Transform3D(0.985452, -0.017654512, 0.16903453, 0.017911728, 0.9998395, 3.1523568e-06, -0.16900747, 0.003024594, 0.98561007, -1.27965254e-17, 0.7843382, -3.993759e-10)
 bone_name = "DEF-head"
 bone_idx = 1
 
@@ -337,12 +340,11 @@ update_rotation = false
 
 [node name="CameraPivot" type="Node3D" parent="." unique_id=1647000280]
 unique_name_in_owner = true
-top_level = true
 
 [node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot" unique_id=1113902983]
 unique_name_in_owner = true
 shape = SubResource("SphereShape3D_wy6v3")
-spring_length = 6.0
+spring_length = 0.0
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D" unique_id=1174057119]
 unique_name_in_owner = true
@@ -416,6 +418,21 @@ stamina_component = NodePath("../../../../../../StaminaComponent")
 [node name="OxygenBar" parent="CanvasLayer/GameHUD/MarginContainer/UI/VBoxContainer" unique_id=131215041 node_paths=PackedStringArray("oxygen_component") instance=ExtResource("9_ug4fj")]
 layout_mode = 2
 oxygen_component = NodePath("../../../../../../OxygenComponent")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/GameHUD/MarginContainer/UI" unique_id=1733447435]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_58hqn")
+expand_mode = 1
 
 [node name="PauseMenu" parent="CanvasLayer" unique_id=1912501345 instance=ExtResource("4_p2vpv")]
 unique_name_in_owner = true
