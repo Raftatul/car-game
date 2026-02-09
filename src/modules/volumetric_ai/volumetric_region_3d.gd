@@ -4,7 +4,7 @@ extends Node3D
 
 #region Navigation
 
-const SHORTCUT_SUBSTEP: int = 2
+const SHORTCUT_SUBSTEP: int = 5
 
 @export_group("Debug")
 @export var debug_paths: bool = false
@@ -218,8 +218,13 @@ func _check_obstacles(obstacles: Array, world_point: Vector3) -> bool:
 				return false
 	
 	if terrain:
-		var intersect: Vector3 = terrain.get_intersection(world_point + Vector3.UP * 100.0, Vector3.DOWN)
-		return intersect.y < world_point.y
+		for offset in OFFSETS:
+			var point_of: Vector3 = world_point + offset * (grid_step / 2.0)
+			var intersection: Vector3 = terrain.get_intersection(point_of, Vector3.DOWN, true)
+			if intersection.y >= point_of.y:
+				return false
+		var p: Vector3 = world_point - Vector3.ONE * (grid_step / 2.0)
+		DebugDraw3D.draw_aabb(AABB(p, Vector3.ONE * grid_step), Color.SEA_GREEN, 10.0)
 	return true
 
 #endregion
