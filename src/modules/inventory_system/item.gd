@@ -65,7 +65,7 @@ func unselected() -> void: pass
 func sold() -> void: pass
 
 func can_be_used() -> bool:
-	return get_energy_percent() > 0.0
+	return !is_zero_approx(get_energy_percent())
 
 
 func get_energy_percent() -> float:

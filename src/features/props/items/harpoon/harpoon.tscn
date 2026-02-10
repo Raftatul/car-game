@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dwxxpkgbmlmpb" path="res://src/features/props/items/harpoon/harpoon.gd" id="2_31oms"]
 [ext_resource type="Script" uid="uid://dl6y1t3o1yx0o" path="res://addons/halyard/scripts/pull_rope.gd" id="4_hu4jj"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_bts33"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_o1pfl"]
 resource_local_to_scene = true
 radius = 2.0
 
@@ -20,7 +20,7 @@ use_mode = 1
 use_count = 5
 
 [node name="CollisionShape3D" parent="Interactable" parent_id_path=PackedInt32Array(672757197) index="0" unique_id=717160102]
-shape = SubResource("SphereShape3D_bts33")
+shape = SubResource("SphereShape3D_o1pfl")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="5" unique_id=1957361685]
 shape = SubResource("BoxShape3D_31oms")

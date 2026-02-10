@@ -23,7 +23,7 @@ func _process(delta: float) -> void:
 	
 	if is_multiplayer_authority():
 		_update_movement_blend(delta)
-		moving = vel.length() != 0.0
+		moving = !is_zero_approx(vel.length())
 		falling = !character.is_on_floor or character.buoyancy.get_submerged_ratio() > 0.0
 	
 	animation_tree.set("parameters/StateMachine/GroundMovement/blend_position", movement_blend)
