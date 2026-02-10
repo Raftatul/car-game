@@ -254,7 +254,7 @@ script = ExtResource("1_0ph83")
 sensitivity = 0.25
 rotation_speed = 10.0
 run_speed = 8.0
-jump_velocity = 5.0
+jump_velocity = 7.0
 walking_acceleration = 8.0
 walking_speed = 5.0
 falling_acceleration = 4.0
@@ -268,7 +268,7 @@ diving_damping = 0.025
 stamina_consume_rate = -30.0
 oxygen_consume_rate = -1.0
 alive_arm_length = 0.0
-dead_arm_length = 6.0
+dead_arm_length = 4.0
 model = NodePath("Visual")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=711554080]
@@ -283,26 +283,26 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, -
 script = ExtResource("3_ti7vc")
 
 [node name="Skeleton3D" parent="Visual/godot_plush_model/Rig" parent_id_path=PackedInt32Array(1080972857, 1940519781) index="0" unique_id=1131176568]
-bones/0/position = Vector3(-1.7482911e-22, 0.78911614, -2.358361e-10)
-bones/0/rotation = Quaternion(0.99719316, -0.010562168, 0.074119285, -0.00078241865)
+bones/0/position = Vector3(-1.9790724e-22, 0.7717582, -8.299704e-10)
+bones/0/rotation = Quaternion(0.998689, 0.0013747696, 0.05117172, 6.189057e-05)
 bones/1/position = Vector3(-2.3597598e-17, 0, -6.18693e-17)
 bones/1/rotation = Quaternion(1, -2.2923515e-15, -3.4519715e-08, -5.960464e-08)
-bones/2/rotation = Quaternion(0.0007286185, 0.016383216, 0.94085705, -0.33840686)
-bones/3/rotation = Quaternion(0.14965019, -0.0072759176, 0.0011467809, 0.9887116)
-bones/5/rotation = Quaternion(-0.05219914, -0.08365144, 0.93670785, 0.3359406)
-bones/6/rotation = Quaternion(0.24973975, -0.0071438476, 0.0017960793, 0.968285)
-bones/8/rotation = Quaternion(0.040065616, -0.0026200477, -0.03702881, 0.9985073)
-bones/9/position = Vector3(-1.2737731e-08, 0.15287317, -1.5400614e-09)
-bones/9/rotation = Quaternion(0.13924347, -0.20560005, 0.029548861, 0.96822864)
-bones/10/position = Vector3(1.03680025e-08, 0.20671973, -1.005736e-08)
-bones/10/rotation = Quaternion(-0.5466898, -0.08931505, 0.019269466, 0.8323351)
+bones/2/rotation = Quaternion(-0.072088435, 0.15700833, 0.92449075, -0.33980647)
+bones/3/rotation = Quaternion(0.2814449, -0.02752013, 0.008071337, 0.9591488)
+bones/5/rotation = Quaternion(-0.123496875, -0.22311759, 0.9087242, 0.33043528)
+bones/6/rotation = Quaternion(0.11690072, -0.028482575, 0.0033576868, 0.9927294)
+bones/8/rotation = Quaternion(-0.04717526, -0.003982501, -0.05735611, 0.99723065)
+bones/9/position = Vector3(-2.7994858e-08, 0.15332, -7.773791e-09)
+bones/9/rotation = Quaternion(0.28388423, -0.19671953, 0.059608415, 0.93656725)
+bones/10/position = Vector3(1.933821e-08, 0.20717508, -5.654127e-09)
+bones/10/rotation = Quaternion(-0.5967036, -0.061576534, 0.023416527, 0.79975307)
 bones/11/position = Vector3(-1.9200796e-08, 0.2512119, -4.9427776e-08)
 bones/11/rotation = Quaternion(-0.000102671445, 0.9324488, -0.36130223, 4.626674e-05)
-bones/12/rotation = Quaternion(-0.041516736, 0.0016974715, 0.027428674, 0.9987598)
-bones/13/position = Vector3(-1.3898128e-08, 0.15253857, 3.614513e-10)
-bones/13/rotation = Quaternion(0.14594004, 0.20960797, -0.031662386, 0.9663144)
-bones/14/position = Vector3(-1.4180761e-08, 0.20610774, 2.0872282e-10)
-bones/14/rotation = Quaternion(-0.48968562, -0.06260691, -0.038922958, 0.86877704)
+bones/12/rotation = Quaternion(-0.13277179, 0.006091989, 0.093011335, 0.986754)
+bones/13/position = Vector3(-1.744618e-08, 0.1524471, 9.28045e-09)
+bones/13/rotation = Quaternion(0.33697224, 0.19034432, -0.06978144, 0.9194289)
+bones/14/position = Vector3(-7.789642e-09, 0.20599769, -7.8588736e-09)
+bones/14/rotation = Quaternion(-0.57124585, -0.040345356, -0.040020116, 0.8188095)
 bones/15/position = Vector3(-4.8419313e-10, 0.25120693, -5.0023658e-08)
 bones/15/rotation = Quaternion(-2.7789587e-05, 0.9324604, -0.36127216, 0.0002779076)
 
@@ -310,7 +310,7 @@ bones/15/rotation = Quaternion(-2.7789587e-05, 0.9324604, -0.36127216, 0.0002779
 material_override = SubResource("ShaderMaterial_58hqn")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="1" unique_id=1198560524]
-transform = Transform3D(-0.7449855, -0.6664954, -0.027937394, 0.6524827, -0.7367568, 0.17735764, -0.13879116, 0.113900185, 0.9837498, -0.7005967, 0.6060388, -0.092874154)
+transform = Transform3D(-0.76615334, -0.54244894, -0.34461275, 0.6338803, -0.72617805, -0.2661972, -0.10585188, -0.42239124, 0.9002115, -0.6740803, 0.5817248, -0.18436041)
 bone_name = "DEF-hand.R"
 bone_idx = 7
 
@@ -319,7 +319,7 @@ unique_name_in_owner = true
 transform = Transform3D(1, 5.6311364e-09, 4.656613e-10, 5.6477347e-09, 1, -6.184564e-11, 0, 6.548362e-11, 1, 0.010235667, 0.14705995, 6.040046e-05)
 
 [node name="BoneAttachment3D2" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="2" unique_id=1331867321]
-transform = Transform3D(0.98878956, -0.020949056, 0.147839, -0.021181028, -0.9997756, -5.275709e-06, 0.14780596, -0.0031261656, -0.98901147, -1.7482911e-22, 0.78911614, -2.358361e-10)
+transform = Transform3D(0.99475914, 0.0027396, 0.10220942, 0.0027522685, -0.99999624, 1.7079785e-05, 0.102209084, 0.00026431744, -0.99476296, -1.9790724e-22, 0.7717582, -8.299704e-10)
 bone_name = "DEF-hips"
 bone_idx = 0
 
@@ -327,7 +327,7 @@ bone_idx = 0
 transform = Transform3D(-1, 8.742277e-08, 0, -8.742278e-08, -0.99999994, 0, 0, 0, 1.0000001, 0.06046414, -0.1489309, 0.51552385)
 
 [node name="BoneAttachment3D3" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="3" unique_id=216061842]
-transform = Transform3D(0.98878956, 0.02094904, -0.14783907, -0.021181028, 0.9997756, 5.157989e-06, 0.14780603, 0.0031262834, 0.98901147, -3.2479932e-17, 0.78911614, -2.3583605e-10)
+transform = Transform3D(0.99475914, -0.002739612, -0.102209486, 0.0027522685, 0.99999624, -1.7199183e-05, 0.10220915, -0.00026419884, 0.99476296, -2.979775e-17, 0.7717582, -8.2997037e-10)
 bone_name = "DEF-head"
 bone_idx = 1
 
@@ -357,8 +357,9 @@ unique_name_in_owner = true
 
 [node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot" unique_id=1113902983]
 unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.6, 0)
 shape = SubResource("SphereShape3D_wy6v3")
-spring_length = 0.0
+spring_length = 4.0
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D" unique_id=1174057119]
 unique_name_in_owner = true

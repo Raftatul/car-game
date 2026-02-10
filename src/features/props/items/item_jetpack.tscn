@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://sqqy6h3uyogf" path="res://src/features/props/items/game_item.tscn" id="1_5hxq2"]
 [ext_resource type="Texture2D" uid="uid://dts2qgujqag2b" path="res://assets/PlayerCharacter/GodotPlush/Material/godot_plush_normal.png" id="2_n6ulx"]
-[ext_resource type="Script" uid="uid://c4qkpfgkb20v1" path="res://src/features/props/items/jetpack.gd" id="2_y11rr"]
+[ext_resource type="Script" uid="uid://c4qkpfgkb20v1" path="res://src/features/props/items/item_jetpack.gd" id="2_y11rr"]
 [ext_resource type="PackedScene" uid="uid://b5gdd8dgna1nj" path="res://assets/props/items/jetpack.blend" id="4_yg212"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_yg212"]
@@ -17,12 +17,10 @@ center_of_mass_mode = 1
 center_of_mass = Vector3(0.00019473312, -2.4975016e-05, 0.00019473406)
 inertia = Vector3(10.6896925, 8.827872, 10.6896925)
 script = ExtResource("2_y11rr")
-force = 20.0
-acceleration = 20.0
+force = 750.0
 anim_player = NodePath("jetpack/AnimationPlayer")
 texture = ExtResource("2_n6ulx")
 attach_point = 1
-lifetime = 20.0
 
 [node name="CollisionShape3D" parent="Interactable" parent_id_path=PackedInt32Array(672757197) index="0" unique_id=717160102]
 shape = SubResource("SphereShape3D_yg212")

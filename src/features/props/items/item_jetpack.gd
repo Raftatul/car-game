@@ -1,17 +1,16 @@
 extends GameItem
 
 @export var force: float = 1.0
-@export var acceleration: float = 10.0
 
 
 func _pre_use() -> void:
 	_rpc_play_animation.rpc("rotate")
 
 
-func _use(delta: float) -> void:
+func _use(_delta: float) -> void:
 	if actor is PlayerCharacter:
 		if actor.is_in_water():
-			actor.velocity = actor.velocity.move_toward(actor.model.global_basis.y * force, acceleration * delta)
+			actor.apply_central_force(actor.model.global_basis.y * force)
 
 
 func _post_use() -> void:

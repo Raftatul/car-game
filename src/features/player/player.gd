@@ -57,6 +57,7 @@ var is_on_floor: bool = false
 
 var is_on_floor_buffer: bool = false
 
+var _rotate_body: bool = false
 
 @onready var dead_focus: Node3D = self
 
@@ -114,7 +115,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		pause_menu.visible = true
 	elif event is InputEventMouseMotion:
 		var motion: Vector2 = -event.relative * sensitivity
-		model.rotate_y(deg_to_rad(motion.x))
+		
 		camera_pivot.rotate_y(deg_to_rad(motion.x))
 		spring_arm.rotate_x(deg_to_rad(motion.y))
 		spring_arm.rotation_degrees.x = clamp(spring_arm.rotation_degrees.x, -70.0, 70.0)
@@ -235,7 +236,7 @@ func _process_walking_state(state: PhysicsDirectBodyState3D, delta: float) -> vo
 		jump(jump_velocity)
 	
 	var movement_dir: Vector3 = camera_pivot.global_basis * inputs_component.move_dir
-	_process_movement(state, movement_dir, speed, walking_acceleration)
+	if movement_dir: _process_movement(state, movement_dir, speed, walking_acceleration)
 
 
 func _process_swimming_state(state: PhysicsDirectBodyState3D, delta: float) -> void:
@@ -251,9 +252,7 @@ func _process_swimming_state(state: PhysicsDirectBodyState3D, delta: float) -> v
 		speed = swimming_speed
 	
 	if inputs_component.dive_pressed or buoyancy.get_submerged_ratio() == 1.0:
-		buoyancy.apply_forces = false
-		gravity_scale = 0.0
-		movement_state = MOVEMENT_STATE.DIVING
+		_on_diving_entered()
 	
 	var movement_dir: Vector3 = camera_pivot.global_basis * inputs_component.move_dir
 	if movement_dir: _process_movement(state, movement_dir, swimming_speed, swimming_acceleration)
@@ -285,30 +284,64 @@ func _process_diving_state(state: PhysicsDirectBodyState3D, delta: float) -> voi
 		speed = swimming_speed
 	
 	if !inputs_component.dive_pressed and buoyancy.get_submerged_ratio() < 1.0:
-		buoyancy.apply_forces = true
-		gravity_scale = 1.0
-		movement_state = MOVEMENT_STATE.SWIMMING
+		_on_swimming_entered()
 	
 	var input: Vector2 = inputs_component.flat_input
 	var up_input: float = inputs_component.vertical_input
 	var movement_dir: Vector3 = (camera.global_basis * Vector3(input.x, 0.0, input.y) + Vector3.UP * up_input).normalized()
-	if movement_dir: _process_movement(state, movement_dir, speed, swimming_acceleration)
+	if movement_dir: _process_movement(state, movement_dir, speed, swimming_acceleration, true)
 	else: state.linear_velocity -= state.linear_velocity * diving_damping
 
 
-func _process_movement(state: PhysicsDirectBodyState3D, movement_input: Vector3, max_speed: float, acceleration: float) -> void:
+func _process_movement(state: PhysicsDirectBodyState3D, movement_input: Vector3, max_speed: float, acceleration: float, use_vertical: bool = false) -> void:
 	var target_vel: Vector3 = state.linear_velocity
 	target_vel += movement_input * max_speed * state.step * acceleration
+	var vel_dir: Vector3 = target_vel.normalized()
 	
-	if is_zero_approx(movement_input.y):
+	if !use_vertical:
 		target_vel.y = 0.0
 	
 	target_vel = target_vel.limit_length(max_speed)
 	
-	if is_zero_approx(movement_input.y):
+	if !use_vertical:
 		target_vel.y = state.linear_velocity.y
 	
 	state.linear_velocity = target_vel
+	
+	if !use_vertical:
+		model.rotation.y = lerp_angle(model.rotation.y, atan2(-target_vel.x, -target_vel.z), state.step * rotation_speed)
+		model.rotation.x = lerp_angle(model.rotation.x, 0.0, state.step * rotation_speed)
+		model.rotation.z = lerp_angle(model.rotation.z, 0.0, state.step * rotation_speed)
+	else:
+		var right_vec: Vector3 = Vector3.UP.cross(vel_dir).normalized()
+		if vel_dir.abs() == Vector3.UP:
+			if diving_right_axis == Vector3.ZERO:
+				diving_right_axis = -model.global_basis.x
+			right_vec = diving_right_axis
+		else:
+			diving_right_axis = Vector3.ZERO
+		
+		var forward_vec: Vector3 = vel_dir.normalized().cross(right_vec).normalized()
+		var target_basis: Basis = Basis(-right_vec, vel_dir.normalized(), forward_vec).orthonormalized()
+		
+		var quat_target: Quaternion = target_basis.get_rotation_quaternion()
+		model.quaternion = model.quaternion.slerp(quat_target, state.step * swimming_rotation_speed)
+
+
+func _on_swimming_entered() -> void:
+	buoyancy.apply_forces = true
+	gravity_scale = 1.0
+	movement_state = MOVEMENT_STATE.SWIMMING
+	
+	_rotate_body = false
+
+
+func _on_diving_entered() -> void:
+	buoyancy.apply_forces = false
+	gravity_scale = 0.0
+	movement_state = MOVEMENT_STATE.DIVING
+	
+	_rotate_body = true
 
 
 func is_in_water() -> bool:
