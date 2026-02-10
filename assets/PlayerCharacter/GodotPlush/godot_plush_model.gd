@@ -18,13 +18,13 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	var vel: Vector3 = character.velocity
+	var vel: Vector3 = character.linear_velocity
 	vel.y = 0.0
 	
 	if is_multiplayer_authority():
 		_update_movement_blend(delta)
 		moving = vel.length() != 0.0
-		falling = !character.is_on_floor() or character.buoyancy.get_submerged_ratio() > 0.0
+		falling = !character.is_on_floor or character.buoyancy.get_submerged_ratio() > 0.0
 	
 	animation_tree.set("parameters/StateMachine/GroundMovement/blend_position", movement_blend)
 

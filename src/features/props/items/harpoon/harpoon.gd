@@ -6,7 +6,7 @@ extends GameItem
 
 
 func _pre_use() -> void:
-	var space_state = get_world_3d().direct_space_state
+	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
 	var dir: Vector3 = -player.camera.global_basis.z
 	var from: Vector3 = player.camera.global_position
 	var to: Vector3 = from + dir * shoot_distance

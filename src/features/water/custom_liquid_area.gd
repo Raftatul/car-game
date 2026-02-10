@@ -1,18 +1,16 @@
 extends LiquidArea
 
 @export var target_mesh: MeshInstance3D
-@export var waves_data: PackedVector4Array
-@export var gravity: float = 9.8
 @export var wave_speed: float = 1.0
 
-var offset: Vector3 = Vector3.ZERO
 var time: float = 0.0
+
+var waves_data: PackedVector4Array
+var gravity: float = 9.8
 
 
 func _ready() -> void:
 	if target_mesh:
-		offset = target_mesh.global_position
-		offset.y = 0.0
 		waves_data = target_mesh.material_override.get("shader_parameter/waves")
 		gravity = target_mesh.material_override.get("shader_parameter/gravity")
 
@@ -33,7 +31,7 @@ func compute_wave_height(point_pos: Vector3) -> Transform3D:
 
 
 func sample_gerstner_surface(world_pos: Vector3, iterations := 4) -> Vector3:
-	var p := world_pos + offset
+	var p := world_pos
 
 	for i in iterations:
 		var disp := Vector3.ZERO

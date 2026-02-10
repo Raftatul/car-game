@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://d2u3qbrrr58rg"]
+[gd_scene format=3 uid="uid://jbv6fqsev2ms"]
 
 [ext_resource type="PackedScene" uid="uid://h8ktknpf0t7p" path="res://src/modules/multiplayer/spawn_point.tscn" id="1_n2inr"]
 [ext_resource type="Script" uid="uid://c2mwuvlffjxot" path="res://src/features/water/custom_liquid_area.gd" id="1_wt035"]
@@ -37,7 +37,7 @@ volumetric_fog_density = 0.0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_1s5vw"]
 lightmap_size_hint = Vector2i(127, 127)
-size = Vector2(250, 250)
+size = Vector2(300, 300)
 subdivide_width = 1000
 subdivide_depth = 1000
 
@@ -151,19 +151,19 @@ shadow_enabled = true
 [node name="LiquidArea" type="LiquidArea" parent="." unique_id=37140416 node_paths=PackedStringArray("target_mesh")]
 show_debug = true
 script = ExtResource("1_wt035")
-target_mesh = NodePath("../WaterMesh")
-waves_data = PackedVector4Array(1, 1, 0.25, 60, 1, 0.6, 0.15, 31, 1, 1.3, 0.05, 18, 0, 0, 0, 0, 0, 0, 0, 0)
+target_mesh = NodePath("WaterMesh")
 
-[node name="WaterMesh" type="MeshInstance3D" parent="." unique_id=521056906]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.381, -3.52, 39.488)
+[node name="WaterMesh" type="MeshInstance3D" parent="LiquidArea" unique_id=521056906]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5920157, 0)
 material_override = ExtResource("2_arbid")
 mesh = SubResource("PlaneMesh_1s5vw")
+skeleton = NodePath("../..")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="WaterMesh" unique_id=1392848849]
-root_path = NodePath("../../LiquidArea")
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="LiquidArea/WaterMesh" unique_id=1392848849]
+root_path = NodePath("../..")
 replication_config = SubResource("SceneReplicationConfig_ygn0o")
 
-[node name="FogVolume" type="FogVolume" parent="WaterMesh" unique_id=811447449]
+[node name="FogVolume" type="FogVolume" parent="LiquidArea/WaterMesh" unique_id=811447449]
 shape = 4
 material = SubResource("FogMaterial_t72cs")
 
@@ -221,6 +221,7 @@ mesh = SubResource("BoxMesh_ndggs")
 script = ExtResource("19_rep4f")
 volume = NodePath("Volume")
 terrain = NodePath("../Terrain3D")
+grid_step = 6.0
 save_path = "res://data/volumetric_points/zoo"
 data = ExtResource("20_2ybnr")
 metadata/_custom_type_script = "uid://yk07u3qi60wx"
@@ -241,11 +242,29 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -19.539486, 38.127575)
 
 [node name="Jetpack" parent="." unique_id=1407846572 instance=ExtResource("14_jseuq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5270677, 0.3566655, -21.079647)
+collision_layer = 2
 
 [node name="ItemMask" parent="." unique_id=1145077405 instance=ExtResource("15_ihxu1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.666975, 1.019382, -21.314684)
+collision_layer = 2
 
 [node name="Harpoon" parent="." unique_id=790591340 instance=ExtResource("15_cj628")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.017966, 1.3104982, -14.208664)
+collision_layer = 2
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=758233623]
+transform = Transform3D(1, 0, 0, 0, 0.8489625, 0.5284532, 0, -0.5284532, 0.8489625, 8.953724, 1.6025624, -5.3590345)
+use_collision = true
+size = Vector3(6.6884766, 1, 10.355957)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=2059398155]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.953724, 5.30489, 3.7415762)
+use_collision = true
+size = Vector3(6.6884766, 1, 10.355957)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="." unique_id=926363393]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8625364, -0.325171, -21.808193)
+use_collision = true
+size = Vector3(29.305908, 1, 26.388428)
 
 [editable path="VolumetricRegion/Fish"]

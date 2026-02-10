@@ -1,5 +1,5 @@
 class_name PlayerCharacter
-extends CharacterBody3D
+extends RigidBody3D
 
 signal jumped
 signal death
@@ -9,23 +9,29 @@ enum MOVEMENT_STATE {WALKING, SWIMMING, FALLING, DIVING}
 @export var sensitivity: float = 0.5
 @export var rotation_speed: float = 1.0
 @export var run_speed: float = 10.0
-@export var jump_force: float = 10.0
 @export var water_jump_force: float = 10.0
 
-@export var gravity_scale: float = 1.0
+@export_group("Jump")
+@export var jump_velocity : float = 1.0
 
 @export_group("Config/Walking", "walking_")
 @export var walking_acceleration: float = 5.0
 @export var walking_speed: float = 10.0
+@export var ground_friction: float = 0.8
 
 @export_group("Config/Falling", "falling_")
 @export var falling_acceleration: float = 5.0
+@export var falling_damping: float = 0.05
 
 @export_group("Config/Swimming", "swimming_")
 @export var swimming_speed: float = 1.0
 @export var swimming_fast_speed: float = 1.0
 @export var swimming_acceleration: float = 0.05
 @export var swimming_rotation_speed: float = 0.05
+@export var swimming_damping: float = 0.05
+
+@export_group("Config/Diving", "diving_")
+@export var diving_damping: float = 0.05
 
 @export_group("Config/Values")
 @export var stamina_consume_rate: float = -10.0
@@ -47,13 +53,18 @@ var dead: bool = false
 
 var diving_right_axis: Vector3 = Vector3.ZERO
 
+var is_on_floor: bool = false
+
+var is_on_floor_buffer: bool = false
+
+
 @onready var dead_focus: Node3D = self
 
 @onready var camera_pivot: Node3D = %CameraPivot
 @onready var spring_arm: SpringArm3D = %SpringArm3D
 @onready var camera: Camera3D = %Camera3D
+@onready var ground_check: RayCast3D = %GroundCheck
 
-@onready var godot_plush_model: Node3D = $Visual/godot_plush_model
 @onready var dead_mesh: MeshInstance3D = %DeadMesh
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
 
@@ -68,7 +79,7 @@ var diving_right_axis: Vector3 = Vector3.ZERO
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var stamina_component: StaminaComponent = $StaminaComponent
 @onready var oxygen_component: OxygenComponent = $OxygenComponent
-@onready var buoyancy: CharacterBuoyancy = $CharacterBuoyancy
+@onready var buoyancy: RigidBuoyancy = $RigidBuoyancy
 
 
 func _enter_tree() -> void:
@@ -103,15 +114,45 @@ func _unhandled_input(event: InputEvent) -> void:
 		pause_menu.visible = true
 	elif event is InputEventMouseMotion:
 		var motion: Vector2 = -event.relative * sensitivity
-		rotate_y(deg_to_rad(motion.x))
+		model.rotate_y(deg_to_rad(motion.x))
+		camera_pivot.rotate_y(deg_to_rad(motion.x))
 		spring_arm.rotate_x(deg_to_rad(motion.y))
 		spring_arm.rotation_degrees.x = clamp(spring_arm.rotation_degrees.x, -70.0, 70.0)
 
 
-func _physics_process(delta: float) -> void:
+func _integrate_forces(state: PhysicsDirectBodyState3D):
+	if dead: return
+	
+	var delta: float = state.step
+	
 	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		inputs_component.update()
 	
+	var is_moving: bool = inputs_component.move_dir != Vector3.ZERO
+	
+	physics_material_override.friction = 0.0 if is_moving else ground_friction
+	
+	match movement_state:
+		MOVEMENT_STATE.WALKING:
+			_process_walking_state(state, delta)
+		MOVEMENT_STATE.SWIMMING:
+			_process_swimming_state(state, delta)
+		MOVEMENT_STATE.FALLING:
+			_process_falling_state(state, delta)
+		MOVEMENT_STATE.DIVING:
+			_process_diving_state(state, delta)
+	
+	is_on_floor = _get_is_on_floor(state)
+
+
+func _get_is_on_floor(state : PhysicsDirectBodyState3D) -> bool:
+	for col_idx in state.get_contact_count():
+		var col_normal = state.get_contact_local_normal(col_idx)
+		return col_normal.dot(Vector3.UP) > -0.5 or ground_check.is_colliding()
+	return false
+
+
+func _physics_process(delta: float) -> void:
 	if dead:
 		if dead_focus:
 			global_position = dead_focus.global_position
@@ -119,16 +160,6 @@ func _physics_process(delta: float) -> void:
 	
 	interactor.wants_interact = inputs_component.interaction_pressed
 	interactor.update()
-	
-	match movement_state:
-		MOVEMENT_STATE.WALKING:
-			_process_walking_state(delta)
-		MOVEMENT_STATE.SWIMMING:
-			_process_swimming_state(delta)
-		MOVEMENT_STATE.FALLING:
-			_process_falling_state(delta)
-		MOVEMENT_STATE.DIVING:
-			_process_diving_state(delta)
 	
 	DebugDraw3D.draw_text(global_position + Vector3.UP, str(buoyancy.get_submerged_ratio()))
 	DebugDraw3D.draw_text(global_position + Vector3.UP * 1.25, str(MOVEMENT_STATE.find_key(movement_state)))
@@ -142,13 +173,11 @@ func _physics_process(delta: float) -> void:
 	
 	if !inputs_component.run_pressed:
 		stamina_component.tick(delta)
-	
-	move_and_slide()
 
 
 func jump(force: float) -> void:
 	jumped.emit()
-	velocity.y = force
+	linear_velocity.y = force
 
 
 @rpc("any_peer", "call_local", "reliable")
@@ -156,7 +185,7 @@ func revive() -> void:
 	dead = false
 	health_component.current_health = health_component.max_health
 	collision_shape.set_deferred("disabled", false)
-	godot_plush_model.visible = true
+	model.visible = true
 	dead_mesh.visible = false
 	dead_focus = null
 	spring_arm.collision_mask = 1
@@ -168,7 +197,9 @@ func kill() -> void:
 	dead = true
 	death.emit()
 	collision_shape.set_deferred("disabled", true)
-	godot_plush_model.visible = false
+	model.visible = false
+	global_rotation = Vector3.ZERO
+	model.global_rotation = Vector3.ZERO
 	dead_mesh.visible = true
 	spring_arm.collision_mask = 0
 	spring_arm.spring_length = dead_arm_length
@@ -182,8 +213,13 @@ func kill() -> void:
 		dead_focus = other_player
 
 
-func _process_walking_state(delta: float) -> void:
-	if not is_on_floor():
+func _apply_h_damping(state: PhysicsDirectBodyState3D, damp: float) -> void:
+	state.linear_velocity.x -= state.linear_velocity.x * damp
+	state.linear_velocity.z -= state.linear_velocity.z * damp
+
+
+func _process_walking_state(state: PhysicsDirectBodyState3D, delta: float) -> void:
+	if not is_on_floor:
 		movement_state = MOVEMENT_STATE.FALLING
 		return
 	
@@ -196,18 +232,17 @@ func _process_walking_state(delta: float) -> void:
 		speed = walking_speed
 	
 	if inputs_component.jump_pressed:
-		jump(jump_force)
+		jump(jump_velocity)
 	
-	_process_movement(delta, speed, walking_acceleration)
+	var movement_dir: Vector3 = camera_pivot.global_basis * inputs_component.move_dir
+	_process_movement(state, movement_dir, speed, walking_acceleration)
 
 
-func _process_swimming_state(delta: float) -> void:
+func _process_swimming_state(state: PhysicsDirectBodyState3D, delta: float) -> void:
 	if inputs_component.jump_pressed:
 		jump(water_jump_force)
 	
 	oxygen_component.tick(delta)
-	
-	velocity += get_gravity() * delta * gravity_scale
 	
 	if inputs_component.run_pressed and stamina_component.has_amount(delta * stamina_consume_rate):
 		stamina_component.modify(delta * stamina_consume_rate)
@@ -215,32 +250,29 @@ func _process_swimming_state(delta: float) -> void:
 	else:
 		speed = swimming_speed
 	
-	if inputs_component.dive_pressed or buoyancy.get_average_depth() < -3.5:
+	if inputs_component.dive_pressed or buoyancy.get_submerged_ratio() == 1.0:
 		buoyancy.apply_forces = false
-		if abs(velocity.y) < 3.0:
-			velocity.y += -3.0
 		gravity_scale = 0.0
 		movement_state = MOVEMENT_STATE.DIVING
 	
-	_process_movement(delta, swimming_speed, swimming_acceleration)
+	var movement_dir: Vector3 = camera_pivot.global_basis * inputs_component.move_dir
+	if movement_dir: _process_movement(state, movement_dir, swimming_speed, swimming_acceleration)
+	else: _apply_h_damping(state, swimming_damping)
 
 
-func _process_falling_state(delta: float) -> void:
-	if is_on_floor():
+func _process_falling_state(state: PhysicsDirectBodyState3D, delta: float) -> void:
+	if is_on_floor:
 		movement_state = MOVEMENT_STATE.WALKING
 		return
 	
 	oxygen_component.tick(delta)
 	
-	velocity += get_gravity() * delta * gravity_scale
-	
-	_process_movement(delta, walking_speed, falling_acceleration)
+	var movement_dir: Vector3 = camera_pivot.global_basis * inputs_component.move_dir
+	if movement_dir: _process_movement(state, movement_dir, walking_speed, falling_acceleration)
+	else: _apply_h_damping(state, falling_damping)
 
 
-func _process_diving_state(delta: float) -> void:
-	var input: Vector2 = inputs_component.flat_input
-	var up_input: float = inputs_component.vertical_input
-	
+func _process_diving_state(state: PhysicsDirectBodyState3D, delta: float) -> void:
 	if oxygen_component.get_percent() > 0.0:
 		oxygen_component.modify(delta * oxygen_consume_rate)
 	else:
@@ -252,26 +284,31 @@ func _process_diving_state(delta: float) -> void:
 	else:
 		speed = swimming_speed
 	
-	if !inputs_component.dive_pressed and buoyancy.get_average_depth() > -2.0:
+	if !inputs_component.dive_pressed and buoyancy.get_submerged_ratio() < 1.0:
 		buoyancy.apply_forces = true
 		gravity_scale = 1.0
 		movement_state = MOVEMENT_STATE.SWIMMING
 	
-	if input or up_input:
-		var vel_dir: Vector3 = (camera.global_basis * Vector3(input.x, 0.0, input.y) + Vector3.UP * up_input).normalized()
-		var target_vel: Vector3 = vel_dir * speed
-		
-		velocity = velocity.move_toward(target_vel, swimming_acceleration)
-	else:
-		velocity = velocity.move_toward(Vector3(0.0, 0.0, 0.0), swimming_acceleration / 2.0)
+	var input: Vector2 = inputs_component.flat_input
+	var up_input: float = inputs_component.vertical_input
+	var movement_dir: Vector3 = (camera.global_basis * Vector3(input.x, 0.0, input.y) + Vector3.UP * up_input).normalized()
+	if movement_dir: _process_movement(state, movement_dir, speed, swimming_acceleration)
+	else: state.linear_velocity -= state.linear_velocity * diving_damping
 
 
-func _process_movement(delta: float, max_speed: float, acceleration: float) -> void:
-	if inputs_component.move_dir:
-		var target_vel: Vector3 = camera_pivot.global_basis * inputs_component.move_dir * max_speed
-		velocity = velocity.move_toward(Vector3(target_vel.x, velocity.y, target_vel.z), acceleration)
-	else:
-		velocity = velocity.move_toward(Vector3(0.0, velocity.y, 0.0), acceleration)
+func _process_movement(state: PhysicsDirectBodyState3D, movement_input: Vector3, max_speed: float, acceleration: float) -> void:
+	var target_vel: Vector3 = state.linear_velocity
+	target_vel += movement_input * max_speed * state.step * acceleration
+	
+	if is_zero_approx(movement_input.y):
+		target_vel.y = 0.0
+	
+	target_vel = target_vel.limit_length(max_speed)
+	
+	if is_zero_approx(movement_input.y):
+		target_vel.y = state.linear_velocity.y
+	
+	state.linear_velocity = target_vel
 
 
 func is_in_water() -> bool:
@@ -284,7 +321,6 @@ func _on_buoyancy_submerged_changed() -> void:
 		movement_state = MOVEMENT_STATE.SWIMMING
 	if !is_submerged and movement_state != MOVEMENT_STATE.FALLING:
 		movement_state = MOVEMENT_STATE.FALLING
-		gravity_scale = 1.0
 		buoyancy.apply_forces = true
 
 
