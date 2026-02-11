@@ -1,0 +1,554 @@
+[gd_scene format=3 uid="uid://701k78kygyiu"]
+
+[ext_resource type="Script" uid="uid://c8c8bvww5wvax" path="res://src/features/player/player.gd" id="1_0ph83"]
+[ext_resource type="PackedScene" uid="uid://mcb0ovo14n40" path="res://assets/PlayerCharacter/GodotPlush/godot_plush_model.glb" id="2_3v8pm"]
+[ext_resource type="Script" uid="uid://da875ut8n11vq" path="res://assets/PlayerCharacter/GodotPlush/godot_plush_model.gd" id="3_ti7vc"]
+[ext_resource type="Texture2D" uid="uid://drijhg0g7ak1n" path="res://assets/PlayerCharacter/GodotPlush/Material/godot_plush_albedo.png" id="4_1mqja"]
+[ext_resource type="PackedScene" uid="uid://bwccmirxmpnbb" path="res://src/ui/pause_menu/pause_menu.tscn" id="4_p2vpv"]
+[ext_resource type="Texture2D" uid="uid://dts2qgujqag2b" path="res://assets/PlayerCharacter/GodotPlush/Material/godot_plush_normal.png" id="5_njwrn"]
+[ext_resource type="Script" uid="uid://c6b34boy1rxu1" path="res://src/modules/inventory_system/ui/box_inventory_slots.gd" id="7_aco40"]
+[ext_resource type="PackedScene" uid="uid://3xqvx7ccfojp" path="res://src/modules/basic_attributes/ui/health_bar.tscn" id="7_q3iuk"]
+[ext_resource type="PackedScene" uid="uid://debtuleobx1iw" path="res://src/modules/basic_attributes/ui/stamina_bar.tscn" id="8_2m83w"]
+[ext_resource type="Script" uid="uid://dss72a2cjr3u8" path="res://src/modules/interaction_system/interactor.gd" id="8_njwrn"]
+[ext_resource type="Script" uid="uid://clyypf1rhthc" path="res://src/features/components/inputs_component.gd" id="9_502ij"]
+[ext_resource type="PackedScene" uid="uid://ddvlyoxxht3y4" path="res://src/modules/basic_attributes/ui/oxygen_bar.tscn" id="9_ug4fj"]
+[ext_resource type="Texture2D" uid="uid://c7abq0ivc2au2" path="res://assets/icons/Circle.png" id="10_58hqn"]
+[ext_resource type="Script" uid="uid://c5b6w7fffwk2o" path="res://src/modules/inventory_system/components/inventory_component.gd" id="10_si01v"]
+[ext_resource type="Script" uid="uid://dhioq5g0akhqd" path="res://src/modules/inventory_system/components/item_manager_component.gd" id="12_ri5lk"]
+[ext_resource type="Script" uid="uid://c5ns01lryx7k3" path="res://src/modules/basic_attributes/components/health/health_component.gd" id="15_2m83w"]
+[ext_resource type="Script" uid="uid://2o85k5syfmr2" path="res://src/modules/basic_attributes/components/stamina_component.gd" id="16_hn5l5"]
+[ext_resource type="Script" uid="uid://cvj3mabvmcue2" path="res://src/modules/basic_attributes/components/oxygen_component.gd" id="17_daxp2"]
+[ext_resource type="Script" uid="uid://cvwxq0usb80uc" path="res://src/modules/basic_attributes/components/health/hurt_box.gd" id="19_58hqn"]
+[ext_resource type="Script" uid="uid://x0e1wkokx41m" path="res://src/features/components/movements/movement.gd" id="20_dfa3y"]
+[ext_resource type="Script" uid="uid://b5g1sop7gn2a4" path="res://src/features/components/movements/flying_movement.gd" id="21_xmri6"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0ph83"]
+height = 1.6096191
+
+[sub_resource type="Shader" id="Shader_dqvdr"]
+code = "shader_type spatial;
+
+uniform sampler2D albedo_texture : source_color, repeat_disable;
+uniform sampler2D normal_texture : hint_normal, repeat_disable;
+uniform vec2 uv_offset = vec2(0.0);
+
+uniform vec3 target_color : source_color = vec3(0.0, 0.0, 1.0);
+uniform vec3 remap_color : source_color = vec3(1.0);
+
+float fresnel(float amount, vec3 normal, vec3 view)
+{
+	return pow((1.0 - clamp(dot(normalize(normal), normalize(view)), 0.0, 1.0 )), amount);
+}
+
+void fragment() {
+	vec3 tex_color = texture(albedo_texture, UV + uv_offset).rgb;
+	float r = tex_color.r;
+	float g = tex_color.g;
+	float b = tex_color.b;
+	
+	float max_val = max(r, max(g, b));
+	float min_val = min(r, min(g, b));
+	float delta = max_val - min_val;
+	
+	if (delta > 0.9)
+	{
+		tex_color = remap_color;
+	}
+	
+	ALBEDO = tex_color;
+	NORMAL_MAP = texture(normal_texture, UV + uv_offset).xyz;
+	EMISSION = mix(vec3(1.0), ALBEDO, 0.75) * clamp(smoothstep(0.6, 0.7, fresnel(1.0, NORMAL, VIEW)) * NORMAL.y, 0.0, 1.0) * 2.0;
+	ROUGHNESS = 0.7;
+	SPECULAR = 0.8;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xmri6"]
+resource_local_to_scene = true
+render_priority = 0
+shader = SubResource("Shader_dqvdr")
+shader_parameter/albedo_texture = ExtResource("4_1mqja")
+shader_parameter/normal_texture = ExtResource("5_njwrn")
+shader_parameter/uv_offset = Vector2(0, 0)
+shader_parameter/target_color = Color(0.09411765, 0.6, 1, 1)
+shader_parameter/remap_color = Color(0.09411765, 0.6, 1, 1)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_njwrn"]
+animation = &"walk"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_502ij"]
+animation = &"run"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_si01v"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_njwrn")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_502ij")
+blend_point_1/pos = 1.0
+min_space = 0.0
+sync = true
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p2vpv"]
+animation = &"fall"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_aco40"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1mqja"]
+animation = &"up"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ri5lk"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wy6v3"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "get_parent().moving"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q3iuk"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "!get_parent().moving and !get_parent().falling"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ti7vc"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "get_parent().falling"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rybn4"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "get_parent().falling"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1mqja"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "!get_parent().falling and !get_parent().moving"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_njwrn"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "!get_parent().falling and get_parent().moving"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_502ij"]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_si01v"]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_aco40"]
+xfade_time = 0.2
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_2m83w"]
+states/GroundMovement/node = SubResource("AnimationNodeBlendSpace1D_si01v")
+states/GroundMovement/position = Vector2(588, 100)
+states/Start/position = Vector2(176, 100)
+states/fall/node = SubResource("AnimationNodeAnimation_p2vpv")
+states/fall/position = Vector2(394, 222)
+states/idle/node = SubResource("AnimationNodeAnimation_aco40")
+states/idle/position = Vector2(394, 100)
+states/up/node = SubResource("AnimationNodeAnimation_1mqja")
+states/up/position = Vector2(588, 216)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_ri5lk"), "idle", "GroundMovement", SubResource("AnimationNodeStateMachineTransition_wy6v3"), "GroundMovement", "idle", SubResource("AnimationNodeStateMachineTransition_q3iuk"), "idle", "fall", SubResource("AnimationNodeStateMachineTransition_ti7vc"), "GroundMovement", "fall", SubResource("AnimationNodeStateMachineTransition_rybn4"), "fall", "idle", SubResource("AnimationNodeStateMachineTransition_1mqja"), "fall", "GroundMovement", SubResource("AnimationNodeStateMachineTransition_njwrn"), "idle", "up", SubResource("AnimationNodeStateMachineTransition_502ij"), "GroundMovement", "up", SubResource("AnimationNodeStateMachineTransition_si01v"), "up", "fall", SubResource("AnimationNodeStateMachineTransition_aco40")]
+graph_offset = Vector2(-174, 12)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ti7vc"]
+animation = &"tilt_l"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rybn4"]
+animation = &"tilt_r"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_1mqja"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_ti7vc")
+blend_point_0/pos = -1.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_rybn4")
+blend_point_1/pos = 1.0
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_p2vpv"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_hn5l5"]
+nodes/TiltBlend/node = SubResource("AnimationNodeBlend2_p2vpv")
+nodes/TiltBlend/position = Vector2(60, 140)
+nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_2m83w")
+nodes/StateMachine/position = Vector2(-540, 180)
+nodes/Tilt/node = SubResource("AnimationNodeBlendSpace1D_1mqja")
+nodes/Tilt/position = Vector2(-520, 400)
+node_connections = [&"output", 0, &"TiltBlend", &"TiltBlend", 0, &"StateMachine", &"TiltBlend", 1, &"Tilt"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ti7vc"]
+properties/0/path = NodePath(".:falling")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:moving")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:movement_blend")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_wy6v3"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_hn5l5"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_rybn4"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:masked")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath("CameraPivot:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("CameraPivot/SpringArm3D:rotation")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath(".:dead")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+properties/5/path = NodePath("CollisionShape3D:disabled")
+properties/5/spawn = true
+properties/5/replication_mode = 2
+properties/6/path = NodePath("CameraPivot/SpringArm3D/Camera3D/DeadMesh:visible")
+properties/6/spawn = true
+properties/6/replication_mode = 2
+properties/7/path = NodePath("Visual/godot_plush_model:visible")
+properties/7/spawn = true
+properties/7/replication_mode = 2
+properties/8/path = NodePath(".:rotation")
+properties/8/spawn = true
+properties/8/replication_mode = 1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_dfa3y"]
+radius = 0.5826499
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_1mqja"]
+
+[sub_resource type="Curve" id="Curve_hn5l5"]
+_data = [Vector2(0, 0.1), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_ug4fj"]
+_data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="BuoyancyMaterial" id="BuoyancyMaterial_58hqn"]
+buoyancy = 3.0
+linear_drag_scale = Vector3(0, 1, 0)
+
+[node name="Player" type="CharacterBody3D" unique_id=525209320 node_paths=PackedStringArray("model") groups=["players"]]
+collision_layer = 3
+collision_mask = 3
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+script = ExtResource("1_0ph83")
+sensitivity = 0.25
+walking_speed = 5.0
+run_speed = 5.0
+walking_acceleration = 5.0
+stamina_consume_rate = -30.0
+oxygen_consume_rate = -1.0
+alive_arm_length = 0.0
+dead_arm_length = 4.0
+model = NodePath("Visual")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=711554080]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.19177246, 0)
+shape = SubResource("CapsuleShape3D_0ph83")
+
+[node name="Visual" type="Node3D" parent="." unique_id=1424932337]
+unique_name_in_owner = true
+
+[node name="godot_plush_model" parent="Visual" unique_id=1080972857 instance=ExtResource("2_3v8pm")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, -1, 0)
+script = ExtResource("3_ti7vc")
+
+[node name="Skeleton3D" parent="Visual/godot_plush_model/Rig" parent_id_path=PackedInt32Array(1080972857, 1940519781) index="0" unique_id=1131176568]
+bones/0/position = Vector3(-2.865251e-22, 0.78013676, -5.4318505e-10)
+bones/0/rotation = Quaternion(0.9962134, 0.007245404, -0.08663685, -0.0006311191)
+bones/1/position = Vector3(-2.3597598e-17, 0, -6.18693e-17)
+bones/1/rotation = Quaternion(1, -2.2923515e-15, -3.4519715e-08, -5.960464e-08)
+bones/2/rotation = Quaternion(0.0979547, -0.17302555, 0.9218495, -0.332657)
+bones/3/rotation = Quaternion(0.19516739, 0.020193636, -0.0039494303, 0.9805541)
+bones/5/rotation = Quaternion(0.045788202, 0.10634261, 0.93343705, 0.3395438)
+bones/6/rotation = Quaternion(0.20466629, 0.0201259, -0.004279222, 0.9786156)
+bones/8/rotation = Quaternion(-0.10729039, -0.0042472575, -0.061309934, 0.9923265)
+bones/9/position = Vector3(-6.20404e-08, 0.15217116, -2.1369209e-09)
+bones/9/rotation = Quaternion(0.2549038, -0.20165552, 0.05441468, 0.9441388)
+bones/10/position = Vector3(-2.1398812e-08, 0.20599714, 3.9274266e-08)
+bones/10/rotation = Quaternion(-0.52469563, 0.07513208, 0.040653087, 0.84699297)
+bones/11/position = Vector3(-1.9200796e-08, 0.2512119, -4.9427776e-08)
+bones/11/rotation = Quaternion(-0.000102671445, 0.9324488, -0.36130223, 4.626674e-05)
+bones/12/rotation = Quaternion(0.009223511, 0.0029170893, 0.045626562, 0.9989118)
+bones/13/position = Vector3(1.8023057e-08, 0.1524158, -2.4050797e-09)
+bones/13/rotation = Quaternion(0.21121308, 0.20123439, -0.044480693, 0.955466)
+bones/14/position = Vector3(7.4006934e-10, 0.20609596, -1.4507917e-08)
+bones/14/rotation = Quaternion(-0.58012813, 0.100018054, -0.018713346, 0.8081445)
+bones/15/position = Vector3(-4.8419313e-10, 0.25120693, -5.0023658e-08)
+bones/15/rotation = Quaternion(-2.7789587e-05, 0.9324604, -0.36127216, 0.0002779076)
+
+[node name="GodotPlushMesh" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="0" unique_id=1009443981]
+material_override = SubResource("ShaderMaterial_xmri6")
+
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="1" unique_id=1198560524]
+transform = Transform3D(-0.7730741, -0.44777262, 0.44928396, 0.6250091, -0.6586019, 0.41905463, 0.10825812, 0.60476696, 0.7890099, -0.65713537, 0.5910511, 0.23587766)
+bone_name = "DEF-hand.R"
+bone_idx = 7
+
+[node name="RightHandSocket" type="Marker3D" parent="Visual/godot_plush_model/Rig/Skeleton3D/BoneAttachment3D" unique_id=1731198154]
+unique_name_in_owner = true
+transform = Transform3D(1, 5.6311364e-09, 4.656613e-10, 5.6477347e-09, 1, -6.184564e-11, 0, 6.548362e-11, 1, 0.010235667, 0.14705995, 6.040046e-05)
+
+[node name="BoneAttachment3D2" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="2" unique_id=1331867321]
+transform = Transform3D(0.9848831, 0.01432658, -0.1726267, 0.014545293, -0.9998941, 2.0206205e-06, -0.17260842, -0.0025128962, -0.9849872, -2.865251e-22, 0.78013676, -5.4318505e-10)
+bone_name = "DEF-hips"
+bone_idx = 0
+
+[node name="BackSocket" type="Marker3D" parent="Visual/godot_plush_model/Rig/Skeleton3D/BoneAttachment3D2" unique_id=1037657971]
+transform = Transform3D(-1, 8.742277e-08, 0, -8.742278e-08, -0.99999994, 0, 0, 0, 1.0000001, 0.06046414, -0.1489309, 0.51552385)
+
+[node name="BoneAttachment3D3" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="3" unique_id=216061842]
+transform = Transform3D(0.9848831, -0.014326559, 0.17262664, 0.014545293, 0.9998941, -2.1408214e-06, -0.17260835, 0.0025130135, 0.9849872, -1.256087e-17, 0.78013676, -5.43185e-10)
+bone_name = "DEF-head"
+bone_idx = 1
+
+[node name="HeadSocket" type="Marker3D" parent="Visual/godot_plush_model/Rig/Skeleton3D/BoneAttachment3D3" unique_id=1617727454]
+transform = Transform3D(1, -2.5410988e-21, -2.842171e-14, -8.4703295e-22, 0.99999976, 7.1054274e-15, 0, -7.1054274e-15, 0.99999976, 7.8616814e-08, 0.1729452, 0.52921456)
+
+[node name="AnimationTree" type="AnimationTree" parent="Visual/godot_plush_model" unique_id=1684553355]
+tree_root = SubResource("AnimationNodeBlendTree_hn5l5")
+anim_player = NodePath("../AnimationPlayer")
+parameters/TiltBlend/blend_amount = 0.0
+parameters/StateMachine/GroundMovement/blend_position = 1.0049322
+parameters/Tilt/blend_position = 1.0
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Visual/godot_plush_model" unique_id=1122505844]
+replication_config = SubResource("SceneReplicationConfig_ti7vc")
+
+[node name="Ray_Drop" type="RayCast3D" parent="Visual" unique_id=1922833415]
+unique_name_in_owner = true
+target_position = Vector3(0, 0, -2)
+
+[node name="CameraRemote" type="RemoteTransform3D" parent="." unique_id=1585974912]
+remote_path = NodePath("../CameraPivot")
+update_rotation = false
+
+[node name="CameraPivot" type="Node3D" parent="." unique_id=1647000280]
+unique_name_in_owner = true
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot" unique_id=1113902983]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.6, 0)
+shape = SubResource("SphereShape3D_wy6v3")
+spring_length = 4.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D" unique_id=1174057119]
+unique_name_in_owner = true
+current = true
+
+[node name="DeadMesh" type="MeshInstance3D" parent="CameraPivot/SpringArm3D/Camera3D" unique_id=541008666]
+unique_name_in_owner = true
+visible = false
+mesh = SubResource("BoxMesh_hn5l5")
+skeleton = NodePath("../../../../Visual")
+
+[node name="GroundCheck" type="RayCast3D" parent="." unique_id=463459458]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.92142284, 0)
+target_position = Vector3(0, -0.25, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1461624240]
+
+[node name="GameHUD" type="Control" parent="CanvasLayer" unique_id=1327301443]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_behavior_recursive = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/GameHUD" unique_id=364566448]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="UI" type="Control" parent="CanvasLayer/GameHUD/MarginContainer" unique_id=327957057]
+layout_mode = 2
+
+[node name="Box_InventorySlots" type="HBoxContainer" parent="CanvasLayer/GameHUD/MarginContainer/UI" unique_id=1704260367 node_paths=PackedStringArray("inventory_component")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -6.0
+offset_top = -92.0
+offset_right = 6.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("7_aco40")
+inventory_component = NodePath("../../../../../InventoryComponent")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GameHUD/MarginContainer/UI" unique_id=920412814]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 135.0
+grow_vertical = 0
+
+[node name="HealthBar" parent="CanvasLayer/GameHUD/MarginContainer/UI/VBoxContainer" unique_id=408513436 node_paths=PackedStringArray("health_component") instance=ExtResource("7_q3iuk")]
+layout_mode = 2
+size_flags_vertical = 3
+health_component = NodePath("../../../../../../HealthComponent")
+
+[node name="StaminaBar" parent="CanvasLayer/GameHUD/MarginContainer/UI/VBoxContainer" unique_id=502303408 node_paths=PackedStringArray("stamina_component") instance=ExtResource("8_2m83w")]
+layout_mode = 2
+size_flags_vertical = 3
+stamina_component = NodePath("../../../../../../StaminaComponent")
+
+[node name="OxygenBar" parent="CanvasLayer/GameHUD/MarginContainer/UI/VBoxContainer" unique_id=131215041 node_paths=PackedStringArray("oxygen_component") instance=ExtResource("9_ug4fj")]
+layout_mode = 2
+oxygen_component = NodePath("../../../../../../OxygenComponent")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/GameHUD/MarginContainer/UI" unique_id=1733447435]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_58hqn")
+expand_mode = 1
+
+[node name="PauseMenu" parent="CanvasLayer" unique_id=1912501345 instance=ExtResource("4_p2vpv")]
+unique_name_in_owner = true
+visible = false
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=871392169]
+replication_config = SubResource("SceneReplicationConfig_rybn4")
+
+[node name="HurtBox" type="Area3D" parent="." unique_id=2065241915 node_paths=PackedStringArray("health_component")]
+script = ExtResource("19_58hqn")
+health_component = NodePath("../HealthComponent")
+metadata/_custom_type_script = "uid://cvwxq0usb80uc"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox" unique_id=1595667503]
+shape = SubResource("SphereShape3D_dfa3y")
+
+[node name="Interactor" type="Area3D" parent="." unique_id=1930921537 node_paths=PackedStringArray("camera")]
+script = ExtResource("8_njwrn")
+camera = NodePath("../CameraPivot/SpringArm3D/Camera3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactor" unique_id=500022172]
+shape = SubResource("SphereShape3D_1mqja")
+
+[node name="InputsComponent" type="Node" parent="." unique_id=1603485649]
+script = ExtResource("9_502ij")
+metadata/_custom_type_script = "uid://clyypf1rhthc"
+
+[node name="InventoryComponent" type="Node" parent="." unique_id=1468872756]
+script = ExtResource("10_si01v")
+slot_count = 2
+
+[node name="ItemManagerComponent" type="Node" parent="." unique_id=1625932705 node_paths=PackedStringArray("inventory_component", "model", "raycast")]
+script = ExtResource("12_ri5lk")
+inventory_component = NodePath("../InventoryComponent")
+model = NodePath("../Visual")
+raycast = NodePath("../Visual/Ray_Drop")
+scroll_delay = 0.1
+metadata/_custom_type_script = "uid://dhioq5g0akhqd"
+
+[node name="HealthComponent" type="Node" parent="." unique_id=963900642]
+script = ExtResource("15_2m83w")
+metadata/_custom_type_script = "uid://c5ns01lryx7k3"
+
+[node name="StaminaComponent" type="Node" parent="." unique_id=2123473153]
+script = ExtResource("16_hn5l5")
+regen_curve = SubResource("Curve_hn5l5")
+regen_amount = 5.0
+metadata/_custom_type_script = "uid://2o85k5syfmr2"
+
+[node name="OxygenComponent" type="Node" parent="." unique_id=933474605]
+script = ExtResource("17_daxp2")
+regen_curve = SubResource("Curve_ug4fj")
+regen_amount = 30.0
+metadata/_custom_type_script = "uid://cvj3mabvmcue2"
+
+[node name="RigidBuoyancy" type="CharacterBuoyancy" parent="." unique_id=814532454]
+buoyancy_material = SubResource("BuoyancyMaterial_58hqn")
+probes = PackedVector3Array(0, 1, 0, 0, -0.32, 0, 0, -0.8, 0)
+show_debug = true
+debug_color = Color(1, 0, 0.016666412, 1)
+
+[node name="Movements" type="Node" parent="." unique_id=987828039]
+
+[node name="GroundMovement" type="Node" parent="Movements" unique_id=521182381 node_paths=PackedStringArray("body", "model")]
+unique_name_in_owner = true
+script = ExtResource("20_dfa3y")
+body = NodePath("../..")
+acceleration = 5.0
+move_speed = 5.0
+fast_move_speed = 8.0
+jump_velocity = 7.0
+model = NodePath("../../Visual")
+model_rotation_speed = 10.0
+metadata/_custom_type_script = "uid://x0e1wkokx41m"
+
+[node name="AirMovement" type="Node" parent="Movements" unique_id=866330763 node_paths=PackedStringArray("body", "model")]
+unique_name_in_owner = true
+script = ExtResource("20_dfa3y")
+body = NodePath("../..")
+acceleration = 2.5
+move_speed = 5.0
+fast_move_speed = 8.0
+drag = 1.0
+can_jump = false
+model = NodePath("../../Visual")
+model_rotation_speed = 10.0
+metadata/_custom_type_script = "uid://x0e1wkokx41m"
+
+[node name="SwimmingMovement" type="Node" parent="Movements" unique_id=939968290 node_paths=PackedStringArray("body", "model")]
+unique_name_in_owner = true
+script = ExtResource("20_dfa3y")
+body = NodePath("../..")
+acceleration = 5.0
+move_speed = 5.0
+fast_move_speed = 8.0
+drag = 1.0
+jump_velocity = 7.0
+model = NodePath("../../Visual")
+model_rotation_speed = 10.0
+metadata/_custom_type_script = "uid://x0e1wkokx41m"
+
+[node name="DivingMovement" type="Node" parent="Movements" unique_id=1339956346 node_paths=PackedStringArray("body", "model")]
+unique_name_in_owner = true
+script = ExtResource("21_xmri6")
+body = NodePath("../..")
+acceleration = 5.0
+move_speed = 7.0
+fast_move_speed = 20.0
+drag = 1.0
+should_apply_gravity = false
+model = NodePath("../../Visual")
+model_rotation_speed = 10.0
+metadata/_custom_type_script = "uid://x0e1wkokx41m"
+
+[editable path="Visual/godot_plush_model"]

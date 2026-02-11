@@ -199,6 +199,18 @@ spawn_path = NodePath("../Props")
 
 [node name="Props" type="Node" parent="." unique_id=1444304400]
 
+[node name="Jetpack" parent="Props" unique_id=1407846572 instance=ExtResource("14_jseuq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5270677, 0.3566655, -21.079647)
+collision_layer = 2
+
+[node name="ItemMask" parent="Props" unique_id=1145077405 instance=ExtResource("15_ihxu1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.666975, 1.019382, -21.314684)
+collision_layer = 2
+
+[node name="Harpoon" parent="Props" unique_id=790591340 instance=ExtResource("15_cj628")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.017966, 1.3104982, -14.208664)
+collision_layer = 2
+
 [node name="Kelp" parent="." unique_id=1475737754 instance=ExtResource("14_h7jkl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.61925, -19.998905, 17.383507)
 
@@ -239,32 +251,5 @@ size = Vector3(26.326172, 27.498047, 27.353577)
 
 [node name="Fish" parent="VolumetricRegion" unique_id=1622872921 instance=ExtResource("13_ndggs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -19.539486, 38.127575)
-
-[node name="Jetpack" parent="." unique_id=1407846572 instance=ExtResource("14_jseuq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5270677, 0.3566655, -21.079647)
-collision_layer = 2
-
-[node name="ItemMask" parent="." unique_id=1145077405 instance=ExtResource("15_ihxu1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.666975, 1.019382, -21.314684)
-collision_layer = 2
-
-[node name="Harpoon" parent="." unique_id=790591340 instance=ExtResource("15_cj628")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.017966, 1.3104982, -14.208664)
-collision_layer = 2
-
-[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=758233623]
-transform = Transform3D(1, 0, 0, 0, 0.8489625, 0.5284532, 0, -0.5284532, 0.8489625, 8.953724, 1.6025624, -5.3590345)
-use_collision = true
-size = Vector3(6.6884766, 1, 10.355957)
-
-[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=2059398155]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.953724, 5.30489, 3.7415762)
-use_collision = true
-size = Vector3(6.6884766, 1, 10.355957)
-
-[node name="CSGBox3D3" type="CSGBox3D" parent="." unique_id=926363393]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8625364, -0.325171, -21.808193)
-use_collision = true
-size = Vector3(29.305908, 1, 26.388428)
 
 [editable path="VolumetricRegion/Fish"]

@@ -11,7 +11,7 @@ var _peer: MultiplayerPeer = SteamMultiplayerPeer.new()
 var _current_lobby_id: int = 0
 var _steam_id: int = 0
 
-var lobby_members: Array
+var lobby_members: Array[Dictionary]
 
 var lobby_data: Dictionary
 
@@ -58,11 +58,13 @@ func leave_lobby() -> void:
 		_current_lobby_id = 0
 
 		# Close session with all users
-		for this_member in lobby_members:
+		for this_member: Dictionary in lobby_members:
 			# Make sure this isn't your Steam ID
-			if this_member['steam_id'] != _steam_id:
+			var member_id: int = this_member['steam_id']
+			if member_id != _steam_id:
 				# Close the P2P session using the Networking class
-				Steam.closeP2PSessionWithUser(this_member['steam_id'])
+				@warning_ignore("return_value_discarded")
+				Steam.closeP2PSessionWithUser(member_id)
 
 		# Clear the local lobby list
 		lobby_members.clear()
@@ -84,7 +86,7 @@ func get_lobby_members() -> void:
 	var num_of_members: int = Steam.getNumLobbyMembers(_current_lobby_id)
 
 	# Get the data of these players from Steam
-	for this_member in range(0, num_of_members):
+	for this_member: int in range(0, num_of_members):
 		# Get the member's Steam ID
 		var member_steam_id: int = Steam.getLobbyMemberByIndex(_current_lobby_id, this_member)
 
@@ -96,17 +98,19 @@ func get_lobby_members() -> void:
 
 #region Steam Peer Management
 
-func create_steam_socket():
+func create_steam_socket() -> void:
 	_peer = SteamMultiplayerPeer.new()
-	_peer.create_host(0)
+	@warning_ignore("return_value_discarded")
+	(_peer as SteamMultiplayerPeer).create_host(0)
 	multiplayer.set_multiplayer_peer(_peer)
 
 	server_created.emit(OS.get_cmdline_args().has("--dedicated_server"))
 
 
-func connect_steam_socket(steam_id: int):
+func connect_steam_socket(steam_id: int) -> void:
 	_peer = SteamMultiplayerPeer.new()
-	_peer.create_client(steam_id, 0)
+	@warning_ignore("return_value_discarded")
+	(_peer as SteamMultiplayerPeer).create_client(steam_id, 0)
 	multiplayer.set_multiplayer_peer(_peer)
 
 	server_joined.emit()
@@ -114,9 +118,11 @@ func connect_steam_socket(steam_id: int):
 
 func _connect_steam_signals() -> void:
 	#Host
+	@warning_ignore("return_value_discarded")
 	Steam.lobby_created.connect(_on_lobby_created)
 
 	#Client
+	@warning_ignore("return_value_discarded")
 	Steam.lobby_joined.connect(_on_lobby_joined)
 
 
@@ -124,7 +130,7 @@ func _connect_steam_signals() -> void:
 
 #region ENet Peer Management
 
-func create_enet_host():
+func create_enet_host() -> void:
 	_peer = ENetMultiplayerPeer.new()
 	var error: Error = (_peer as ENetMultiplayerPeer).create_server(DEFAULT_PORT)
 	if error != OK:
@@ -135,7 +141,7 @@ func create_enet_host():
 	server_created.emit(OS.get_cmdline_args().has("--dedicated_server"))
 
 
-func create_enet_client(address: String):
+func create_enet_client(address: String) -> void:
 	if address == "":
 		address = DEFAULT_ADDRESS
 	_peer = ENetMultiplayerPeer.new()
@@ -153,11 +159,14 @@ func _on_lobby_created(status: int, lobby_id: int) -> void:
 	if status == 1:
 		_current_lobby_id = lobby_id
 		print("Lobby created !")
+		@warning_ignore("return_value_discarded")
 		Steam.setLobbyJoinable(lobby_id, true)
 
 		# Set some lobby data
-		for key in lobby_data:
-			Steam.setLobbyData(lobby_id, key, lobby_data[key])
+		for key: String in lobby_data:
+			var data: String = lobby_data[key]
+			@warning_ignore("return_value_discarded")
+			Steam.setLobbyData(lobby_id, key, data)
 
 		# Allow P2P connections to fallback to being relayed through Steam if needed
 		var set_relay: bool = Steam.allowP2PPacketRelay(true)
@@ -171,7 +180,7 @@ func _on_lobby_joined(lobby: int, _permissions: int, _locked: bool, response: in
 		print("Lobby joined !")
 		_current_lobby_id = lobby
 
-		var id := Steam.getLobbyOwner(lobby)
+		var id: int = Steam.getLobbyOwner(lobby)
 		if id != Steam.getSteamID():
 			connect_steam_socket(id)
 

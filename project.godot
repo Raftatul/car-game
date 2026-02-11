@@ -30,6 +30,16 @@ MultiplayerBackend="*res://src/modules/multiplayer/multiplayer_backend.gd"
 Global="*res://src/modules/windows_placement/global.gd"
 MultiplayerUtility="*uid://ckr0l5f570wmc"
 
+[debug]
+
+gdscript/warnings/untyped_declaration=1
+gdscript/warnings/inferred_declaration=1
+gdscript/warnings/unsafe_property_access=1
+gdscript/warnings/unsafe_method_access=1
+gdscript/warnings/unsafe_cast=1
+gdscript/warnings/unsafe_call_argument=1
+gdscript/warnings/return_value_discarded=1
+
 [debug_draw_3d]
 
 settings/addon_root_folder="res://addons/debug_draw_3d"

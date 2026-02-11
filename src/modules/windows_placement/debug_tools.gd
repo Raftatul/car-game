@@ -19,9 +19,10 @@ func update_instance_window_rect(window: Window, max_instances_count: int, title
 	
 	var width: float = screen_rect.size.x / cols
 	var height: float = screen_rect.size.y / rows
-	var origin: Vector2 = screen_rect.position + Vector2(
-		wrap(instance_index, 0, cols) * width, 
-		wrap(floor(instance_index / 2.0), 0, rows) * height)
+	
+	var x: float = wrap(instance_index, 0, cols) * width
+	var y: float = wrap(floor(instance_index / 2.0), 0, rows) * height
+	var origin: Vector2 = screen_rect.position + Vector2(x, y)
 	
 	window.size = Vector2(width, height - title_bar_height)
 	window.position = origin + Vector2.DOWN * title_bar_height

@@ -19,9 +19,8 @@
 [ext_resource type="Script" uid="uid://2o85k5syfmr2" path="res://src/modules/basic_attributes/components/stamina_component.gd" id="16_hn5l5"]
 [ext_resource type="Script" uid="uid://cvj3mabvmcue2" path="res://src/modules/basic_attributes/components/oxygen_component.gd" id="17_daxp2"]
 [ext_resource type="Script" uid="uid://cvwxq0usb80uc" path="res://src/modules/basic_attributes/components/health/hurt_box.gd" id="19_58hqn"]
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_58hqn"]
-friction = 0.5
+[ext_resource type="Script" uid="uid://x0e1wkokx41m" path="res://src/features/components/movements/movement.gd" id="20_dfa3y"]
+[ext_resource type="Script" uid="uid://b5g1sop7gn2a4" path="res://src/features/components/movements/flying_movement.gd" id="21_xmri6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0ph83"]
 height = 1.6096191
@@ -64,7 +63,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_58hqn"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xmri6"]
 resource_local_to_scene = true
 render_priority = 0
 shader = SubResource("Shader_dqvdr")
@@ -235,36 +234,20 @@ _data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
 point_count = 2
 
 [sub_resource type="BuoyancyMaterial" id="BuoyancyMaterial_58hqn"]
-buoyancy = 5.0
+buoyancy = 3.0
 linear_drag_scale = Vector3(0, 1, 0)
 
-[node name="Player" type="RigidBody3D" unique_id=1303505687 node_paths=PackedStringArray("model") groups=["players"]]
+[node name="Player" type="CharacterBody3D" unique_id=525209320 node_paths=PackedStringArray("model") groups=["players"]]
 collision_layer = 3
 collision_mask = 3
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
-mass = 70.0
-physics_material_override = SubResource("PhysicsMaterial_58hqn")
-can_sleep = false
-lock_rotation = true
-contact_monitor = true
-max_contacts_reported = 8
 script = ExtResource("1_0ph83")
 sensitivity = 0.25
-rotation_speed = 10.0
-run_speed = 8.0
-jump_velocity = 7.0
-walking_acceleration = 8.0
 walking_speed = 5.0
-falling_acceleration = 4.0
-falling_damping = 0.03
-swimming_speed = 3.0
-swimming_fast_speed = 6.0
-swimming_acceleration = 8.0
-swimming_rotation_speed = 5.0
-swimming_damping = 0.025
-diving_damping = 0.025
+run_speed = 5.0
+walking_acceleration = 5.0
 stamina_consume_rate = -30.0
 oxygen_consume_rate = -1.0
 alive_arm_length = 0.0
@@ -283,34 +266,34 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, -
 script = ExtResource("3_ti7vc")
 
 [node name="Skeleton3D" parent="Visual/godot_plush_model/Rig" parent_id_path=PackedInt32Array(1080972857, 1940519781) index="0" unique_id=1131176568]
-bones/0/position = Vector3(-1.9790724e-22, 0.7717582, -8.299704e-10)
-bones/0/rotation = Quaternion(0.998689, 0.0013747696, 0.05117172, 6.189057e-05)
+bones/0/position = Vector3(-2.8744872e-22, 0.78070235, -5.2382665e-10)
+bones/0/rotation = Quaternion(0.9961822, -0.0075086835, 0.08697278, -0.00065604254)
 bones/1/position = Vector3(-2.3597598e-17, 0, -6.18693e-17)
 bones/1/rotation = Quaternion(1, -2.2923515e-15, -3.4519715e-08, -5.960464e-08)
-bones/2/rotation = Quaternion(-0.072088435, 0.15700833, 0.92449075, -0.33980647)
-bones/3/rotation = Quaternion(0.2814449, -0.02752013, 0.008071337, 0.9591488)
-bones/5/rotation = Quaternion(-0.123496875, -0.22311759, 0.9087242, 0.33043528)
-bones/6/rotation = Quaternion(0.11690072, -0.028482575, 0.0033576868, 0.9927294)
-bones/8/rotation = Quaternion(-0.04717526, -0.003982501, -0.05735611, 0.99723065)
-bones/9/position = Vector3(-2.7994858e-08, 0.15332, -7.773791e-09)
-bones/9/rotation = Quaternion(0.28388423, -0.19671953, 0.059608415, 0.93656725)
-bones/10/position = Vector3(1.933821e-08, 0.20717508, -5.654127e-09)
-bones/10/rotation = Quaternion(-0.5967036, -0.061576534, 0.023416527, 0.79975307)
+bones/2/rotation = Quaternion(-0.043817636, 0.10254222, 0.93397266, -0.3395001)
+bones/3/rotation = Quaternion(0.2015806, -0.019516557, 0.004092257, 0.97926897)
+bones/5/rotation = Quaternion(-0.09603233, -0.16926038, 0.92269903, 0.33279923)
+bones/6/rotation = Quaternion(0.19826224, -0.019559791, 0.0038826684, 0.9799462)
+bones/8/rotation = Quaternion(0.011820789, -0.003145268, -0.044863734, 0.99891824)
+bones/9/position = Vector3(-1.8389304e-08, 0.15303868, -3.8491716e-09)
+bones/9/rotation = Quaternion(0.20650686, -0.20142198, 0.04344731, 0.95650226)
+bones/10/position = Vector3(1.3690763e-08, 0.2068884, -8.426307e-09)
+bones/10/rotation = Quaternion(-0.5783683, -0.100358695, 0.018592175, 0.80936563)
 bones/11/position = Vector3(-1.9200796e-08, 0.2512119, -4.9427776e-08)
 bones/11/rotation = Quaternion(-0.000102671445, 0.9324488, -0.36130223, 4.626674e-05)
-bones/12/rotation = Quaternion(-0.13277179, 0.006091989, 0.093011335, 0.986754)
-bones/13/position = Vector3(-1.744618e-08, 0.1524471, 9.28045e-09)
-bones/13/rotation = Quaternion(0.33697224, 0.19034432, -0.06978144, 0.9194289)
-bones/14/position = Vector3(-7.789642e-09, 0.20599769, -7.8588736e-09)
-bones/14/rotation = Quaternion(-0.57124585, -0.040345356, -0.040020116, 0.8188095)
+bones/12/rotation = Quaternion(-0.10442238, 0.003846581, 0.059503607, 0.9927439)
+bones/13/position = Vector3(-2.0123487e-08, 0.15208611, 4.9024065e-09)
+bones/13/rotation = Quaternion(0.24932489, 0.20232493, -0.05336205, 0.9455445)
+bones/14/position = Vector3(-1.0527139e-08, 0.20576003, -4.094355e-09)
+bones/14/rotation = Quaternion(-0.52248764, -0.074952625, -0.04059659, 0.8483753)
 bones/15/position = Vector3(-4.8419313e-10, 0.25120693, -5.0023658e-08)
 bones/15/rotation = Quaternion(-2.7789587e-05, 0.9324604, -0.36127216, 0.0002779076)
 
 [node name="GodotPlushMesh" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="0" unique_id=1009443981]
-material_override = SubResource("ShaderMaterial_58hqn")
+material_override = SubResource("ShaderMaterial_xmri6")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="1" unique_id=1198560524]
-transform = Transform3D(-0.76615334, -0.54244894, -0.34461275, 0.6338803, -0.72617805, -0.2661972, -0.10585188, -0.42239124, 0.9002115, -0.6740803, 0.5817248, -0.18436041)
+transform = Transform3D(-0.7449338, -0.6194131, -0.2477926, 0.6478896, -0.76026493, -0.047284596, -0.15909946, -0.19576618, 0.96765834, -0.6820278, 0.5936812, -0.17873713)
 bone_name = "DEF-hand.R"
 bone_idx = 7
 
@@ -319,7 +302,7 @@ unique_name_in_owner = true
 transform = Transform3D(1, 5.6311364e-09, 4.656613e-10, 5.6477347e-09, 1, -6.184564e-11, 0, 6.548362e-11, 1, 0.010235667, 0.14705995, 6.040046e-05)
 
 [node name="BoneAttachment3D2" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="2" unique_id=1331867321]
-transform = Transform3D(0.99475914, 0.0027396, 0.10220942, 0.0027522685, -0.99999624, 1.7079785e-05, 0.102209084, 0.00026431744, -0.99476296, -1.9790724e-22, 0.7717582, -8.299704e-10)
+transform = Transform3D(0.98475873, -0.014845915, 0.1732913, -0.015074148, -0.9998862, 9.735812e-07, 0.17327161, -0.0026131773, -0.9848705, -2.8744872e-22, 0.78070235, -5.2382665e-10)
 bone_name = "DEF-hips"
 bone_idx = 0
 
@@ -327,7 +310,7 @@ bone_idx = 0
 transform = Transform3D(-1, 8.742277e-08, 0, -8.742278e-08, -0.99999994, 0, 0, 0, 1.0000001, 0.06046414, -0.1489309, 0.51552385)
 
 [node name="BoneAttachment3D3" type="BoneAttachment3D" parent="Visual/godot_plush_model/Rig/Skeleton3D" index="3" unique_id=216061842]
-transform = Transform3D(0.99475914, -0.002739612, -0.102209486, 0.0027522685, 0.99999624, -1.7199183e-05, 0.10220915, -0.00026419884, 0.99476296, -2.979775e-17, 0.7717582, -8.2997037e-10)
+transform = Transform3D(0.98475873, 0.014845895, -0.17329137, -0.015074148, 0.9998862, -1.0917362e-06, 0.17327169, 0.0026132946, 0.9848705, -3.395964e-17, 0.78070235, -5.238266e-10)
 bone_name = "DEF-head"
 bone_idx = 1
 
@@ -514,11 +497,63 @@ regen_curve = SubResource("Curve_ug4fj")
 regen_amount = 30.0
 metadata/_custom_type_script = "uid://cvj3mabvmcue2"
 
-[node name="RigidBuoyancy" type="RigidBuoyancy" parent="." unique_id=1113625334]
-buoyancy_mode = 1
+[node name="RigidBuoyancy" type="CharacterBuoyancy" parent="." unique_id=814532454]
 buoyancy_material = SubResource("BuoyancyMaterial_58hqn")
 probes = PackedVector3Array(0, 0, 0, 0, -0.32, 0, 0, -0.8, 0)
 show_debug = true
 debug_color = Color(1, 0, 0.016666412, 1)
+
+[node name="Movements" type="Node" parent="." unique_id=987828039]
+
+[node name="GroundMovement" type="Node" parent="Movements" unique_id=521182381 node_paths=PackedStringArray("body", "model")]
+unique_name_in_owner = true
+script = ExtResource("20_dfa3y")
+body = NodePath("../..")
+acceleration = 30.0
+move_speed = 5.0
+fast_move_speed = 8.0
+jump_velocity = 7.0
+model = NodePath("../../Visual")
+model_rotation_speed = 10.0
+metadata/_custom_type_script = "uid://x0e1wkokx41m"
+
+[node name="AirMovement" type="Node" parent="Movements" unique_id=866330763 node_paths=PackedStringArray("body", "model")]
+unique_name_in_owner = true
+script = ExtResource("20_dfa3y")
+body = NodePath("../..")
+acceleration = 10.0
+move_speed = 5.0
+fast_move_speed = 8.0
+drag = 1.0
+can_jump = false
+model = NodePath("../../Visual")
+model_rotation_speed = 10.0
+metadata/_custom_type_script = "uid://x0e1wkokx41m"
+
+[node name="SwimmingMovement" type="Node" parent="Movements" unique_id=939968290 node_paths=PackedStringArray("body", "model")]
+unique_name_in_owner = true
+script = ExtResource("20_dfa3y")
+body = NodePath("../..")
+acceleration = 5.0
+move_speed = 5.0
+fast_move_speed = 8.0
+drag = 1.0
+jump_velocity = 7.0
+model = NodePath("../../Visual")
+model_rotation_speed = 10.0
+metadata/_custom_type_script = "uid://x0e1wkokx41m"
+
+[node name="DivingMovement" type="Node" parent="Movements" unique_id=1339956346 node_paths=PackedStringArray("body", "model")]
+unique_name_in_owner = true
+script = ExtResource("21_xmri6")
+body = NodePath("../..")
+acceleration = 5.0
+move_speed = 7.0
+fast_move_speed = 20.0
+drag = 1.0
+should_apply_gravity = false
+model = NodePath("../../Visual")
+model_rotation_speed = 10.0
+metadata/_custom_type_script = "uid://x0e1wkokx41m"
 
 [editable path="Visual/godot_plush_model"]

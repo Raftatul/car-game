@@ -17,10 +17,11 @@ center_of_mass_mode = 1
 center_of_mass = Vector3(0.00019473312, -2.4975016e-05, 0.00019473406)
 inertia = Vector3(10.6896925, 8.827872, 10.6896925)
 script = ExtResource("2_y11rr")
-force = 750.0
+force = 15.0
 anim_player = NodePath("jetpack/AnimationPlayer")
 texture = ExtResource("2_n6ulx")
 attach_point = 1
+energy = 10.0
 
 [node name="CollisionShape3D" parent="Interactable" parent_id_path=PackedInt32Array(672757197) index="0" unique_id=717160102]
 shape = SubResource("SphereShape3D_yg212")

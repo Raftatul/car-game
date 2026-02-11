@@ -7,10 +7,10 @@ func _pre_use() -> void:
 	_rpc_play_animation.rpc("rotate")
 
 
-func _use(_delta: float) -> void:
-	if actor is PlayerCharacter:
-		if actor.is_in_water():
-			actor.apply_central_force(actor.model.global_basis.y * force)
+func _use(delta: float) -> void:
+	consume_energy(delta)
+	if player.is_in_water():
+		player.velocity = player.velocity.move_toward(player.model.global_basis.y * force, force * delta)
 
 
 func _post_use() -> void:
