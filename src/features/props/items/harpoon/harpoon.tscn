@@ -2,7 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://sqqy6h3uyogf" path="res://src/features/props/items/game_item.tscn" id="1_sx8s2"]
 [ext_resource type="Script" uid="uid://dwxxpkgbmlmpb" path="res://src/features/props/items/harpoon/harpoon.gd" id="2_31oms"]
-[ext_resource type="Script" uid="uid://dl6y1t3o1yx0o" path="res://addons/halyard/scripts/pull_rope.gd" id="4_hu4jj"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_o1pfl"]
 resource_local_to_scene = true
@@ -12,10 +11,12 @@ radius = 2.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_7n7ic"]
 
-[node name="Harpoon" unique_id=1407846572 node_paths=PackedStringArray("pull_rope") instance=ExtResource("1_sx8s2")]
+[node name="Harpoon" unique_id=1407846572 node_paths=PackedStringArray("rope") instance=ExtResource("1_sx8s2")]
+mass = 20.0
 script = ExtResource("2_31oms")
-pull_rope = NodePath("PullRope")
+rope = NodePath("Rope")
 shoot_distance = 25.0
+harpoon_mask = 3
 use_mode = 1
 use_count = 5
 
@@ -28,8 +29,13 @@ shape = SubResource("BoxShape3D_31oms")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." index="6" unique_id=1319165346]
 mesh = SubResource("BoxMesh_7n7ic")
 
-[node name="PullRope" type="Rope" parent="." index="7" unique_id=579762542]
-process_mode = 4
-custom_aabb = AABB(-0.0625, -4.109609, -0.0625, 0.125, 4.172109, 0.125)
-script = ExtResource("4_hu4jj")
-metadata/_custom_type_script = "uid://dl6y1t3o1yx0o"
+[node name="Rope" type="Rope" parent="." index="7" unique_id=91561916]
+start_anchor = NodePath("..")
+end_anchor = NodePath("../EndAnchor")
+collision_layer = 0
+top_level = true
+visible = false
+custom_aabb = AABB(-0.0625, -2.0718005, -0.0625, 0.125, 2.1343005, 0.125)
+
+[node name="EndAnchor" type="Marker3D" parent="." index="8" unique_id=322153462]
+top_level = true

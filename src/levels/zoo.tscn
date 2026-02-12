@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://h8ktknpf0t7p" path="res://src/modules/multiplayer/spawn_point.tscn" id="1_n2inr"]
 [ext_resource type="Script" uid="uid://c2mwuvlffjxot" path="res://src/features/water/custom_liquid_area.gd" id="1_wt035"]
-[ext_resource type="Material" uid="uid://pbw4j4s2e6cy" path="res://assets/shaders/water/water_shader_material.tres" id="2_arbid"]
+[ext_resource type="Material" uid="uid://c4s55451jwnlq" path="res://assets/shaders/water/src/material/water_basic/water_basic_01.tres" id="2_jseuq"]
 [ext_resource type="Texture2D" uid="uid://8yt7p4okxtp5" path="res://assets/terrains/sand/sand_color.png" id="4_rep4f"]
 [ext_resource type="Texture2D" uid="uid://cfupmk6hv8em6" path="res://assets/terrains/sand/sand_normal.png" id="5_2ybnr"]
 [ext_resource type="PackedScene" uid="uid://6442jxq5hu73" path="res://src/features/props/shop/shop.tscn" id="5_l54tx"]
@@ -47,8 +47,8 @@ properties/0/spawn = true
 properties/0/replication_mode = 1
 
 [sub_resource type="FogMaterial" id="FogMaterial_t72cs"]
-density = 0.2
-albedo = Color(1.4439225e-06, 0.6007146, 0.74289006, 1)
+density = 0.25
+albedo = Color(0.08399999, 0.4088, 0.42, 1)
 height_falloff = 10.0
 edge_fade = 0.0517
 
@@ -154,10 +154,14 @@ script = ExtResource("1_wt035")
 target_mesh = NodePath("WaterMesh")
 
 [node name="WaterMesh" type="MeshInstance3D" parent="LiquidArea" unique_id=521056906]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5920157, 0)
-material_override = ExtResource("2_arbid")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5, 0)
+material_override = ExtResource("2_jseuq")
 mesh = SubResource("PlaneMesh_1s5vw")
 skeleton = NodePath("../..")
+
+[node name="BackWaterSurface" type="MeshInstance3D" parent="LiquidArea/WaterMesh" unique_id=1613218294]
+visible = false
+mesh = SubResource("PlaneMesh_1s5vw")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="LiquidArea/WaterMesh" unique_id=1392848849]
 root_path = NodePath("../..")
@@ -201,15 +205,12 @@ spawn_path = NodePath("../Props")
 
 [node name="Jetpack" parent="Props" unique_id=1407846572 instance=ExtResource("14_jseuq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5270677, 0.3566655, -21.079647)
-collision_layer = 2
 
 [node name="ItemMask" parent="Props" unique_id=1145077405 instance=ExtResource("15_ihxu1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.666975, 1.019382, -21.314684)
-collision_layer = 2
 
 [node name="Harpoon" parent="Props" unique_id=790591340 instance=ExtResource("15_cj628")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.017966, 1.3104982, -14.208664)
-collision_layer = 2
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.833872, -3.8280926, -1.945713)
 
 [node name="Kelp" parent="." unique_id=1475737754 instance=ExtResource("14_h7jkl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.61925, -19.998905, 17.383507)

@@ -13,6 +13,7 @@ radius = 2.0
 size = Vector3(0.618, 0.739, 0.618)
 
 [node name="Jetpack" unique_id=1407846572 node_paths=PackedStringArray("anim_player") instance=ExtResource("1_5hxq2")]
+mass = 10.0
 center_of_mass_mode = 1
 center_of_mass = Vector3(0.00019473312, -2.4975016e-05, 0.00019473406)
 inertia = Vector3(10.6896925, 8.827872, 10.6896925)
