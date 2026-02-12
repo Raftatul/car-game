@@ -1,7 +1,7 @@
 class_name Movement
 extends Node
 
-@export var body: CharacterBody3D
+@export var body: RigidBodyCharacter
 
 @export_group("Config")
 @export var acceleration: float = 1.0
@@ -38,6 +38,7 @@ func tick(delta: float) -> void:
 	if can_jump && wants_jump:
 		_jump()
 	
+	body.push_away_rigid_bodies()
 	body.move_and_slide()
 
 

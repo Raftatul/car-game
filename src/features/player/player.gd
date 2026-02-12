@@ -1,5 +1,5 @@
 class_name PlayerCharacter
-extends CharacterBody3D
+extends RigidBodyCharacter
 
 signal jumped
 signal death
