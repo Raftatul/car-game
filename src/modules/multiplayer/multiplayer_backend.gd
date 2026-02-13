@@ -141,17 +141,18 @@ func create_enet_host() -> void:
 	server_created.emit(OS.get_cmdline_args().has("--dedicated_server"))
 
 
-func create_enet_client(address: String) -> void:
+func create_enet_client(address: String) -> int:
 	if address == "":
 		address = DEFAULT_ADDRESS
 	_peer = ENetMultiplayerPeer.new()
 	var error: Error = (_peer as ENetMultiplayerPeer).create_client(address, DEFAULT_PORT)
 	if error != OK:
 		printerr(error_string(error))
-		return
+		return -1
 	
 	multiplayer.set_multiplayer_peer(_peer)
 	server_joined.emit()
+	return _peer.get_unique_id()
 
 #endregion
 

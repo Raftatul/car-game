@@ -6,12 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://8yt7p4okxtp5" path="res://assets/terrains/sand/sand_color.png" id="4_rep4f"]
 [ext_resource type="Texture2D" uid="uid://cfupmk6hv8em6" path="res://assets/terrains/sand/sand_normal.png" id="5_2ybnr"]
 [ext_resource type="PackedScene" uid="uid://6442jxq5hu73" path="res://src/features/props/shop/shop.tscn" id="5_l54tx"]
-[ext_resource type="PackedScene" uid="uid://b1n45j8c8vn4u" path="res://src/features/entities/fish.tscn" id="13_ndggs"]
 [ext_resource type="PackedScene" uid="uid://bj87j7b2cfw0b" path="res://assets/scenes/kelp/kelp.tscn" id="14_h7jkl"]
 [ext_resource type="PackedScene" uid="uid://damvtojfd3dv6" path="res://src/features/props/items/item_jetpack.tscn" id="14_jseuq"]
 [ext_resource type="PackedScene" uid="uid://dkesrb6mdy2np" path="res://src/features/props/items/harpoon/harpoon.tscn" id="15_cj628"]
 [ext_resource type="PackedScene" uid="uid://cyxx4ngsn7fe3" path="res://src/features/props/items/item_mask.tscn" id="15_ihxu1"]
 [ext_resource type="PackedScene" uid="uid://bgoiai11g65yt" path="res://src/features/props/respawner/respawner.tscn" id="15_jseuq"]
+[ext_resource type="PackedScene" uid="uid://bxu7oghlw0lck" path="res://src/features/entities/little_fish/little_fish.tscn" id="15_ndggs"]
 [ext_resource type="Script" uid="uid://decph3w7n7q4s" path="res://src/modules/basic_attributes/components/health/hit_box.gd" id="16_ihxu1"]
 [ext_resource type="Script" uid="uid://yk07u3qi60wx" path="res://src/modules/volumetric_ai/volumetric_region_3d.gd" id="19_rep4f"]
 [ext_resource type="Resource" uid="uid://dv5edm3o01jiv" path="res://data/volumetric_points/zoo/zoo_volumetric_region.tres" id="20_2ybnr"]
@@ -41,16 +41,16 @@ size = Vector2(300, 300)
 subdivide_width = 1000
 subdivide_depth = 1000
 
+[sub_resource type="FogMaterial" id="FogMaterial_t72cs"]
+density = 0.15
+albedo = Color(0.08399999, 0.4088, 0.42, 1)
+height_falloff = 10.0
+edge_fade = 0.0517
+
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ygn0o"]
 properties/0/path = NodePath(".:time")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-
-[sub_resource type="FogMaterial" id="FogMaterial_t72cs"]
-density = 0.25
-albedo = Color(0.08399999, 0.4088, 0.42, 1)
-height_falloff = 10.0
-edge_fade = 0.0517
 
 [sub_resource type="Gradient" id="Gradient_ygn0o"]
 offsets = PackedFloat32Array(0.2, 1)
@@ -163,13 +163,12 @@ skeleton = NodePath("../..")
 visible = false
 mesh = SubResource("PlaneMesh_1s5vw")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="LiquidArea/WaterMesh" unique_id=1392848849]
-root_path = NodePath("../..")
-replication_config = SubResource("SceneReplicationConfig_ygn0o")
-
 [node name="FogVolume" type="FogVolume" parent="LiquidArea/WaterMesh" unique_id=811447449]
 shape = 4
 material = SubResource("FogMaterial_t72cs")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="LiquidArea" unique_id=1392848849]
+replication_config = SubResource("SceneReplicationConfig_ygn0o")
 
 [node name="Spawners" type="Node3D" parent="." unique_id=900345733]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.166407, 1.8177831, -21.862795)
@@ -210,7 +209,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5270677, 0.3566655, -21.079
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.666975, 1.019382, -21.314684)
 
 [node name="Harpoon" parent="Props" unique_id=790591340 instance=ExtResource("15_cj628")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.833872, -3.8280926, -1.945713)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.833872, 2.8660064, -11.803429)
 
 [node name="Kelp" parent="." unique_id=1475737754 instance=ExtResource("14_h7jkl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.61925, -19.998905, 17.383507)
@@ -250,7 +249,32 @@ transparency = 0.5
 use_collision = true
 size = Vector3(26.326172, 27.498047, 27.353577)
 
-[node name="Fish" parent="VolumetricRegion" unique_id=1622872921 instance=ExtResource("13_ndggs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -19.539486, 38.127575)
+[node name="LittleFish" parent="VolumetricRegion" unique_id=975278705 instance=ExtResource("15_ndggs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.480662, -18.540577, 30.9208)
 
-[editable path="VolumetricRegion/Fish"]
+[node name="LittleFish2" parent="VolumetricRegion" unique_id=1152829767 instance=ExtResource("15_ndggs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.295997, -18.540577, 30.9208)
+
+[node name="LittleFish3" parent="VolumetricRegion" unique_id=1198847824 instance=ExtResource("15_ndggs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.092172, -18.540577, 30.9208)
+
+[node name="LittleFish4" parent="VolumetricRegion" unique_id=552417198 instance=ExtResource("15_ndggs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.315539, -18.540577, 30.9208)
+
+[node name="LittleFish5" parent="VolumetricRegion" unique_id=533420090 instance=ExtResource("15_ndggs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.480662, -18.540577, 32.46526)
+
+[node name="LittleFish6" parent="VolumetricRegion" unique_id=1989547059 instance=ExtResource("15_ndggs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.295997, -18.540577, 32.46526)
+
+[node name="LittleFish7" parent="VolumetricRegion" unique_id=503436009 instance=ExtResource("15_ndggs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.092172, -18.540577, 32.46526)
+
+[node name="LittleFish8" parent="VolumetricRegion" unique_id=1840441442 instance=ExtResource("15_ndggs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.315539, -18.540577, 32.46526)
+
+[node name="LittleFish9" parent="VolumetricRegion" unique_id=673293527 instance=ExtResource("15_ndggs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.480662, -18.540577, 34.968178)
+
+[node name="LittleFish10" parent="VolumetricRegion" unique_id=18984566 instance=ExtResource("15_ndggs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.295997, -18.540577, 34.968178)

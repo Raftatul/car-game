@@ -40,20 +40,19 @@ func _ready() -> void:
 func pick() -> void:
 	picked_up.emit()
 
-
+## Called local only
 func pre_use() -> void:
 	if can_be_used():
 		_pre_use()
 
-
+## Called local only
 func use(delta: float) -> void:
 	if can_be_used():
 		_use(delta)
 
-
+## Called local only
 func post_use() -> void:
-	if can_be_used():
-		_post_use()
+	_post_use()
 
 
 func dropped() -> void: pass
@@ -83,10 +82,13 @@ func _rpc_modify_energy(delta: float) -> void:
 
 ## Virtuals
 
+## Called local only
 func _pre_use() -> void: pass
 
+## Called local only
 func _use(_delta: float) -> void: pass
 
+## Called local only
 func _post_use() -> void: pass
 
 func _energy_drained() -> void: pass

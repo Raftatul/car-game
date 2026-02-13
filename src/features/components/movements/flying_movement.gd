@@ -1,5 +1,8 @@
 extends Movement
 
+@export_group("Config/Visual") 
+@export var offset: Vector3
+
 var right_axis: Vector3 = Vector3.ZERO
 
 
@@ -24,6 +27,10 @@ func _apply_model_rotation(delta: float) -> void:
 	
 	var forward_vec: Vector3 = desired_move_dir.normalized().cross(right_vec).normalized()
 	var target_basis: Basis = Basis(-right_vec, desired_move_dir.normalized(), forward_vec).orthonormalized()
+	
+	target_basis = target_basis.rotated(target_basis.x, deg_to_rad(offset.x))
+	target_basis = target_basis.rotated(target_basis.y, deg_to_rad(offset.y))
+	target_basis = target_basis.rotated(target_basis.z, deg_to_rad(offset.z))
 	
 	var quat_target: Quaternion = target_basis.get_rotation_quaternion()
 	model.quaternion = model.quaternion.slerp(quat_target, delta * model_rotation_speed)

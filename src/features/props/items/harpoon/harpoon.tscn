@@ -16,9 +16,10 @@ mass = 20.0
 script = ExtResource("2_31oms")
 rope = NodePath("Rope")
 shoot_distance = 25.0
+pull_force = 200.0
 harpoon_mask = 3
 use_mode = 1
-use_count = 5
+use_count = 10
 
 [node name="CollisionShape3D" parent="Interactable" parent_id_path=PackedInt32Array(672757197) index="0" unique_id=717160102]
 shape = SubResource("SphereShape3D_o1pfl")
@@ -33,6 +34,7 @@ mesh = SubResource("BoxMesh_7n7ic")
 start_anchor = NodePath("..")
 end_anchor = NodePath("../EndAnchor")
 collision_layer = 0
+apply_buoyancy = true
 top_level = true
 visible = false
 custom_aabb = AABB(-0.0625, -2.0718005, -0.0625, 0.125, 2.1343005, 0.125)

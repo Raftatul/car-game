@@ -32,8 +32,10 @@ func _ready() -> void:
 	
 	if OS.get_cmdline_args().has("--server") or OS.get_cmdline_args().has("--dedicated_server"):
 		MultiplayerBackend.create_enet_host()
+		get_window().title = "Server (%s)" % 1
 	elif OS.get_cmdline_args().has("--client"):
-		MultiplayerBackend.create_enet_client(DEFAULT_ADDRESS)
+		var id: int = MultiplayerBackend.create_enet_client(DEFAULT_ADDRESS)
+		get_window().title = "Cient (%s)" % id
 
 
 func set_selected_level(index: int) -> void:

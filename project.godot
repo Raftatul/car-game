@@ -29,16 +29,8 @@ config/icon="res://icon.svg"
 MultiplayerBackend="*res://src/modules/multiplayer/multiplayer_backend.gd"
 Global="*res://src/modules/windows_placement/global.gd"
 MultiplayerUtility="*uid://ckr0l5f570wmc"
-
-[debug]
-
-gdscript/warnings/untyped_declaration=1
-gdscript/warnings/inferred_declaration=1
-gdscript/warnings/unsafe_property_access=1
-gdscript/warnings/unsafe_method_access=1
-gdscript/warnings/unsafe_cast=1
-gdscript/warnings/unsafe_call_argument=1
-gdscript/warnings/return_value_discarded=1
+BeehaveGlobalMetrics="*uid://c3ktl6ontsdt7"
+BeehaveGlobalDebugger="*uid://bl3ma400hpvsh"
 
 [debug_draw_3d]
 
@@ -50,7 +42,7 @@ run/main_run_args="--no-header"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/PathMesh3D/plugin.cfg", "res://addons/halyard/plugin.cfg", "res://addons/multiplayer_shortcuts/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
+enabled=PackedStringArray("res://addons/PathMesh3D/plugin.cfg", "res://addons/beehave/plugin.cfg", "res://addons/halyard/plugin.cfg", "res://addons/multiplayer_shortcuts/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
 
 [file_customization]
 

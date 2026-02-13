@@ -126,9 +126,9 @@ func _physics_process(delta: float) -> void:
 	
 	var move_dir: Vector3 = camera_pivot.global_basis * inputs_component.move_dir
 	var run_pressed: bool = inputs_component.run_pressed
-	var can_run: bool = run_pressed && stamina_component.has_amount(1.0)
+	var can_run: bool = run_pressed && stamina_component.has_amount(1.0) && move_dir
 	
-	if run_pressed:
+	if can_run:
 		stamina_component.tick(delta)
 		stamina_component.modify(stamina_consume_rate * delta)
 	

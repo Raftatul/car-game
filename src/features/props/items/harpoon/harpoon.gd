@@ -2,10 +2,13 @@ extends GameItem
 
 @export var rope: Rope
 @export var shoot_distance: float = 1.0
+@export var pull_force: float = 1.0
 @export_flags_3d_physics var harpoon_mask: int = 1
 
+var pull_target: RigidBody3D
+var end_offset: Vector3
+
 @onready var end_anchor: Marker3D = $EndAnchor
-@onready var pull_rope: PullRope = $PullRope
 
 
 func _pre_use() -> void:
@@ -20,12 +23,14 @@ func _pre_use() -> void:
 	var result: Dictionary = space_state.intersect_ray(query)
 	if result:
 		_connect_rope(result.collider, result.position)
-		DebugDraw3D.draw_line(from, result.position, Color.GREEN, 5.0)
-		DebugDraw3D.draw_sphere(result.position, 0.5, Color.RED, 5.0)
-	else:
-		DebugDraw3D.draw_ray(from, dir, shoot_distance, Color.GREEN, 5.0)
 	
 	consume_energy(energy / float(use_count))
+
+
+func _use(_delta: float) -> void:
+	if pull_target:
+		var dir: Vector3 = pull_target.global_position.direction_to(player.global_position)
+		_server_rpc_pull_target.rpc(pull_target.get_path(), dir * pull_force)
 
 
 func _post_use() -> void:
@@ -34,14 +39,43 @@ func _post_use() -> void:
 
 func _connect_rope(node: Node3D, global_pos: Vector3) -> void:
 	var distance: float = global_position.distance_to(global_pos)
+	var relative_pos: Vector3 = Vector3.ZERO
+	
+	if node is RigidBody3D:
+		pull_target = node
+		relative_pos = pull_target.to_local(global_pos)
+	
+	_rpc_enable_rope.rpc(global_pos, relative_pos, distance)
+
+
+func _disconnect_rope() -> void:
+	pull_target = null
+	_rpc_disable_rope.rpc()
+
+
+@rpc("any_peer", "call_local", "reliable")
+func _rpc_enable_rope(global_pos: Vector3, relative_pos: Vector3, distance: float) -> void:
 	end_anchor.global_position = global_pos
-	rope.end_anchor = end_anchor.get_path()
+	end_offset = relative_pos
 	rope.rope_length = distance
 	rope.process_mode = Node.PROCESS_MODE_ALWAYS
 	rope.visible = true
 
 
-func _disconnect_rope() -> void:
-	rope.end_anchor = ""
+@rpc("any_peer", "call_local", "reliable")
+func _rpc_disable_rope() -> void:
 	rope.process_mode = Node.PROCESS_MODE_DISABLED
 	rope.visible = false
+
+
+@rpc("any_peer", "call_local")
+func _server_rpc_pull_target(node: NodePath, force:  Vector3) -> void:
+	var body: RigidBody3D = get_tree().root.get_node(node)
+	
+	if !body: return
+	
+	body.apply_central_force(force)
+	
+	var distance: float = global_position.distance_to(body.global_position)
+	rope.rope_length = distance
+	end_anchor.global_position = body.global_transform * end_offset
