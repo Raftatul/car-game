@@ -55,7 +55,20 @@ func attack() -> void:
 func get_next_path_position() -> Vector3:
 	if path.is_empty():
 		return global_position
+	var next: Vector3 = path[0]
+	if path.size() <= 1: return next
+	
+	var dir_to_next: Vector3 = path[0].direction_to(path[1])
+	var dir_to_actor: Vector3 = path[0].direction_to(global_position)
+	
+	var dot: float = dir_to_next.dot(dir_to_actor)
+	if dot >= 0.0:
+		path.remove_at(0)
 	return path[0]
+
+
+func set_path(_path: PackedVector3Array) -> void:
+	path = _path
 
 
 func get_last_path_pos() -> Vector3:

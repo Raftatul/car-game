@@ -27,8 +27,10 @@ var desired_move_dir: Vector3
 
 
 func tick(delta: float) -> void:
-	_apply_movement(delta)
-	_apply_drag(delta)
+	if desired_move_dir:
+		_apply_movement(delta)
+	else:
+		_apply_drag(delta)
 	
 	if should_apply_gravity:
 		_apply_gravity(delta)

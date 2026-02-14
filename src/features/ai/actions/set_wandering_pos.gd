@@ -17,6 +17,7 @@ func tick(actor: Node, blackboard: Blackboard) -> int:
 	if path.size() <= 1: return FAILURE
 	
 	path.remove_at(0)
-	actor.path = path
+	
+	actor.set_path(path)
 	
 	return SUCCESS

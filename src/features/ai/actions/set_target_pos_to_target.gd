@@ -11,9 +11,9 @@ func tick(actor: Node, blackboard: Blackboard) -> int:
 	var target_pos: Vector3 = actor.current_target.global_position
 	
 	var path: PackedVector3Array = nav_region.get_shortest_path(actor.global_position, target_pos)
-	if path.size() > 1:
-		path.remove_at(0)
 	
-	actor.path = path
+	if !path.is_empty(): path[0] = actor.global_position
+	
+	actor.set_path(path)
 	
 	return SUCCESS

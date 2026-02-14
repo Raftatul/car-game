@@ -233,7 +233,7 @@ mesh = SubResource("BoxMesh_ndggs")
 script = ExtResource("19_rep4f")
 volume = NodePath("Volume")
 terrain = NodePath("../Terrain3D")
-grid_step = 6.0
+grid_step = 4.0
 save_path = "res://data/volumetric_points/zoo"
 data = ExtResource("20_2ybnr")
 metadata/_custom_type_script = "uid://yk07u3qi60wx"
@@ -244,10 +244,9 @@ visible = false
 size = Vector3(183.61417, 65.45903, 218.81317)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="VolumetricRegion" unique_id=348403419]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -25, 70)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.013258, -30.138733, 70)
 transparency = 0.5
-use_collision = true
-size = Vector3(26.326172, 27.498047, 27.353577)
+size = Vector3(7.5458984, 37.775513, 140.6272)
 
 [node name="LittleFish" parent="VolumetricRegion" unique_id=975278705 instance=ExtResource("15_ndggs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.480662, -18.540577, 30.9208)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8971224, -18.540577, 30.9208)

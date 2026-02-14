@@ -102,10 +102,10 @@ _data = {
 &"attack": SubResource("Animation_s3dx6")
 }
 
-[node name="LittleFish" type="CharacterBody3D" unique_id=975278705 node_paths=PackedStringArray("movement")]
+[node name="Agent" type="CharacterBody3D" unique_id=975278705 node_paths=PackedStringArray("movement")]
 script = ExtResource("1_lxrau")
 movement = NodePath("Movement")
-damage = 5.0
+damage = -2.5
 debug_path = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=991602910]
@@ -141,7 +141,7 @@ metadata/_custom_type_script = "uid://c5ns01lryx7k3"
 script = ExtResource("3_86v1s")
 offset = Vector3(90, 180, 0)
 body = NodePath("..")
-acceleration = 5.0
+acceleration = 2.0
 move_speed = 5.0
 drag = 3.0
 should_apply_gravity = false
@@ -152,7 +152,7 @@ metadata/_custom_type_script = "uid://x0e1wkokx41m"
 [node name="BeehaveTree" type="Node" parent="." unique_id=1440322549 node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("3_p86fm")
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@19313")
+blackboard = NodePath("@Node@19309")
 actor = NodePath("..")
 metadata/_custom_type_script = "uid://bb0t2ovl7wifo"
 
@@ -235,7 +235,6 @@ movement = NodePath("../../../../../../Movement")
 metadata/_custom_type_script = "uid://cv74jjdrwevpr"
 
 [node name="WanderingBehavior" type="Node" parent="BeehaveTree/SelectorComposite" unique_id=1794664452]
-process_mode = 4
 script = ExtResource("4_ax6xe")
 metadata/_custom_type_script = "uid://8hn4kne15ac5"
 
@@ -263,13 +262,12 @@ metadata/_custom_type_script = "uid://cv74jjdrwevpr"
 
 [node name="DelayDecorator" type="Node" parent="BeehaveTree/SelectorComposite/WanderingBehavior/SequenceComposite" unique_id=594939218]
 script = ExtResource("19_mhjv1")
-wait_time = 5.0
 metadata/_custom_type_script = "uid://dorri1tul8gfx"
 
 [node name="SetWanderingPos" type="Node" parent="BeehaveTree/SelectorComposite/WanderingBehavior/SequenceComposite/DelayDecorator" unique_id=310419018]
 unique_name_in_owner = true
 script = ExtResource("10_4w51p")
-min_range = 5.0
+min_range = -20.0
 max_range = 20.0
 metadata/_custom_type_script = "uid://cv74jjdrwevpr"
 

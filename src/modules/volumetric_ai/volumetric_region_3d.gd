@@ -4,7 +4,7 @@ extends Node3D
 
 #region Navigation
 
-const SHORTCUT_SUBSTEP: int = 5
+const SHORTCUT_SUBSTEP: int = 1
 
 @export_group("Debug")
 @export var debug_paths: bool = false
@@ -48,16 +48,15 @@ func _add_point(point: Vector3) -> void:
 
 
 func _connect_points() -> void:
+	var search_coords = [-grid_step, 0, grid_step]
 	for point in points:
 		var pos_str = point.split(",")
 		var world_pos := Vector3(float(pos_str[0]), float(pos_str[1]), float(pos_str[2]))
-		var search_coords = [-grid_step, 0, grid_step]
 		for x in search_coords:
 			for y in search_coords:
 				for z in search_coords:
 					var search_offset := Vector3(x, y, z)
-					if search_offset == Vector3.ZERO:
-						continue
+					if search_offset == Vector3.ZERO: continue
 					
 					var potential_neighbor := world_to_astar(world_pos + search_offset)
 					if points.has(potential_neighbor):
@@ -65,6 +64,22 @@ func _connect_points() -> void:
 						var neighbor_id = points[potential_neighbor]
 						if not nav.are_points_connected(current_id, neighbor_id):
 							nav.connect_points(current_id, neighbor_id)
+	
+	_connect_links()
+
+
+func _connect_links() -> void:
+	var links: Array = UtilityClass.get_children_of_type(self, NavigationLink3D)
+	for link: NavigationLink3D in links:
+		var start_pos: Vector3 = world_to_astar_vec3(link.to_global(link.start_position))
+		var end_pos: Vector3 = world_to_astar_vec3(link.to_global(link.end_position))
+		
+		var start_id: int = nav.get_closest_point(start_pos)
+		var end_id: int = nav.get_closest_point(end_pos)
+		
+		DebugDraw3D.draw_line(start_pos, end_pos, Color.YELLOW, editor_debug_duration)
+		
+		nav.connect_points(start_id, end_id, link.bidirectional)
 
 
 func world_to_astar(world: Vector3) -> String:
@@ -83,18 +98,22 @@ func has_point(world: Vector3) -> bool:
 	return nav.has_point(points[point])
 
 
-func find_path(from: Vector3, to: Vector3) -> PackedVector3Array:
+func find_path(from: Vector3, to: Vector3, skip_first: bool = false) -> PackedVector3Array:
 	var start_id := nav.get_closest_point(from)
 	var end_id := nav.get_closest_point(to)
-	return nav.get_point_path(start_id, end_id)
+	var path: PackedVector3Array = nav.get_point_path(start_id, end_id)
+	if path.size() > 1 && skip_first: path.remove_at(0)
+	return path
 
 
-func get_shortest_path(from: Vector3, to: Vector3) -> PackedVector3Array:
-	var path: PackedVector3Array = find_path(from, to)
+func get_shortest_path(from: Vector3, to: Vector3, skip_first: bool = false) -> PackedVector3Array:
+	var path: PackedVector3Array = find_path(from, to, skip_first)
+	
+	if path.is_empty(): return path
 	
 	if debug_paths: DebugDraw3D.draw_arrow_path(path, Color.WHITE)
 	
-	if path.is_empty() || path.size() < 3:
+	if path.size() == 1:
 		if has_point(to):
 			path[-1] = to
 		return path
@@ -121,6 +140,8 @@ func get_shortest_path(from: Vector3, to: Vector3) -> PackedVector3Array:
 	if has_point(to):
 		short_path[-1] = to
 
+	if debug_paths: DebugDraw3D.draw_arrow_path(short_path, Color.DIM_GRAY)
+
 	return short_path
 
 
@@ -129,7 +150,6 @@ func _is_shortcut_valid(p1: Vector3, p2: Vector3) -> bool:
 	var loop_count: int = floor(distance / grid_step) * SHORTCUT_SUBSTEP
 	for i in range(loop_count):
 		var p_lerp: Vector3 = lerp(p1, p2, i / float(loop_count))
-		DebugDraw3D.draw_sphere(p_lerp, 0.5, Color.ORANGE)
 		if !has_point(p_lerp):
 			return false
 	return true
@@ -161,6 +181,8 @@ const OFFSETS: PackedVector3Array = [
 	set(v):
 		save_path = v
 		update_configuration_warnings()
+
+@export var editor_debug_duration: float = 10.0
 
 @export_storage var data: VolumetricPoints
 
@@ -222,7 +244,7 @@ func _check_obstacles(obstacles: Array, world_point: Vector3) -> bool:
 			if intersection.y >= point_of.y:
 				return false
 		var p: Vector3 = world_point - Vector3.ONE * (grid_step / 2.0)
-		DebugDraw3D.draw_aabb(AABB(p, Vector3.ONE * grid_step), Color.SEA_GREEN, 10.0)
+		DebugDraw3D.draw_aabb(AABB(p, Vector3.ONE * grid_step), Color.SEA_GREEN, editor_debug_duration)
 	return true
 
 #endregion
