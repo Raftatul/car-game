@@ -233,7 +233,7 @@ mesh = SubResource("BoxMesh_ndggs")
 script = ExtResource("19_rep4f")
 volume = NodePath("Volume")
 terrain = NodePath("../Terrain3D")
-grid_step = 6.0
+grid_step = 4.0
 save_path = "res://data/volumetric_points/zoo"
 data = ExtResource("20_2ybnr")
 metadata/_custom_type_script = "uid://yk07u3qi60wx"
@@ -251,30 +251,3 @@ size = Vector3(26.326172, 27.498047, 27.353577)
 
 [node name="LittleFish" parent="VolumetricRegion" unique_id=975278705 instance=ExtResource("15_ndggs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.480662, -18.540577, 30.9208)
-
-[node name="LittleFish2" parent="VolumetricRegion" unique_id=1152829767 instance=ExtResource("15_ndggs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.295997, -18.540577, 30.9208)
-
-[node name="LittleFish3" parent="VolumetricRegion" unique_id=1198847824 instance=ExtResource("15_ndggs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.092172, -18.540577, 30.9208)
-
-[node name="LittleFish4" parent="VolumetricRegion" unique_id=552417198 instance=ExtResource("15_ndggs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.315539, -18.540577, 30.9208)
-
-[node name="LittleFish5" parent="VolumetricRegion" unique_id=533420090 instance=ExtResource("15_ndggs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.480662, -18.540577, 32.46526)
-
-[node name="LittleFish6" parent="VolumetricRegion" unique_id=1989547059 instance=ExtResource("15_ndggs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.295997, -18.540577, 32.46526)
-
-[node name="LittleFish7" parent="VolumetricRegion" unique_id=503436009 instance=ExtResource("15_ndggs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.092172, -18.540577, 32.46526)
-
-[node name="LittleFish8" parent="VolumetricRegion" unique_id=1840441442 instance=ExtResource("15_ndggs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.315539, -18.540577, 32.46526)
-
-[node name="LittleFish9" parent="VolumetricRegion" unique_id=673293527 instance=ExtResource("15_ndggs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.480662, -18.540577, 34.968178)
-
-[node name="LittleFish10" parent="VolumetricRegion" unique_id=18984566 instance=ExtResource("15_ndggs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.295997, -18.540577, 34.968178)

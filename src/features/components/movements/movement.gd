@@ -33,7 +33,7 @@ func tick(delta: float) -> void:
 	if should_apply_gravity:
 		_apply_gravity(delta)
 	
-	if desired_move_dir: _apply_model_rotation(delta)
+	if desired_move_dir: apply_model_rotation(desired_move_dir, model_rotation_speed, delta)
 	
 	if can_jump && wants_jump:
 		_jump()
@@ -65,10 +65,10 @@ func _apply_drag(delta: float) -> void:
 	body.velocity = body.velocity.move_toward(body.velocity * Vector3.UP, drag * delta)
 
 
-func _apply_model_rotation(delta: float) -> void:
-	model.rotation.y = lerp_angle(model.rotation.y, atan2(-desired_move_dir.x, -desired_move_dir.z), model_rotation_speed * delta)
-	model.rotation.x = lerp_angle(model.rotation.x, 0.0, model_rotation_speed * delta)
-	model.rotation.z = lerp_angle(model.rotation.z, 0.0, model_rotation_speed * delta)
+func apply_model_rotation(dir: Vector3, rotation_speed: float, delta: float) -> void:
+	model.rotation.y = lerp_angle(model.rotation.y, atan2(-dir.x, -dir.z), rotation_speed * delta)
+	model.rotation.x = lerp_angle(model.rotation.x, 0.0, rotation_speed * delta)
+	model.rotation.z = lerp_angle(model.rotation.z, 0.0, rotation_speed * delta)
 
 
 func _get_move_speed() -> float:

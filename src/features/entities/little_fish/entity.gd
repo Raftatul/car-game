@@ -1,6 +1,8 @@
 class_name Entity
 extends CharacterBody3D
 
+signal attacking
+
 @export var movement: Movement
 
 @export_group("Config/Attack")
@@ -43,6 +45,13 @@ func _physics_process(delta: float) -> void:
 	movement.tick(delta)
 
 
+func attack() -> void:
+	if !is_instance_valid(current_target): return
+	
+	current_target.health_component.modify(damage)
+	attacking.emit()
+
+
 func get_next_path_position() -> Vector3:
 	if path.is_empty():
 		return global_position
@@ -56,3 +65,8 @@ func get_last_path_pos() -> Vector3:
 
 func _on_ai_sensor_target_in_range(target: Node3D) -> void:
 	current_target = target
+
+
+func _on_health_component_health_changed(percent: float) -> void:
+	if percent == 0.0:
+		queue_free()

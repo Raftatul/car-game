@@ -4,24 +4,29 @@
 [ext_resource type="Script" uid="uid://b5bs6krcd5okm" path="res://src/features/components/ai_sensor.gd" id="2_p86fm"]
 [ext_resource type="Script" uid="uid://b5g1sop7gn2a4" path="res://src/features/components/movements/flying_movement.gd" id="3_86v1s"]
 [ext_resource type="Script" uid="uid://bb0t2ovl7wifo" path="res://addons/beehave/nodes/beehave_tree.gd" id="3_p86fm"]
+[ext_resource type="Script" uid="uid://c5ns01lryx7k3" path="res://src/modules/basic_attributes/components/health/health_component.gd" id="3_s3dx6"]
 [ext_resource type="Script" uid="uid://8hn4kne15ac5" path="res://addons/beehave/nodes/composites/selector.gd" id="4_ax6xe"]
 [ext_resource type="Script" uid="uid://ftselenb6fm3" path="res://src/features/ai/conditions/has_target.gd" id="5_pwxlf"]
 [ext_resource type="Script" uid="uid://cg016dbe7gs1x" path="res://addons/beehave/nodes/composites/sequence.gd" id="5_r0c4u"]
 [ext_resource type="Script" uid="uid://bv2m1hqtucpb5" path="res://src/features/ai/actions/ai_move_to.gd" id="7_wftlc"]
 [ext_resource type="Script" uid="uid://t7ahctls3tfl" path="res://src/features/ai/actions/set_target_pos_to_target.gd" id="8_kc072"]
 [ext_resource type="Script" uid="uid://clo6g343uevtg" path="res://src/features/ai/actions/attack.gd" id="9_2viae"]
-[ext_resource type="Script" uid="uid://bt5xk45cuuoic" path="res://src/features/ai/conditions/in_range_of_position.gd" id="9_lxrau"]
+[ext_resource type="Script" uid="uid://bt5xk45cuuoic" path="res://src/features/ai/conditions/is_in_range.gd" id="9_lxrau"]
 [ext_resource type="Script" uid="uid://2qri6rrfv8ui" path="res://addons/beehave/nodes/decorators/cooldown.gd" id="9_rrop5"]
+[ext_resource type="Script" uid="uid://dec4m4ow7hnsm" path="res://src/features/ai/actions/look_at.gd" id="9_sbm26"]
 [ext_resource type="Script" uid="uid://b2yjxlu4ig13d" path="res://src/features/ai/actions/set_wandering_pos.gd" id="10_4w51p"]
+[ext_resource type="Script" uid="uid://d1u8s0betpi2c" path="res://src/features/ai/actions/stop_movement.gd" id="10_xuy56"]
+[ext_resource type="Script" uid="uid://dsf3a8vlolhx8" path="res://addons/beehave/nodes/decorators/succeeder.gd" id="11_bbkfr"]
 [ext_resource type="Script" uid="uid://crkjak4kyv56m" path="res://addons/beehave/nodes/decorators/inverter.gd" id="13_a5rfi"]
+[ext_resource type="Script" uid="uid://dorri1tul8gfx" path="res://addons/beehave/nodes/decorators/delayer.gd" id="19_mhjv1"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rfew7"]
 size = Vector3(0.725, 0.505, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ax6xe"]
-radius = 5.0
+radius = 10.0
 
-[sub_resource type="BoxMesh" id="BoxMesh_pwxlf"]
+[sub_resource type="BoxMesh" id="BoxMesh_3svv7"]
 size = Vector3(0.725, 0.505, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_86v1s"]
@@ -35,10 +40,72 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
+[sub_resource type="Animation" id="Animation_bbkfr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_s3dx6"]
+resource_name = "attack"
+length = 0.3
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.046865053, 0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.19462167, 0, 0), Vector3(0.43875828, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.046865053, 0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, -0.009145439, 0.4051522), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3svv7"]
+_data = {
+&"RESET": SubResource("Animation_bbkfr"),
+&"attack": SubResource("Animation_s3dx6")
+}
+
 [node name="LittleFish" type="CharacterBody3D" unique_id=975278705 node_paths=PackedStringArray("movement")]
 script = ExtResource("1_lxrau")
 movement = NodePath("Movement")
-damage = -5.0
+damage = -2.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=991602910]
 shape = SubResource("BoxShape3D_rfew7")
@@ -54,7 +121,7 @@ metadata/_custom_type_script = "uid://b5bs6krcd5okm"
 shape = SubResource("SphereShape3D_ax6xe")
 
 [node name="Visual" type="MeshInstance3D" parent="." unique_id=832219692]
-mesh = SubResource("BoxMesh_pwxlf")
+mesh = SubResource("BoxMesh_3svv7")
 
 [node name="Visual2" type="MeshInstance3D" parent="Visual" unique_id=1264528700]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.4470501)
@@ -64,12 +131,18 @@ skeleton = NodePath("../..")
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=927918739]
 replication_config = SubResource("SceneReplicationConfig_rfew7")
 
+[node name="HealthComponent" type="Node" parent="." unique_id=407282914]
+script = ExtResource("3_s3dx6")
+max_health = 10.0
+metadata/_custom_type_script = "uid://c5ns01lryx7k3"
+
 [node name="Movement" type="Node" parent="." unique_id=392349742 node_paths=PackedStringArray("body", "model")]
 script = ExtResource("3_86v1s")
 offset = Vector3(90, 180, 0)
 body = NodePath("..")
 acceleration = 5.0
 move_speed = 5.0
+drag = 3.0
 should_apply_gravity = false
 model = NodePath("..")
 model_rotation_speed = 2.0
@@ -78,7 +151,7 @@ metadata/_custom_type_script = "uid://x0e1wkokx41m"
 [node name="BeehaveTree" type="Node" parent="." unique_id=1440322549 node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("3_p86fm")
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@36575")
+blackboard = NodePath("@Node@19313")
 actor = NodePath("..")
 metadata/_custom_type_script = "uid://bb0t2ovl7wifo"
 
@@ -98,27 +171,58 @@ metadata/_custom_type_script = "uid://cbnbvj8prv63i"
 script = ExtResource("4_ax6xe")
 metadata/_custom_type_script = "uid://8hn4kne15ac5"
 
-[node name="SequenceComposite" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite/SelectorComposite" unique_id=275814044]
+[node name="SequenceComposite" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite/SelectorComposite" unique_id=1799143578]
 script = ExtResource("5_r0c4u")
 metadata/_custom_type_script = "uid://cg016dbe7gs1x"
 
-[node name="InRangeOfPosition" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite/SelectorComposite/SequenceComposite" unique_id=297132991]
+[node name="InRangeOfTarget" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite/SelectorComposite/SequenceComposite" unique_id=297132991]
 script = ExtResource("9_lxrau")
-required_distance = 2.0
+range_type = 1
+required_distance = 3.0
 metadata/_custom_type_script = "uid://cbnbvj8prv63i"
 
-[node name="CooldownDecorator" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite/SelectorComposite/SequenceComposite" unique_id=1796120598]
+[node name="SetTargetPosToTarget" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite/SelectorComposite/SequenceComposite" unique_id=1864787160]
+script = ExtResource("8_kc072")
+metadata/_custom_type_script = "uid://cv74jjdrwevpr"
+
+[node name="LookAtTarget" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite/SelectorComposite/SequenceComposite" unique_id=1014454643 node_paths=PackedStringArray("movement")]
+script = ExtResource("9_sbm26")
+movement = NodePath("../../../../../../Movement")
+look_type = 1
+rotation_speed = 5.0
+metadata/_custom_type_script = "uid://cv74jjdrwevpr"
+
+[node name="StopMovement" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite/SelectorComposite/SequenceComposite" unique_id=1666586536 node_paths=PackedStringArray("movement")]
+script = ExtResource("10_xuy56")
+movement = NodePath("../../../../../../Movement")
+metadata/_custom_type_script = "uid://cv74jjdrwevpr"
+
+[node name="AlwaysSucceedDecorator" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite/SelectorComposite/SequenceComposite" unique_id=1877080903]
+script = ExtResource("11_bbkfr")
+metadata/_custom_type_script = "uid://dsf3a8vlolhx8"
+
+[node name="CooldownDecorator" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite/SelectorComposite/SequenceComposite/AlwaysSucceedDecorator" unique_id=1796120598]
 script = ExtResource("9_rrop5")
 wait_time = 1.0
 metadata/_custom_type_script = "uid://2qri6rrfv8ui"
 
-[node name="Attack" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite/SelectorComposite/SequenceComposite/CooldownDecorator" unique_id=826142986]
+[node name="Attack" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite/SelectorComposite/SequenceComposite/AlwaysSucceedDecorator/CooldownDecorator" unique_id=826142986]
 script = ExtResource("9_2viae")
 metadata/_custom_type_script = "uid://cv74jjdrwevpr"
 
 [node name="SequenceComposite2" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite/SelectorComposite" unique_id=630801662]
 script = ExtResource("5_r0c4u")
 metadata/_custom_type_script = "uid://cg016dbe7gs1x"
+
+[node name="InverterDecorator" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite/SelectorComposite/SequenceComposite2" unique_id=1189316704]
+script = ExtResource("13_a5rfi")
+metadata/_custom_type_script = "uid://crkjak4kyv56m"
+
+[node name="InRangeOfTarget" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite/SelectorComposite/SequenceComposite2/InverterDecorator" unique_id=45893488]
+script = ExtResource("9_lxrau")
+range_type = 1
+required_distance = 3.0
+metadata/_custom_type_script = "uid://cbnbvj8prv63i"
 
 [node name="SetTargetPosToTarget" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite/SelectorComposite/SequenceComposite2" unique_id=817575529]
 script = ExtResource("8_kc072")
@@ -150,12 +254,21 @@ script = ExtResource("9_lxrau")
 required_distance = 3.0
 metadata/_custom_type_script = "uid://cbnbvj8prv63i"
 
-[node name="SetWanderingPos" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite2/SequenceComposite" unique_id=310419018]
+[node name="StopMovement" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite2/SequenceComposite" unique_id=954359359 node_paths=PackedStringArray("movement")]
+script = ExtResource("10_xuy56")
+movement = NodePath("../../../../../Movement")
+metadata/_custom_type_script = "uid://cv74jjdrwevpr"
+
+[node name="DelayDecorator" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite2/SequenceComposite" unique_id=594939218]
+script = ExtResource("19_mhjv1")
+wait_time = 5.0
+metadata/_custom_type_script = "uid://dorri1tul8gfx"
+
+[node name="SetWanderingPos" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite2/SequenceComposite/DelayDecorator" unique_id=310419018]
 unique_name_in_owner = true
 script = ExtResource("10_4w51p")
 min_range = 5.0
 max_range = 20.0
-from_point = null
 metadata/_custom_type_script = "uid://cv74jjdrwevpr"
 
 [node name="SequenceComposite2" type="Node" parent="BeehaveTree/SelectorComposite/SelectorComposite2" unique_id=337798835]
@@ -176,4 +289,9 @@ script = ExtResource("7_wftlc")
 movement = NodePath("../../../../../Movement")
 metadata/_custom_type_script = "uid://cv74jjdrwevpr"
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1420887441]
+libraries/ = SubResource("AnimationLibrary_3svv7")
+
+[connection signal="attacking" from="." to="AnimationPlayer" method="play" binds= ["attack"]]
 [connection signal="target_in_range" from="AISensor" to="." method="_on_ai_sensor_target_in_range"]
+[connection signal="health_changed" from="HealthComponent" to="." method="_on_health_component_health_changed"]

@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://sqqy6h3uyogf" path="res://src/features/props/items/game_item.tscn" id="1_sx8s2"]
 [ext_resource type="Script" uid="uid://dwxxpkgbmlmpb" path="res://src/features/props/items/harpoon/harpoon.gd" id="2_31oms"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_o1pfl"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_bts33"]
 resource_local_to_scene = true
 radius = 2.0
 
@@ -14,6 +14,7 @@ radius = 2.0
 [node name="Harpoon" unique_id=1407846572 node_paths=PackedStringArray("rope") instance=ExtResource("1_sx8s2")]
 mass = 20.0
 script = ExtResource("2_31oms")
+damage = -25.0
 rope = NodePath("Rope")
 shoot_distance = 25.0
 pull_force = 200.0
@@ -22,7 +23,7 @@ use_mode = 1
 use_count = 10
 
 [node name="CollisionShape3D" parent="Interactable" parent_id_path=PackedInt32Array(672757197) index="0" unique_id=717160102]
-shape = SubResource("SphereShape3D_o1pfl")
+shape = SubResource("SphereShape3D_bts33")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="5" unique_id=1957361685]
 shape = SubResource("BoxShape3D_31oms")
@@ -37,7 +38,7 @@ collision_layer = 0
 apply_buoyancy = true
 top_level = true
 visible = false
-custom_aabb = AABB(-0.0625, -2.0718005, -0.0625, 0.125, 2.1343005, 0.125)
+custom_aabb = AABB(-0.13772494, -2.0686347, -0.0625, 0.20022494, 2.1311347, 0.17746964)
 
 [node name="EndAnchor" type="Marker3D" parent="." index="8" unique_id=322153462]
 top_level = true

@@ -1,5 +1,10 @@
 extends GameItem
 
+@export_group("Config")
+@export var damage: float = -1.0
+
+@export_group("")
+
 @export var rope: Rope
 @export var shoot_distance: float = 1.0
 @export var pull_force: float = 1.0
@@ -23,6 +28,10 @@ func _pre_use() -> void:
 	var result: Dictionary = space_state.intersect_ray(query)
 	if result:
 		_connect_rope(result.collider, result.position)
+		
+		var comp: HealthComponent = UtilityClass.get_child_of_type(result.collider, HealthComponent)
+		if comp:
+			comp.modify(damage)
 	
 	consume_energy(energy / float(use_count))
 
