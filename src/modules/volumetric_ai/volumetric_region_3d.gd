@@ -31,6 +31,7 @@ func _process(_delta: float) -> void:
 		for i in nav.get_point_count():
 			var p: Vector3 = nav.get_point_position(i) - Vector3.ONE * (grid_step / 2.0)
 			DebugDraw3D.draw_aabb(AABB(p, Vector3.ONE * grid_step), Color.SEA_GREEN)
+			DebugDraw3D.draw_sphere(p, 0.5, Color.YELLOW)
 
 
 func add_points() -> void:
@@ -67,17 +68,12 @@ func _connect_points() -> void:
 
 
 func world_to_astar(world: Vector3) -> String:
-	var x = snapped(world.x, grid_step)
-	var y = snapped(world.y, grid_step)
-	var z = snapped(world.z, grid_step)
-	return "%d,%d,%d" % [x, y, z]
+	world = world.snappedf(grid_step)
+	return "%d,%d,%d" % [world.x, world.y, world.z]
 
 
 func world_to_astar_vec3(world: Vector3) -> Vector3:
-	var x = snapped(world.x, grid_step)
-	var y = snapped(world.y, grid_step)
-	var z = snapped(world.z, grid_step)
-	return Vector3(x, y, z)
+	return world.snappedf(grid_step)
 
 
 func has_point(world: Vector3) -> bool:
@@ -124,7 +120,7 @@ func get_shortest_path(from: Vector3, to: Vector3) -> PackedVector3Array:
 	
 	if has_point(to):
 		short_path[-1] = to
-	
+
 	return short_path
 
 
@@ -133,6 +129,7 @@ func _is_shortcut_valid(p1: Vector3, p2: Vector3) -> bool:
 	var loop_count: int = floor(distance / grid_step) * SHORTCUT_SUBSTEP
 	for i in range(loop_count):
 		var p_lerp: Vector3 = lerp(p1, p2, i / float(loop_count))
+		DebugDraw3D.draw_sphere(p_lerp, 0.5, Color.ORANGE)
 		if !has_point(p_lerp):
 			return false
 	return true
@@ -150,7 +147,8 @@ const OFFSETS: PackedVector3Array = [
 	Vector3(1, -1, -1),
 	Vector3(1, 1, -1),
 	Vector3(-1, 1, -1),
-	Vector3(1, -1, 1)]
+	Vector3(1, -1, 1)
+	]
 
 @export var volume: CSGBox3D
 @export var terrain: Terrain3D
@@ -180,7 +178,7 @@ func _generate_points() -> void:
 	if !is_instance_valid(volume): return
 	
 	var aabb: AABB = volume.global_transform * volume.get_aabb()
-	var start_point: Vector3 = aabb.position
+	var start_point: Vector3 = aabb.position.snappedf(grid_step)
 	
 	var x_steps = aabb.size.x / grid_step
 	var y_steps = aabb.size.y / grid_step

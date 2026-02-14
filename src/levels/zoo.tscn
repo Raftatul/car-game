@@ -171,7 +171,7 @@ material = SubResource("FogMaterial_t72cs")
 replication_config = SubResource("SceneReplicationConfig_ygn0o")
 
 [node name="Spawners" type="Node3D" parent="." unique_id=900345733]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.166407, 1.8177831, -21.862795)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.273336, 1.8177831, 31.880695)
 
 [node name="SpawnPoint" parent="Spawners" unique_id=1528174475 instance=ExtResource("1_n2inr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
@@ -233,7 +233,7 @@ mesh = SubResource("BoxMesh_ndggs")
 script = ExtResource("19_rep4f")
 volume = NodePath("Volume")
 terrain = NodePath("../Terrain3D")
-grid_step = 4.0
+grid_step = 6.0
 save_path = "res://data/volumetric_points/zoo"
 data = ExtResource("20_2ybnr")
 metadata/_custom_type_script = "uid://yk07u3qi60wx"
