@@ -6,15 +6,26 @@
 [ext_resource type="Texture2D" uid="uid://8yt7p4okxtp5" path="res://assets/terrains/sand/sand_color.png" id="4_rep4f"]
 [ext_resource type="Texture2D" uid="uid://cfupmk6hv8em6" path="res://assets/terrains/sand/sand_normal.png" id="5_2ybnr"]
 [ext_resource type="PackedScene" uid="uid://6442jxq5hu73" path="res://src/features/props/shop/shop.tscn" id="5_l54tx"]
+[ext_resource type="Script" uid="uid://djfw0fgad7jnb" path="res://addons/proton_scatter/src/scatter.gd" id="10_3mg8c"]
+[ext_resource type="Script" uid="uid://yp52fclp7tun" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="11_qwepl"]
+[ext_resource type="Script" uid="uid://3qser6arbiif" path="res://addons/proton_scatter/src/modifiers/base_modifier.gd" id="12_2vmgg"]
+[ext_resource type="Script" uid="uid://dt4k6m0esard" path="res://addons/proton_scatter/src/modifiers/create_inside_random.gd" id="13_ubqno"]
 [ext_resource type="PackedScene" uid="uid://bj87j7b2cfw0b" path="res://assets/scenes/kelp/kelp.tscn" id="14_h7jkl"]
 [ext_resource type="PackedScene" uid="uid://damvtojfd3dv6" path="res://src/features/props/items/item_jetpack.tscn" id="14_jseuq"]
+[ext_resource type="Script" uid="uid://bh0dsa4s2q563" path="res://addons/proton_scatter/src/modifiers/randomize_transforms.gd" id="14_xpyh4"]
 [ext_resource type="PackedScene" uid="uid://dkesrb6mdy2np" path="res://src/features/props/items/harpoon/harpoon.tscn" id="15_cj628"]
+[ext_resource type="Script" uid="uid://r2of0ogt2c5q" path="res://addons/proton_scatter/src/modifiers/relax.gd" id="15_ew0ek"]
 [ext_resource type="PackedScene" uid="uid://cyxx4ngsn7fe3" path="res://src/features/props/items/item_mask.tscn" id="15_ihxu1"]
 [ext_resource type="PackedScene" uid="uid://bgoiai11g65yt" path="res://src/features/props/respawner/respawner.tscn" id="15_jseuq"]
 [ext_resource type="PackedScene" uid="uid://bxu7oghlw0lck" path="res://src/features/entities/little_fish/little_fish.tscn" id="15_ndggs"]
 [ext_resource type="Script" uid="uid://decph3w7n7q4s" path="res://src/modules/basic_attributes/components/health/hit_box.gd" id="16_ihxu1"]
+[ext_resource type="Script" uid="uid://duhqble6ul2be" path="res://addons/proton_scatter/src/modifiers/project_on_geometry.gd" id="16_pi6f6"]
+[ext_resource type="Script" uid="uid://d15h56xdg7t84" path="res://addons/proton_scatter/src/scatter_item.gd" id="17_ww1ui"]
+[ext_resource type="Script" uid="uid://caa685vfyif67" path="res://addons/proton_scatter/src/scatter_shape.gd" id="18_f47c2"]
+[ext_resource type="Script" uid="uid://bfh4aooir8tuk" path="res://addons/proton_scatter/src/shapes/sphere_shape.gd" id="19_nys8q"]
 [ext_resource type="Script" uid="uid://yk07u3qi60wx" path="res://src/modules/volumetric_ai/volumetric_region_3d.gd" id="19_rep4f"]
 [ext_resource type="Resource" uid="uid://dv5edm3o01jiv" path="res://data/volumetric_points/zoo/zoo_volumetric_region.tres" id="20_2ybnr"]
+[ext_resource type="PackedScene" uid="uid://bwvc0y451kshi" path="res://assets/props/underwater/corals/brain.tscn" id="26_qwepl"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2inr"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -139,6 +150,43 @@ albedo_color = Color(1, 0, 0, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_ndggs"]
 material = SubResource("StandardMaterial3D_ihxu1")
 
+[sub_resource type="Resource" id="Resource_qwepl"]
+script = ExtResource("13_ubqno")
+amount = 30
+override_global_seed = true
+custom_seed = 10
+restrict_height = true
+reference_frame = 1
+
+[sub_resource type="Resource" id="Resource_2vmgg"]
+script = ExtResource("14_xpyh4")
+position = Vector3(0.15, 0.15, 0.15)
+rotation = Vector3(20, 360, 20)
+scale = Vector3(1, 1, 1)
+override_global_seed = true
+custom_seed = 5
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_ubqno"]
+script = ExtResource("15_ew0ek")
+offset_step = 0.2
+consecutive_step_multiplier = 0.75
+restrict_height = true
+
+[sub_resource type="Resource" id="Resource_xpyh4"]
+script = ExtResource("16_pi6f6")
+ray_length = 5.0
+ray_offset = 5.0
+align_with_collision_normal = true
+
+[sub_resource type="Resource" id="Resource_ew0ek"]
+script = ExtResource("11_qwepl")
+stack = Array[ExtResource("12_2vmgg")]([SubResource("Resource_qwepl"), SubResource("Resource_2vmgg"), SubResource("Resource_ubqno"), SubResource("Resource_xpyh4")])
+
+[sub_resource type="Resource" id="Resource_g8bsm"]
+script = ExtResource("19_nys8q")
+radius = 46.39659
+
 [node name="Zoo" type="Node3D" unique_id=653414602]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=78625833]
@@ -171,7 +219,7 @@ material = SubResource("FogMaterial_t72cs")
 replication_config = SubResource("SceneReplicationConfig_ygn0o")
 
 [node name="Spawners" type="Node3D" parent="." unique_id=900345733]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.273336, 1.8177831, 31.880695)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.21795, 1.8177831, -21.69482)
 
 [node name="SpawnPoint" parent="Spawners" unique_id=1528174475 instance=ExtResource("1_n2inr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
@@ -233,20 +281,96 @@ mesh = SubResource("BoxMesh_ndggs")
 script = ExtResource("19_rep4f")
 volume = NodePath("Volume")
 terrain = NodePath("../Terrain3D")
-grid_step = 4.0
+grid_step = 2
 save_path = "res://data/volumetric_points/zoo"
+editor_debug_duration = 5.0
 data = ExtResource("20_2ybnr")
 metadata/_custom_type_script = "uid://yk07u3qi60wx"
 
 [node name="Volume" type="CSGBox3D" parent="VolumetricRegion" unique_id=736670715]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.41817284, -38.262794, 35.54555)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -33.47229, 47.05188)
 visible = false
-size = Vector3(183.61417, 65.45903, 218.81317)
+size = Vector3(191.78613, 58.206787, 229.64917)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="VolumetricRegion" unique_id=348403419]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.013258, -30.138733, 70)
-transparency = 0.5
-size = Vector3(7.5458984, 37.775513, 140.6272)
+[node name="Proton" type="Node" parent="VolumetricRegion" unique_id=1222769370]
+
+[node name="ProtonScatter" type="Node3D" parent="VolumetricRegion/Proton" unique_id=251375738]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.924688, -62.80362, 74.14094)
+script = ExtResource("10_3mg8c")
+show_output_in_tree = true
+render_mode = 1
+force_uniform_scale = true
+modifier_stack = SubResource("Resource_ew0ek")
+Performance/use_chunks = true
+Performance/chunk_dimensions = Vector3(15, 15, 15)
+metadata/_custom_type_script = "uid://djfw0fgad7jnb"
+
+[node name="ScatterItem" type="Node3D" parent="VolumetricRegion/Proton/ProtonScatter" unique_id=1524769812]
+script = ExtResource("17_ww1ui")
+path = "uid://bwvc0y451kshi"
+
+[node name="ScatterShape" type="Node3D" parent="VolumetricRegion/Proton/ProtonScatter" unique_id=379734507]
+transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 0, 0, 0)
+script = ExtResource("18_f47c2")
+shape = SubResource("Resource_g8bsm")
+
+[node name="ScatterOutput" type="Marker3D" parent="VolumetricRegion/Proton/ProtonScatter" unique_id=577925725]
+
+[node name="ScatterItem" type="Node3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput" unique_id=99758302]
+
+[node name="Brain" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=1540283853 instance=ExtResource("26_qwepl")]
+transform = Transform3D(-0.943195, -0.10054272, -1.73881, 0.10732474, 1.9702876, -0.17214432, 1.7384045, -0.17619145, -0.93278724, 14.141777, 3.1124954, 19.451439)
+
+[node name="Brain2" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=187271432 instance=ExtResource("26_qwepl")]
+transform = Transform3D(1.1541535, 6.172689e-08, 1.616094, -2.9802322e-08, 1.9859079, -5.456826e-08, -1.616094, 7.460967e-09, 1.1541535, 7.3874216, 2.8036346, -19.884655)
+
+[node name="Brain3" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=2038118357 instance=ExtResource("26_qwepl")]
+transform = Transform3D(-1.7364473, 0.23155189, 0.30828914, 0.14375119, 1.7085054, -0.4735532, -0.3577626, -0.4373794, -1.6865981, -18.84003, 3.4288254, -4.4733887)
+
+[node name="Brain4" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=1346080900 instance=ExtResource("26_qwepl")]
+transform = Transform3D(-0.16982599, 0.1311734, -1.78313, 0.14445707, 1.7863066, 0.11764892, 1.7821032, -0.1322976, -0.17946044, -5.8040266, 3.0043106, 14.021652)
+
+[node name="Brain5" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=1099606202 instance=ExtResource("26_qwepl")]
+transform = Transform3D(0.6342038, 0.069651365, -1.6568666, -0.050371308, 1.7738879, 0.055289928, 1.6575646, 0.02725679, 0.63561684, -18.63508, 2.9282837, -20.61708)
+
+[node name="Brain6" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=89373102 instance=ExtResource("26_qwepl")]
+transform = Transform3D(1.5724875, 0.13655199, 1.1758527, 0.04583139, 1.9466178, -0.28735217, -1.1828676, 0.25695395, 1.5520283, -23.44407, 4.6159744, -34.44962)
+
+[node name="Brain7" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=637521654 instance=ExtResource("26_qwepl")]
+transform = Transform3D(-1.616941, -0.0018641592, -0.41180018, 0.0038482328, 1.6683981, -0.02266275, 0.41178644, -0.022911439, -1.6167831, 6.385233, 2.8555908, 14.132217)
+
+[node name="Brain8" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=244313373 instance=ExtResource("26_qwepl")]
+transform = Transform3D(-0.29627702, -5.170909e-08, -1.1672006, -2.9802326e-08, 1.2042164, -4.5784073e-08, 1.1672006, 1.7621852e-08, -0.29627702, 18.279625, 2.8036346, -27.354485)
+
+[node name="Brain9" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=1942182811 instance=ExtResource("26_qwepl")]
+transform = Transform3D(-1.4059569, 0.29270577, 0.9140155, -0.076223016, 1.5820191, -0.62387615, -0.95670843, -0.55619663, -1.2935108, 1.2691765, 3.499588, 21.450935)
+
+[node name="Brain10" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=779221678 instance=ExtResource("26_qwepl")]
+transform = Transform3D(1.3607533, 7.1007094e-09, 0.38885173, 1.4826658e-06, 1.4152226, -5.214305e-06, -0.38885173, 5.4209986e-06, 1.3607533, 13.025858, 2.8036385, -32.940987)
+
+[node name="Brain11" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=1257618823 instance=ExtResource("26_qwepl")]
+transform = Transform3D(-0.92486614, 0.22141688, -0.93201596, 0.10361306, 1.3110265, 0.20863932, 0.9523357, 0.07239202, -0.92783207, -29.157373, 4.115822, -21.638885)
+
+[node name="Brain12" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=890769684 instance=ExtResource("26_qwepl")]
+transform = Transform3D(0.93733525, 0.00090710993, -0.921114, -0.0003589243, 1.314172, 0.0009289472, 0.9211143, -0.0004109999, 0.93733525, -8.306856, 2.8058777, -13.948055)
+
+[node name="Brain13" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=1326952927 instance=ExtResource("26_qwepl")]
+transform = Transform3D(-1.1278113, 0.004677866, -0.8263817, -0.00010739266, 1.3981495, 0.008061014, 0.826395, 0.0065657482, -1.1277922, 16.494297, 2.8100662, -38.91242)
+
+[node name="Brain14" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=1227170117 instance=ExtResource("26_qwepl")]
+transform = Transform3D(0.60722786, 0.26985604, 1.3039174, -0.055436783, 1.4369831, -0.2715784, -1.3303945, 0.06329129, 0.60645956, -27.726175, 3.6309967, -17.04834)
+
+[node name="Brain15" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=1333087842 instance=ExtResource("26_qwepl")]
+transform = Transform3D(-0.6526987, 0.014160576, -1.7224785, -0.18765937, 1.8304397, 0.08615788, 1.7122841, 0.20600656, -0.6471421, 17.030993, 2.9190598, -40.908047)
+
+[node name="Brain16" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=778841638 instance=ExtResource("26_qwepl")]
+transform = Transform3D(0.9590198, 0.11566198, 0.58259684, -0.07237376, 1.1209748, -0.10340985, -0.5895412, 0.050535835, 0.96041816, -23.688662, 3.2153206, -19.909492)
+
+[node name="Brain17" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=669223659 instance=ExtResource("26_qwepl")]
+transform = Transform3D(-1.1701704, 0.1372682, 0.72475165, 0.1775559, 1.3715525, 0.026905915, -0.715948, 0.11579061, -1.1778867, -25.905745, 4.167015, -27.873085)
+
+[node name="Brain18" type="StaticBody3D" parent="VolumetricRegion/Proton/ProtonScatter/ScatterOutput/ScatterItem" unique_id=1747436409 instance=ExtResource("26_qwepl")]
+transform = Transform3D(1.724481, 0.002473427, -0.9040039, -0.00063185394, 1.947061, 0.0041219876, 0.9040071, -0.0033574067, 1.7244778, -2.0461655, 2.811489, 5.7714005)
 
 [node name="LittleFish" parent="VolumetricRegion" unique_id=975278705 instance=ExtResource("15_ndggs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8971224, -18.540577, 30.9208)

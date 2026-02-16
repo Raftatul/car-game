@@ -21,3 +21,11 @@ static func get_child_of_type(parent: Node, type: Variant) -> Node:
 		if is_instance_of(child, type):
 			return child
 	return null
+
+
+static func get_every_children_of_type(parent: Node, type: Variant) -> Array:
+	var array: Array
+	array.append_array(get_children_of_type(parent, type))
+	for child: Node in parent.get_children():
+		array.append_array(get_every_children_of_type(child, type))
+	return array 

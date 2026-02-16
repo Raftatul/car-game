@@ -98,16 +98,14 @@ func has_point(world: Vector3) -> bool:
 	return nav.has_point(points[point])
 
 
-func find_path(from: Vector3, to: Vector3, skip_first: bool = false) -> PackedVector3Array:
+func find_path(from: Vector3, to: Vector3) -> PackedVector3Array:
 	var start_id := nav.get_closest_point(from)
 	var end_id := nav.get_closest_point(to)
-	var path: PackedVector3Array = nav.get_point_path(start_id, end_id)
-	if path.size() > 1 && skip_first: path.remove_at(0)
-	return path
+	return nav.get_point_path(start_id, end_id)
 
 
-func get_shortest_path(from: Vector3, to: Vector3, skip_first: bool = false) -> PackedVector3Array:
-	var path: PackedVector3Array = find_path(from, to, skip_first)
+func get_shortest_path(from: Vector3, to: Vector3, always_include_to: bool = false) -> PackedVector3Array:
+	var path: PackedVector3Array = find_path(from, to)
 	
 	if path.is_empty(): return path
 	
@@ -137,7 +135,7 @@ func get_shortest_path(from: Vector3, to: Vector3, skip_first: bool = false) -> 
 		if !flag:
 			idx += 1
 	
-	if has_point(to):
+	if has_point(to) || always_include_to:
 		short_path[-1] = to
 
 	if debug_paths: DebugDraw3D.draw_arrow_path(short_path, Color.DIM_GRAY)
@@ -173,7 +171,7 @@ const OFFSETS: PackedVector3Array = [
 @export var volume: CSGBox3D
 @export var terrain: Terrain3D
 
-@export_range(0.5, 10.0, 0.5, "or_greater") var grid_step: float = 2.0
+@export var grid_step: int = 4
 
 @export_tool_button("Bake") var bake_delegate = _generate_points
 
@@ -202,17 +200,25 @@ func _generate_points() -> void:
 	var aabb: AABB = volume.global_transform * volume.get_aabb()
 	var start_point: Vector3 = aabb.position.snappedf(grid_step)
 	
+	var obstacles: Array[VisualInstance3D] = []
+	obstacles.assign(UtilityClass.get_every_children_of_type(self, VisualInstance3D))
+	obstacles.erase(volume)
+	
+	#for obstacle: VisualInstance3D in obstacles:
+		#var ob_aabb: AABB = obstacle.global_transform * obstacle.get_aabb()
+		#DebugDraw3D.draw_aabb(ob_aabb, Color.WHITE, editor_debug_duration)
+	
 	var x_steps = aabb.size.x / grid_step
 	var y_steps = aabb.size.y / grid_step
 	var z_steps = aabb.size.z / grid_step
-
+	
 	var _data = VolumetricPoints.new()
 	
 	for x in x_steps:
 		for y in y_steps:
 			for z in z_steps:
 				var next_point := start_point + Vector3(x, y, z) * grid_step
-				if _check_obstacles(get_children(), next_point):
+				if _is_point_valid(obstacles, next_point):
 					_data.points.append(next_point)
 	
 	if save_path:
@@ -226,10 +232,8 @@ func _generate_points() -> void:
 	notify_property_list_changed()
 
 
-func _check_obstacles(obstacles: Array, world_point: Vector3) -> bool:
-	for obstacle in obstacles:
-		if not obstacle is VisualInstance3D or obstacle == volume:
-			continue
+func _is_point_valid(obstacles: Array[VisualInstance3D], world_point: Vector3) -> bool:
+	for obstacle: VisualInstance3D in obstacles:
 		var aabb: AABB = obstacle.global_transform * obstacle.get_aabb()
 		
 		for offset in OFFSETS:

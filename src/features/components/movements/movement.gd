@@ -32,8 +32,7 @@ func tick(delta: float) -> void:
 	else:
 		_apply_drag(delta)
 	
-	if should_apply_gravity:
-		_apply_gravity(delta)
+	if should_apply_gravity: _apply_gravity(delta)
 	
 	if desired_move_dir: apply_model_rotation(desired_move_dir, model_rotation_speed, delta)
 	

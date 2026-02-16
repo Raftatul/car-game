@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://bwvc0y451kshi"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_04ber"]
+radius = 1.9945394
+
+[sub_resource type="Gradient" id="Gradient_04ber"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.53759396, 0.7819549)
+colors = PackedColorArray(0.36299998, 0.3848167, 0.55, 1, 0.5788738, 0.40022096, 0.54703605, 1, 0.8, 0.41599998, 0.5440001, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_04ber"]
+noise_type = 3
+frequency = 0.0064
+fractal_type = 2
+fractal_octaves = 1
+domain_warp_enabled = true
+domain_warp_amplitude = 5.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lkeqf"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_04ber")
+color_ramp = SubResource("Gradient_04ber")
+seamless = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_66xk6"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_04ber")
+seamless = true
+as_normal_map = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4vf0e"]
+albedo_texture = SubResource("NoiseTexture2D_lkeqf")
+normal_enabled = true
+normal_scale = 3.0
+normal_texture = SubResource("NoiseTexture2D_66xk6")
+uv1_triplanar = true
+uv1_triplanar_sharpness = 50.0
+uv1_world_triplanar = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_04ber"]
+radius = 2.0
+height = 2.0
+is_hemisphere = true
+
+[node name="Brain" type="StaticBody3D" unique_id=1540283853]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1397255545]
+shape = SubResource("SphereShape3D_04ber")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1664690300]
+material_override = SubResource("StandardMaterial3D_4vf0e")
+mesh = SubResource("SphereMesh_04ber")
